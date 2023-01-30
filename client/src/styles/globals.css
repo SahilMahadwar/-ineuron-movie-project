@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* h1 {
+    @apply font-display;
+  }
+  h2 {
+    @apply font-display;
+  }
+  h3 {
+    @apply font-display;
+  } */
+
+  /* ... */
+  /* body {
+    @apply bg-[#F1F5F9] font-body h-full;
+  }
+
+  html {
+    @apply h-full;
+  }  */
+}
