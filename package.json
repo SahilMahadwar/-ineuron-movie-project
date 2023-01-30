@@ -8,9 +8,9 @@
     ]
   },
   "scripts": {
-    "dev": "concurrently \"yarn client:dev\"  \"\"",
+    "dev": "concurrently \"yarn client:dev\"  \"yarn server:dev\"",
     "client:dev": "yarn workspace client dev",
-    "server:dev": "yarn workspace server start"
+    "server:dev": "yarn workspace server dev"
   },
   "packageManager": "yarn@3.2.1",
   "dependencies": {
