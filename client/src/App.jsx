@@ -1,9 +1,7 @@
-function App() {
-  return (
-    <div>
-      <p className="text-7xl text-brand-800 font-bold">Tailwindcsss setup</p>
-    </div>
-  );
+import { Outlet } from "react-router-dom";
+
+export function App() {
+  return <Outlet />;
 }
 
 export default App;
