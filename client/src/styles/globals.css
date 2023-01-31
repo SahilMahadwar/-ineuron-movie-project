@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-  /* h1 {
+  h1 {
     @apply font-display;
   }
   h2 {
@@ -11,14 +11,13 @@
   }
   h3 {
     @apply font-display;
-  } */
+  }
 
-  /* ... */
-  /* body {
+  body {
     @apply bg-[#F1F5F9] font-body h-full;
   }
 
   html {
     @apply h-full;
-  }  */
+  }
 }

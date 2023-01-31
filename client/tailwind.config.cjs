@@ -9,6 +9,10 @@ module.exports = {
         brand: colors.blue,
       },
     },
+    fontFamily: {
+      display: ["InterVariable"],
+      body: ["InterVariable"],
+    },
   },
   plugins: [],
 };
