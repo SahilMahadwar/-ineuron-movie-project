@@ -8,26 +8,58 @@ export function useTmdb() {
   const [error, setError] = useState(null);
   const [isError, setIsError] = useState(null);
 
-  useEffect(() => {
-    getMovies();
-  }, []);
+  // useEffect(() => {
+  //   getPopularMovies();
+  // }, []);
 
-  const getMovies = async (page = 1) => {
+  // const getPopularMovies = async (page = 1) => {
+  //   try {
+  //     setIsError(false);
+  //     setIsLoading(true);
+
+  //     const { data, status } = await axiosTmdbInstance.get(
+  //       `https://api.themoviedb.org/3/movie/popular?api_key=${tmdbKey}&language=en-US&page=${page}`
+  //     );
+
+  //     if (status === 200) {
+  //       setMovies(data.results);
+  //     }
+
+  //     console.log(data);
+
+  //     setIsLoading(false);
+  //   } catch (error) {
+  //     setError(error);
+  //     setIsError(true);
+  //     setIsLoading(false);
+  //     console.log(error);
+  //   }
+  // };
+
+  const moviesSearch = async (query) => {
+    const convertedQuery = query.split(" ").join("%").toLowerCase();
+
+    console.log(convertedQuery);
+
     try {
       setIsError(false);
       setIsLoading(true);
 
       const { data, status } = await axiosTmdbInstance.get(
-        `/search/movie?api_key=${tmdbKey}&language=en-US&query=iron%20man&page=${page}&include_adult=true`
+        `https://api.themoviedb.org/3/search/movie?api_key=${tmdbKey}&language=en-US&query=${convertedQuery}&page=1&include_adult=true`
       );
 
       if (status === 200) {
-        setMovies(data.results);
+        setIsLoading(false);
+
+        return {
+          data: data.results,
+          success: true,
+        };
       }
 
-      console.log(data);
-
       setIsLoading(false);
+      console.log(data);
     } catch (error) {
       setError(error);
       setIsError(true);
@@ -37,10 +69,9 @@ export function useTmdb() {
   };
 
   return {
-    getMovies,
-    movies,
     isLoading,
     error,
     isError,
+    moviesSearch,
   };
 }

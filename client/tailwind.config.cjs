@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        brand: colors.blue,
+        brand: colors.red,
       },
     },
     fontFamily: {

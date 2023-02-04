@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { default as App } from "./App";
 import AdminLayout from "./layouts/AdminLayout";
 import AdminDashboard from "./routes/admin/Dashboard";
+import Movies from "./routes/admin/Movies";
 import ErrorPage from "./routes/ErrorPage";
 import Home from "./routes/Home";
 import "./styles/globals.css";
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
           {
             path: "/admin",
             element: <AdminDashboard />,
+          },
+          {
+            path: "/admin/movies",
+            element: <Movies />,
           },
         ],
       },

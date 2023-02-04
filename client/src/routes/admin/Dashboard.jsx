@@ -1,9 +1,5 @@
 export function AdminDashboard() {
-  return (
-    <div>
-      <p>Admin</p>
-    </div>
-  );
+  return <div>Dashboard with cards</div>;
 }
 
 export default AdminDashboard;

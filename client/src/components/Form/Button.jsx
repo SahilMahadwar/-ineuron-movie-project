@@ -1,8 +1,8 @@
 import { cva } from "class-variance-authority";
 import clsx from "clsx";
 
-import Icon from "./Icon";
-import Spinner from "./Spinner";
+import Icon from "../Icon";
+import Spinner from "../Spinner";
 
 const buttonStyles = cva(
   "duration-0.15 transition ease-in rounded-lg text-center focus:outline-none focus:ring-4 font-medium select-none relative inline-flex items-center",

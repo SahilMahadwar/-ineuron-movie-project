@@ -1,9 +1,11 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { HomeModernIcon } from "@heroicons/react/24/outline";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
+import Button from "../components/Form/Button";
 
 import Logo from "../components/Logo";
+import TmdbMovieSearch from "../components/TmdbMovieSearch/TmdbMovieSearch";
 
 const user = {
   name: "Sahil",
@@ -11,7 +13,8 @@ const user = {
   imageUrl: "https://randomuser.me/api/portraits/men/32.jpg",
 };
 const navigation = [
-  { name: "Movies", href: "#", current: true },
+  { name: "Home", href: "#", current: true },
+  { name: "Movies", href: "#", current: false },
   { name: "Reviews", href: "#", current: false },
   { name: "Users", href: "#", current: false },
 ];
@@ -26,6 +29,8 @@ function classNames(...classes) {
 }
 
 export function AdminLayout() {
+  const [open, setOpen] = useState(false);
+
   return (
     <>
       <div className="min-h-full">
@@ -64,6 +69,12 @@ export function AdminLayout() {
                     </div>
                   </div>
                   <div className="hidden sm:ml-6 sm:flex sm:items-center">
+                    <div className="mr-2">
+                      <Button onClick={() => setOpen(true)} size="xs">
+                        Add New Movie
+                      </Button>
+                    </div>
+
                     {/* Profile dropdown */}
                     <Menu as="div" className="ml-3 relative">
                       <div>
@@ -206,6 +217,7 @@ export function AdminLayout() {
           </main>
         </div>
       </div>
+      <TmdbMovieSearch open={open} setOpen={setOpen} />
     </>
   );
 }
