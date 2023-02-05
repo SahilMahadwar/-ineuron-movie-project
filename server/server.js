@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const morgan = require("morgan");
 
 //Load env vars
 dotenv.config({ path: "../.env" });
@@ -9,6 +10,13 @@ const app = express();
 
 // Body parser
 app.use(express.json());
+
+// Dev logging middleware
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+} else {
+  app.use(morgan("short"));
+}
 
 // Api Home
 app.get("/", (req, res, next) => {
