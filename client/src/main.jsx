@@ -10,6 +10,8 @@ import MovieDetails, {
   loader as movieLoader,
 } from "./routes/admin/MovieDetails";
 import Movies from "./routes/admin/Movies";
+import LoginPage from "./routes/auth/LoginPage";
+import RegisterPage from "./routes/auth/RegisterPage";
 import ErrorPage from "./routes/ErrorPage";
 import Home from "./routes/Home";
 import "./styles/globals.css";
@@ -43,6 +45,14 @@ const router = createBrowserRouter([
             errorElement: <ErrorElement />,
           },
         ],
+      },
+      {
+        path: "/auth/login",
+        element: <LoginPage />,
+      },
+      {
+        path: "/auth/register",
+        element: <RegisterPage />,
       },
     ],
   },
