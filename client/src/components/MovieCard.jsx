@@ -23,7 +23,7 @@ export function MovieCard({
             posterPath={posterPath}
           />
           {adult && (
-            <span class="bg-red-500 text-white text-xs font-semibold px-2.5 py-0.5 rounded absolute bottom-2">
+            <span className="bg-red-500 text-white text-xs font-semibold px-2.5 py-0.5 rounded absolute bottom-2">
               ADULT
             </span>
           )}

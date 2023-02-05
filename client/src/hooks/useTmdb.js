@@ -36,7 +36,7 @@ export function useTmdb() {
   //   }
   // };
 
-  const moviesSearch = async (query) => {
+  const movieSearch = async (query) => {
     const convertedQuery = query.split(" ").join("%").toLowerCase();
 
     console.log(convertedQuery);
@@ -72,6 +72,6 @@ export function useTmdb() {
     isLoading,
     error,
     isError,
-    moviesSearch,
+    movieSearch,
   };
 }

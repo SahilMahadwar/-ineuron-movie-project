@@ -10,7 +10,7 @@ export default function TmdbMovieSearch({ open, setOpen }) {
   const [movies, setMovies] = useState();
   const [movieInput, setMovieInput] = useState("");
 
-  const { moviesSearch, isLoading, isError, error } = useTmdb();
+  const { movieSearch, isLoading, isError, error } = useTmdb();
 
   useEffect(() => {
     searchMovie(movieInput);
@@ -27,7 +27,7 @@ export default function TmdbMovieSearch({ open, setOpen }) {
       return setMovies();
     }
 
-    const { data, success } = await moviesSearch(input);
+    const { data, success } = await movieSearch(input);
 
     if (success === true) {
       console.log(data);

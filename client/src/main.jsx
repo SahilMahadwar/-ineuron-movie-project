@@ -5,6 +5,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { default as App } from "./App";
 import AdminLayout from "./layouts/AdminLayout";
 import AdminDashboard from "./routes/admin/Dashboard";
+import MovieDetails, {
+  ErrorElement as MovieDetailsErrorElement,
+  loader as movieLoader,
+} from "./routes/admin/MovieDetails";
 import Movies from "./routes/admin/Movies";
 import ErrorPage from "./routes/ErrorPage";
 import Home from "./routes/Home";
@@ -31,6 +35,12 @@ const router = createBrowserRouter([
           {
             path: "/admin/movies",
             element: <Movies />,
+          },
+          {
+            path: "/admin/movies/:tmdbId",
+            element: <MovieDetails />,
+            loader: movieLoader,
+            errorElement: <MovieDetailsErrorElement />,
           },
         ],
       },
