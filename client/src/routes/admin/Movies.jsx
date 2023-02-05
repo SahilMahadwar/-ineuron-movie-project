@@ -1,5 +1,3 @@
-export function Movies() {
+export default function Movies() {
   return <div>movies</div>;
 }
-
-export default Movies;

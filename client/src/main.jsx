@@ -3,10 +3,10 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { default as App } from "./App";
+import ErrorElement from "./components/ErrorElement";
 import AdminLayout from "./layouts/AdminLayout";
 import AdminDashboard from "./routes/admin/Dashboard";
 import MovieDetails, {
-  ErrorElement as MovieDetailsErrorElement,
   loader as movieLoader,
 } from "./routes/admin/MovieDetails";
 import Movies from "./routes/admin/Movies";
@@ -18,7 +18,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorElement />,
     children: [
       {
         path: "/",
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
             path: "/admin/movies/:tmdbId",
             element: <MovieDetails />,
             loader: movieLoader,
-            errorElement: <MovieDetailsErrorElement />,
+            errorElement: <ErrorElement />,
           },
         ],
       },
