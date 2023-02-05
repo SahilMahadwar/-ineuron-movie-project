@@ -1,9 +1,16 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
+const connectDB = require("./config/db");
 
 //Load env vars
 dotenv.config({ path: "../.env" });
+
+// Connect to db
+connectDB();
+
+//Route Files
+const auth = require("./routes/auth");
 
 //Create App
 const app = express();
@@ -17,6 +24,9 @@ if (process.env.NODE_ENV === "development") {
 } else {
   app.use(morgan("short"));
 }
+
+// Mount routers
+app.use("/api/v1/auth", auth);
 
 // Api Home
 app.get("/", (req, res, next) => {
