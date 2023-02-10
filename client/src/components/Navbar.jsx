@@ -1,7 +1,8 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { HomeModernIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 import Button from "./Form/Button";
 import Logo from "./Logo";
 import Spinner from "./Spinner";
@@ -11,17 +12,34 @@ const navigation = [
   { name: "Reviews", href: "#", current: false },
 ];
 
+const adminNavigation = [
+  { name: "Home", href: "/admin", current: true },
+  { name: "Movies", href: "/admin/movies", current: false },
+  { name: "Reviews", href: "#", current: false },
+  { name: "Users", href: "#", current: false },
+];
+
 const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
+  { name: "Your Profile", href: "/profile" },
+  { name: "Settings", href: "/settings" },
 ];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ({ user, userLoading, isError }) {
+export default function ({
+  user,
+  userLoading,
+  isError,
+  adminNav,
+  setTmdbSlide,
+  tmdbSlide,
+}) {
+  const { logOut } = useAuth();
+
+  const { pathname } = useLocation();
+
   return (
     <Disclosure as="nav" className="bg-white border-b border-gray-200">
       {({ open }) => (
@@ -40,31 +58,61 @@ export default function ({ user, userLoading, isError }) {
                   </Link>
                 </div>
 
-                <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
-                  {navigation.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className={classNames(
-                        item.current
-                          ? "border-indigo-500 text-gray-900"
-                          : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
-                        "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-                      )}
-                      aria-current={item.current ? "page" : undefined}
-                    >
-                      {item.name}
-                    </a>
-                  ))}
-                </div>
+                {adminNav ? (
+                  <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
+                    {adminNavigation.map((item) => (
+                      <Link
+                        to={item.href}
+                        key={item.name}
+                        current={item.current ? "page" : undefined}
+                        className={classNames(
+                          item.current
+                            ? "border-indigo-500 text-gray-900"
+                            : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
+                          "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                        )}
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
+                    {navigation.map((item) => (
+                      <a
+                        key={item.name}
+                        href={item.href}
+                        className={classNames(
+                          item.current
+                            ? "border-indigo-500 text-gray-900"
+                            : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
+                          "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                        )}
+                        aria-current={item.current ? "page" : undefined}
+                      >
+                        {item.name}
+                      </a>
+                    ))}
+                  </div>
+                )}
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:items-center">
-                {user && user.role === "ADMIN" && (
-                  <div className="mr-2">
-                    <Link to="/admin">
-                      <Button size="xs">Open Admin Dashboard</Button>
-                    </Link>
-                  </div>
+                {pathname.startsWith("/admin") ? (
+                  <>
+                    <Button onClick={() => setTmdbSlide(true)} size="xs">
+                      Add New Movie
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    {user && !userLoading && user.role === "ADMIN" && (
+                      <div className="mr-2">
+                        <Link to="/admin">
+                          <Button size="xs">Open Admin Dashboard</Button>
+                        </Link>
+                      </div>
+                    )}{" "}
+                  </>
                 )}
 
                 {userLoading && <Spinner />}
@@ -95,18 +143,31 @@ export default function ({ user, userLoading, isError }) {
                         {userNavigation.map((item) => (
                           <Menu.Item key={item.name}>
                             {({ active }) => (
-                              <a
-                                href={item.href}
+                              <Link
+                                to={item.href}
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
                                   "block px-4 py-2 text-sm text-gray-700"
                                 )}
                               >
                                 {item.name}
-                              </a>
+                              </Link>
                             )}
                           </Menu.Item>
                         ))}
+                        <Menu.Item>
+                          {({ active }) => (
+                            <a
+                              onClick={() => logOut()}
+                              className={classNames(
+                                active ? "bg-gray-100 cursor-pointer" : "",
+                                "block px-4 py-2 text-sm text-gray-700"
+                              )}
+                            >
+                              Sign out
+                            </a>
+                          )}
+                        </Menu.Item>
                       </Menu.Items>
                     </Transition>
                   </Menu>

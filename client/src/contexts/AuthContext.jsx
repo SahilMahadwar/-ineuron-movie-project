@@ -57,7 +57,9 @@ export const AuthProvider = ({ children }) => {
         console.log(data);
         localStorage.setItem("token", data.token);
         setUser(data.user);
-        navigate("/");
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
       }
     } catch (error) {
       console.log(error.response.status);
@@ -65,7 +67,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logOut = () => {
-    localStorage.removeItem("token", data.token);
+    localStorage.removeItem("token");
+    setUser(null);
+    navigate("/auth/login");
   };
 
   const getUser = async () => {

@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Form/Button";
 import Input from "../../components/Form/Input";
 import Logo from "../../components/Logo";
-import { useAuth } from "../../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 
 export async function loader() {
   const { user } = useAuth();

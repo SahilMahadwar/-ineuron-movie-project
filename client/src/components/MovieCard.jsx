@@ -37,7 +37,7 @@ export function MovieCard({
             {title}
           </h3>
           <div className="flex space-x-2 ">
-            <span class="bg-green-500 text-white text-xs font-semibold px-1.5 py-0.5 rounded flex items-center">
+            <span className="bg-green-500 text-white text-xs font-semibold px-1.5 py-0.5 rounded flex items-center">
               {voteAverage}
             </span>
             <p className="text-sm font-normal text-gray-800 ">{releaseDate}</p>

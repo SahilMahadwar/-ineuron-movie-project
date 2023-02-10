@@ -6,19 +6,16 @@ import Button from "../components/Form/Button";
 
 import AdminNavbar from "../components/AdminNavbar";
 import Logo from "../components/Logo";
+import Navbar from "../components/Navbar";
 import Spinner from "../components/Spinner";
 import TmdbMovieSearch from "../components/TmdbMovieSearch/TmdbMovieSearch";
 import AuthContext from "../contexts/AuthContext";
-import { useAuth } from "../hooks/useAuth";
+import useAuth from "../hooks/useAuth";
 
 export default function AdminLayout({ title }) {
-  const [open, setOpen] = useState(false);
+  const [tmdbSlide, setTmdbSlide] = useState(false);
 
   const { user, isLoading, error, isError, getUser } = useAuth();
-
-  // useEffect(() => {
-  //   getUser();
-  // }, []);
 
   if (isLoading) {
     return (
@@ -39,7 +36,14 @@ export default function AdminLayout({ title }) {
     return (
       <>
         <div className="min-h-full">
-          <AdminNavbar user={user} isError={isError} userLoading={isLoading} />
+          <Navbar
+            adminNav={true}
+            user={user}
+            isError={isError}
+            userLoading={isLoading}
+            tmdbSlide={tmdbSlide}
+            setTmdbSlide={setTmdbSlide}
+          />
 
           <div className="py-10">
             {title && (
@@ -63,7 +67,7 @@ export default function AdminLayout({ title }) {
             </main>
           </div>
         </div>
-        <TmdbMovieSearch open={open} setOpen={setOpen} />
+        <TmdbMovieSearch open={tmdbSlide} setOpen={setTmdbSlide} />
       </>
     );
   }

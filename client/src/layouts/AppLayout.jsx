@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { useAuth } from "../hooks/useAuth";
+import useAuth from "../hooks/useAuth";
 
 export default function AppLayout({ title }) {
   const { user, isLoading, error, isError, getUser } = useAuth();
-
-  // useEffect(() => {
-  //   getUser();
-  // }, []);
 
   return (
     <>
