@@ -25,6 +25,7 @@ const Input = ({
   register = () => {},
   name = "string",
   label,
+  config,
   status,
   isError,
   message,
@@ -44,7 +45,7 @@ const Input = ({
       )}
 
       <input
-        {...register(name)}
+        {...register(name, config)}
         {...props}
         disabled={status === "disabled" && true}
         type="string"

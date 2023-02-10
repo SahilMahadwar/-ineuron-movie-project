@@ -2,6 +2,8 @@ const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const connectDB = require("./config/db");
+const cors = require("cors");
+const errorHandler = require("./middleware/error");
 
 //Load env vars
 dotenv.config({ path: "../.env" });
@@ -14,6 +16,9 @@ const auth = require("./routes/auth");
 
 //Create App
 const app = express();
+
+// Cors
+app.use(cors());
 
 // Body parser
 app.use(express.json());
@@ -28,8 +33,10 @@ if (process.env.NODE_ENV === "development") {
 // Mount routers
 app.use("/api/v1/auth", auth);
 
+app.use(errorHandler);
+
 // Api Home
-app.get("/", (req, res, next) => {
+app.get("/api/v1", (req, res, next) => {
   return res.status(200).json({
     message: "Hello from root!",
   });

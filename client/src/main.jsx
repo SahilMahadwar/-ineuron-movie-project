@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { default as App } from "./App";
 import ErrorElement from "./components/ErrorElement";
 import AdminLayout from "./layouts/AdminLayout";
+import AppLayout from "./layouts/AppLayout";
 import AdminDashboard from "./routes/admin/Dashboard";
 import MovieDetails, {
   loader as movieLoader,
@@ -24,11 +25,18 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home />,
+        element: <AppLayout />,
+        children: [
+          {
+            path: "/",
+            element: <Home />,
+          },
+        ],
       },
       {
         path: "/admin",
         element: <AdminLayout />,
+        errorElement: <ErrorElement />,
         children: [
           {
             path: "/admin",
