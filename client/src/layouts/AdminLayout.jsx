@@ -1,15 +1,10 @@
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { HomeModernIcon } from "@heroicons/react/24/outline";
-import { Fragment, useContext, useEffect, useState } from "react";
-import { Link, Outlet, useLoaderData } from "react-router-dom";
-import Button from "../components/Form/Button";
+import { useState } from "react";
+import { Outlet } from "react-router-dom";
 
-import AdminNavbar from "../components/AdminNavbar";
-import Logo from "../components/Logo";
 import Navbar from "../components/Navbar";
 import Spinner from "../components/Spinner";
 import TmdbMovieSearch from "../components/TmdbMovieSearch/TmdbMovieSearch";
-import AuthContext from "../contexts/AuthContext";
+
 import useAuth from "../hooks/useAuth";
 
 export default function AdminLayout({ title }) {
