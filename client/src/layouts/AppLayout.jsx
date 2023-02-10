@@ -6,9 +6,9 @@ import { useAuth } from "../hooks/useAuth";
 export default function AppLayout({ title }) {
   const { user, isLoading, error, isError, getUser } = useAuth();
 
-  //   useEffect(() => {
-  //     getUser();
-  //   }, []);
+  // useEffect(() => {
+  //   getUser();
+  // }, []);
 
   return (
     <>

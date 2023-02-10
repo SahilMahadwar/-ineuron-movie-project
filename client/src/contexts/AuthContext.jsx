@@ -17,6 +17,13 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  useEffect(() => {
+    if (user && !isLoading) {
+      setError(null);
+      setIsError(null);
+    }
+  }, [pathname]);
+
   const navigate = useNavigate();
 
   const login = async (email, password) => {

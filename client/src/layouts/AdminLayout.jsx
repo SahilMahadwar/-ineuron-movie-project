@@ -1,11 +1,11 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { HomeModernIcon } from "@heroicons/react/24/outline";
-import { Fragment, useContext, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { Link, Outlet, useLoaderData } from "react-router-dom";
 import Button from "../components/Form/Button";
 
-import Logo from "../components/Logo";
 import AdminNavbar from "../components/AdminNavbar";
+import Logo from "../components/Logo";
 import Spinner from "../components/Spinner";
 import TmdbMovieSearch from "../components/TmdbMovieSearch/TmdbMovieSearch";
 import AuthContext from "../contexts/AuthContext";
@@ -14,7 +14,11 @@ import { useAuth } from "../hooks/useAuth";
 export default function AdminLayout({ title }) {
   const [open, setOpen] = useState(false);
 
-  const { user, isLoading, error, isError } = useAuth();
+  const { user, isLoading, error, isError, getUser } = useAuth();
+
+  // useEffect(() => {
+  //   getUser();
+  // }, []);
 
   if (isLoading) {
     return (
