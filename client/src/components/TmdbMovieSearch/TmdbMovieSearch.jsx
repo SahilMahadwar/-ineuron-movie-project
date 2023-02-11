@@ -39,7 +39,15 @@ export default function TmdbMovieSearch({ open, setOpen }) {
     <SlideOver open={open} setOpen={setOpen} title="Search for movies on TMDB">
       <Input onChange={(e) => setMovieInput(e.target.value)} />
 
-      {isError && <div>{error?.message}</div>}
+      {isError && (
+        <div>
+          {error?.message === "Network Error" ? (
+            <div>Tmdb api offline please try again later</div>
+          ) : (
+            <div>{error?.message}</div>
+          )}
+        </div>
+      )}
 
       {isLoading && <div>Loading...</div>}
 
