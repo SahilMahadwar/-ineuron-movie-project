@@ -13,6 +13,7 @@ connectDB();
 
 //Route Files
 const auth = require("./routes/auth");
+const movies = require("./routes/movies");
 
 //Create App
 const app = express();
@@ -32,6 +33,7 @@ if (process.env.NODE_ENV === "development") {
 
 // Mount routers
 app.use("/api/v1/auth", auth);
+app.use("/api/v1/movies", movies);
 
 app.use(errorHandler);
 
