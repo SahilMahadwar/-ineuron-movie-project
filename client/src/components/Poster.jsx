@@ -10,7 +10,7 @@ export function Poster({
         className={`${width} ${height} bg-gray-300 rounded-xl overflow-hidden`}
       >
         <img
-          src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2/${posterPath}`}
+          src={posterPath}
           alt={title}
           className="object-cover w-full h-full"
         />

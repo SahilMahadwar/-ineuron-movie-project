@@ -30,7 +30,7 @@ export default function MovieDetails() {
           width="w-64"
           height="h-96"
           movieId={movie.id}
-          posterPath={movie.poster_path}
+          posterPath={`https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movie.poster_path}`}
           title={movie.title}
           key={movie.id}
           overview={movie.overview}
