@@ -7,14 +7,13 @@ import ErrorElement from "./components/ErrorElement";
 import AdminLayout from "./layouts/AdminLayout";
 import AppLayout from "./layouts/AppLayout";
 import AdminDashboard from "./routes/admin/Dashboard";
-import MovieDetails, {
-  loader as movieLoader,
-} from "./routes/admin/MovieDetails";
-import Movies from "./routes/admin/Movies";
 import LoginPage from "./routes/auth/LoginPage";
 import RegisterPage from "./routes/auth/RegisterPage";
 import ErrorPage from "./routes/ErrorPage";
 import Home, { loader as moviesLoader } from "./routes/Home";
+import MovieDetails, { loader as movieLoader } from "./routes/MovieDetails";
+import Movies from "./routes/Movies";
+import Reviews from "./routes/Reviews";
 import "./styles/globals.css";
 
 const router = createBrowserRouter([
@@ -29,8 +28,19 @@ const router = createBrowserRouter([
         children: [
           {
             path: "/",
-            element: <Home />,
+            element: <Movies />,
             loader: moviesLoader,
+            errorElement: <ErrorElement />,
+          },
+          {
+            path: "/movies/:tmdbId",
+            element: <MovieDetails />,
+            loader: movieLoader,
+            errorElement: <ErrorElement />,
+          },
+          {
+            path: "/reviews",
+            element: <Reviews />,
             errorElement: <ErrorElement />,
           },
         ],
@@ -47,6 +57,8 @@ const router = createBrowserRouter([
           {
             path: "/admin/movies",
             element: <Movies />,
+            loader: moviesLoader,
+            errorElement: <ErrorElement />,
           },
           {
             path: "/admin/movies/:tmdbId",

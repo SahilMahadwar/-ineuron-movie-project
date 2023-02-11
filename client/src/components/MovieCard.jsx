@@ -1,5 +1,6 @@
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
+
 import Button from "./Form/Button";
 import Poster from "./Poster";
 
@@ -43,7 +44,7 @@ export function MovieCard({
             <p className="text-sm font-normal text-gray-800 ">{releaseDate}</p>
           </div>
 
-          <div className="">
+          <div>
             <Link to={`/admin/movies/${movieId}`}>
               <button className=" text-brand-500 bg-brand-100  w-fit  text-xs font-semibold px-2.5 py-1 rounded mt-1.5 mb-0.5 ">
                 Add to website

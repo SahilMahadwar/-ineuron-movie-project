@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { pathname } = useLocation();
 
+  // TODO: Create a new state to trigger a refetch manually
   useEffect(() => {
     if (!pathname.startsWith("/auth")) {
       getUser();

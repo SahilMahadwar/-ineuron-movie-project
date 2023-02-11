@@ -374,16 +374,13 @@ export function Home() {
         ) : (
           <div className="grid grid-cols-6 gap-x-7 gap-y-10">
             {movies?.map((movie) => (
-              <Poster
-                movieId={movie.id}
-                posterPath={movie.poster}
-                title={movie.title}
-                key={movie.id}
-                overview={movie.overview}
-                adult={movie.adult}
-                voteAverage={movie.vote_average}
-                releaseDate={movie.release_date}
-              />
+              <Link to={`/admin/movies/${movie.tmdbId}`}>
+                <Poster
+                  posterPath={movie.poster}
+                  title={movie.name}
+                  key={movie.tmdbId}
+                />
+              </Link>
             ))}
           </div>
         )}

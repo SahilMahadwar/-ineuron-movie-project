@@ -8,8 +8,8 @@ import Logo from "./Logo";
 import Spinner from "./Spinner";
 
 const navigation = [
-  { name: "Movies", href: "#", current: false },
-  { name: "Reviews", href: "#", current: false },
+  { name: "Movies", href: "/", current: true },
+  { name: "Reviews", href: "/reviews", current: false },
 ];
 
 const adminNavigation = [
@@ -79,9 +79,9 @@ export default function ({
                 ) : (
                   <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
-                        href={item.href}
+                        to={item.href}
                         className={classNames(
                           item.current
                             ? "border-indigo-500 text-gray-900"
@@ -91,7 +91,7 @@ export default function ({
                         aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 )}

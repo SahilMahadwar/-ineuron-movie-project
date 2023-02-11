@@ -1,10 +1,14 @@
 import { useLoaderData, useParams, useRouteError } from "react-router-dom";
-import Button from "../../components/Form/Button";
-import Poster from "../../components/Poster";
-import { useTmdb } from "../../hooks/useTmdb";
-import { axiosTmdbInstance } from "../../lib/axiosTmdbInstance";
-import { tmdbKey } from "../../lib/axiosTmdbInstance/constants";
-import { convertRuntimeToHours } from "../../utils/tmdb";
+import Button from "../components/Form/Button";
+import Poster from "../components/Poster";
+import Spinner from "../components/Spinner";
+import { useApi } from "../hooks/useApi";
+import useAuth from "../hooks/useAuth";
+import { useTmdb } from "../hooks/useTmdb";
+import { axiosApiInstance } from "../lib/axiosApiInstance";
+import { axiosTmdbInstance } from "../lib/axiosTmdbInstance";
+import { tmdbKey } from "../lib/axiosTmdbInstance/constants";
+import { convertRuntimeToHours } from "../utils/tmdb";
 
 const getMovieDetails = async (params) => {
   const { data, status } = await axiosTmdbInstance.get(
@@ -21,7 +25,15 @@ export async function loader({ params }) {
 export default function MovieDetails() {
   const movie = useLoaderData();
 
+  const { user, isLoading, isError, error } = useAuth();
+  const { addToWebsite } = useApi();
+
   console.log(movie);
+
+  const handleAdd = async () => {
+    await addToWebsite(movie);
+    console.log("movies added successfully");
+  };
 
   return (
     <div className="bg-white  px-8 py-8 rounded-xl shadow-sm">
@@ -62,9 +74,11 @@ export default function MovieDetails() {
             )}
           </div>
 
-          <div>
-            <Button>Add To Website</Button>
-          </div>
+          {isLoading && <Spinner />}
+
+          {user && user.role === "ADMIN" && (
+            <Button onClick={handleAdd}>Add To Website</Button>
+          )}
 
           <div className="space-y-1">
             <p className="text-gray-800 font-semibold text-sm">Genres</p>
