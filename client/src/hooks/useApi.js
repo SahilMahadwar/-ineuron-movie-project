@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import { tmdbKey } from "../lib/axiosTmdbInstance/constants";
-import { axiosTmdbInstance } from "../lib/axiosTmdbInstance/index";
 
-export function useTmdb() {
+import { axiosApiInstance } from "../lib/axiosApiInstance";
+
+export default function useTmdb() {
   const [movies, setMovies] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isError, setIsError] = useState(null);
 
-  const addToWebsite = async (title, overview, id, poster_path) => {
+  const addToWebsite = async (movie) => {
     let token = localStorage.getItem("token");
 
     const data = {
