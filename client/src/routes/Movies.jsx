@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link, useLoaderData } from "react-router-dom";
-import Poster from "../components/Poster";
+import Poster from "../components/Cards/Poster";
 import useAuth from "../hooks/useAuth";
 import { axiosApiInstance } from "../lib/axiosApiInstance";
 

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
 import { useTmdb } from "../../hooks/useTmdb";
+import MovieCard from "../Cards/MovieCard";
+import Poster from "../Cards/Poster";
 import Input from "../Form/Input";
-import MovieCard from "../MovieCard";
-import Poster from "../Poster";
 import SlideOver from "./SlideOver";
 
 export default function TmdbMovieSearch({ open, setOpen }) {

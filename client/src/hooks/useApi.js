@@ -25,7 +25,7 @@ export default function useTmdb() {
     });
 
     if (status === 201) {
-      console.log("sussfully added");
+      console.log("sussfully added ");
     }
   };
 

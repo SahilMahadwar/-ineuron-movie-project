@@ -1,7 +1,7 @@
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 
-import Button from "./Form/Button";
+import Button from "../Form/Button";
 import Poster from "./Poster";
 
 export function MovieCard({
