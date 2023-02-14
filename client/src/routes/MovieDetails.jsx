@@ -28,7 +28,9 @@ export default function MovieDetails() {
       <MovieDetailsCard movie={movie} isAdmin={false} />
 
       {/* Reviews Part */}
-      <div className="bg-white  px-8 py-8 rounded-xl shadow-sm"></div>
+      <div className="bg-white  px-8 py-8 rounded-xl shadow-sm">
+        <CreateReviewCard />
+      </div>
     </div>
   );
 }
