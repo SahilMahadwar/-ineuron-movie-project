@@ -14,6 +14,7 @@ connectDB();
 //Route Files
 const auth = require("./routes/auth");
 const movies = require("./routes/movies");
+const reviews = require("./routes/reviews");
 
 //Create App
 const app = express();
@@ -34,8 +35,7 @@ if (process.env.NODE_ENV === "development") {
 // Mount routers
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/movies", movies);
-
-app.use(errorHandler);
+app.use("/api/v1/reviews", reviews);
 
 // Api Home
 app.get("/api/v1", (req, res, next) => {
@@ -50,6 +50,9 @@ app.use((req, res, next) => {
     error: "Not Found",
   });
 });
+
+// Error middleware
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 

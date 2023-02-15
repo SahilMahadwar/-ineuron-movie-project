@@ -8,11 +8,23 @@ const ReviewSchema = new mongoose.Schema({
 
   review: {
     type: String,
-    required: [true, "Please add movie name"],
+    required: [true, "Please add review"],
   },
 
   rating: {
     type: String,
+  },
+
+  movie: {
+    type: mongoose.Schema.ObjectId,
+    ref: "Movie",
+    required: [true, "Please add movie"],
+  },
+
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User",
+    required: [true, "Please add user"],
   },
 
   createdAt: {
