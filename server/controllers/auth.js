@@ -1,4 +1,5 @@
 const asyncHandler = require("../middleware/async");
+const Review = require("../models/Review");
 
 const User = require("../models/User");
 const ErrorResponse = require("../utils/errorResponse");
@@ -75,6 +76,11 @@ const sendTokenResponse = (user, statusCode, res) => {
 // @access  Private
 exports.getMe = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user.id);
+
+  //Fetches the reviews created by the user as well as a movie for which the review was created
+  const reviews = await Review.find({ user: req.user.id }).populate("movie");
+
+  user.reviews = reviews;
 
   res.status(200).json({
     success: true,
