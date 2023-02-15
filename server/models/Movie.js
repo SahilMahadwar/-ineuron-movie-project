@@ -31,6 +31,21 @@ const MovieSchema = new mongoose.Schema({
     required: false,
   },
 
+  spokenLanguage: {
+    type: String,
+    required: false,
+  },
+
+  runtime: {
+    type: Number,
+    required: false,
+  },
+
+  genres: {
+    type: Array,
+    required: false,
+  },
+
   releaseDate: {
     type: String,
     required: false,

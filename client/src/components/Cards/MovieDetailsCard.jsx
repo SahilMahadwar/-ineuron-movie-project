@@ -3,7 +3,22 @@ import { convertRuntimeToHours } from "../../utils/tmdb";
 import Button from "../Form/Button";
 import Poster from "./Poster";
 
-export function MovieDetailsCard({ movie, isAdmin }) {
+export function MovieDetailsCard(props) {
+  const {
+    posterPath,
+    name,
+    adult,
+    status,
+    releaseDate,
+    spokenLanguage,
+    runtime,
+    genres,
+    tagline,
+    description,
+    isAdmin,
+    movie,
+  } = props;
+
   const { addToWebsite } = useApi();
 
   const handleAdd = async () => {
@@ -17,35 +32,29 @@ export function MovieDetailsCard({ movie, isAdmin }) {
         <Poster
           width="w-64"
           height="h-96"
-          movieId={movie.id}
-          posterPath={`https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movie.poster_path}`}
-          title={movie.title}
-          key={movie.id}
-          overview={movie.overview}
-          adult={movie.adult}
-          voteAverage={movie.vote_average}
-          releaseDate={movie.release_date}
+          posterPath={posterPath}
+          title={name}
+          adult={adult}
         />
         <div className="py-2 space-y-6">
           <div className="space-y-2">
-            <h1 className="text-3xl font-bold text-gray-800">{movie.title}</h1>
+            <h1 className="text-3xl font-bold text-gray-800">{name}</h1>
 
-            {movie.status === "Released" ? (
+            {status === "Released" ? (
               <p className="text-sm text-gray-700 flex items-center">
-                {movie.release_date}
-                {movie.spoken_languages[0]?.english_name &&
-                  movie.runtime > 0 && (
-                    <>
-                      <span className="block w-1 h-1 bg-gray-500 rounded ml-2 mr-2"></span>
-                      {convertRuntimeToHours(movie.runtime)}
-                      <span className="block w-1 h-1 bg-gray-500 rounded ml-2 mr-2"></span>
-                      {movie.spoken_languages[0]?.english_name}
-                    </>
-                  )}
+                {releaseDate}
+                {spokenLanguage && runtime > 0 && (
+                  <>
+                    <span className="block w-1 h-1 bg-gray-500 rounded ml-2 mr-2"></span>
+                    {convertRuntimeToHours(runtime)}
+                    <span className="block w-1 h-1 bg-gray-500 rounded ml-2 mr-2"></span>
+                    {spokenLanguage}
+                  </>
+                )}
               </p>
             ) : (
               <p className="text-sm text-gray-700 flex items-center">
-                Not released yet in {movie.status.toLowerCase()}
+                Not released yet in {status?.toLowerCase()}
               </p>
             )}
           </div>
@@ -55,24 +64,24 @@ export function MovieDetailsCard({ movie, isAdmin }) {
           <div className="space-y-1">
             <p className="text-gray-800 font-semibold text-sm">Genres</p>
             <div className="space-x-2">
-              {movie.genres.map((genre) => (
+              {genres?.map((genre) => (
                 <span
-                  key={genre.id}
+                  key={genre}
                   className="bg-gray-100 text-gray-500 text-xs font-semibold px-2.5 py-0.5 rounded"
                 >
-                  {genre.name}
+                  {genre}
                 </span>
               ))}
             </div>
           </div>
 
           <div className="space-y-1 ">
-            <p className="text-sm text-gray-700 italic">{movie.tagline}</p>
+            <p className="text-sm text-gray-700 italic">{tagline}</p>
           </div>
 
           <div className="space-y-1">
             <p className="text-gray-700 font-semibold text-sm">Overview</p>
-            <p className="text-gray-700">{movie.overview}</p>
+            <p className="text-gray-700">{description}</p>
           </div>
         </div>
         <div className="w-64 h-96 shrink-0"></div>

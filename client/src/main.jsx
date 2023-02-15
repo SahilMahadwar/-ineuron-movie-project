@@ -11,7 +11,7 @@ import LoginPage from "./routes/auth/LoginPage";
 import RegisterPage from "./routes/auth/RegisterPage";
 import ErrorPage from "./routes/ErrorPage";
 import Home, { loader as moviesLoader } from "./routes/Home";
-import MovieDetails, { loader as movieLoader } from "./routes/MovieDetails";
+import MovieDetails, { loader as movieLoader } from "./routes/MovieDetailsPage";
 import Movies from "./routes/Movies";
 import Reviews from "./routes/Reviews";
 import "./styles/globals.css";
