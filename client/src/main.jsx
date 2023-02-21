@@ -33,7 +33,7 @@ const router = createBrowserRouter([
             errorElement: <ErrorElement />,
           },
           {
-            path: "/movies/:tmdbId",
+            path: "/movies/:movieId",
             element: <MovieDetails />,
             loader: movieLoader,
             errorElement: <ErrorElement />,

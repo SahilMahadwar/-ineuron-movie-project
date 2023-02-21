@@ -1,9 +1,11 @@
 import { FaceSmileIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import useApi from "../hooks/useApi";
+import useAuth from "../hooks/useAuth";
 import Button from "./Form/Button";
 
-export default function CreateReviewCard() {
+export default function CreateReviewCard({ movie }) {
   const {
     register,
     handleSubmit,
@@ -11,8 +13,18 @@ export default function CreateReviewCard() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
-    console.log(data);
+  const { postReview } = useApi();
+  const { user, isLoading, isError, error } = useAuth();
+
+  const onSubmit = async (inputs) => {
+    const reviewData = {
+      title: inputs.title,
+      review: inputs.review,
+      user: user._id,
+      movie: movie._id,
+    };
+
+    postReview(reviewData);
   };
 
   return (

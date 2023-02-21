@@ -1,8 +1,10 @@
 import { Link, useLoaderData } from "react-router-dom";
 import MovieDetailsCard from "../components/Cards/MovieDetailsCard";
+import ReviewsCard from "../components/Cards/ReviewsCard";
 import CreateReviewCard from "../components/CreateReviewCard";
 import Button from "../components/Form/Button";
 import Spinner from "../components/Spinner";
+import useApi from "../hooks/useApi";
 import useAuth from "../hooks/useAuth";
 import { axiosApiInstance } from "../lib/axiosApiInstance";
 import { axiosTmdbInstance } from "../lib/axiosTmdbInstance";
@@ -15,13 +17,31 @@ const getMovieDetails = async (params) => {
 };
 
 export async function loader({ params }) {
-  return getMovieDetails(params.tmdbId);
+  return getMovieDetails(params.movieId);
 }
 
 export default function MovieDetailsPage() {
   const movie = useLoaderData();
 
   const { user, isLoading, isError } = useAuth();
+
+  const {
+    reviews,
+    isLoading: reviewsIsLoading,
+    isError: reviewsIsError,
+    error: reviewsError,
+  } = useApi();
+
+  function moveUserReviewToFront(arr, elem) {
+    reviews.forEach((element, i) => {
+      if (element.user.id === elem) {
+        const removedElement = arr.splice(i, 1);
+        arr.unshift(removedElement[0]);
+      }
+    });
+
+    return arr;
+  }
 
   return (
     <div className="space-y-10">
@@ -54,7 +74,40 @@ export default function MovieDetailsPage() {
         )}
       </div>
 
-      <div className="bg-white  px-8 py-8 rounded-xl shadow-sm"></div>
+      {/* Reviews Part */}
+      <div className="">
+        {reviewsIsLoading || isLoading ? <Spinner /> : ""}
+        {reviews && !reviewsIsLoading && (
+          <div>
+            {reviews?.length === 0 ? (
+              <div className="bg-white  px-8 py-8 rounded-xl shadow-sm">
+                no movies found
+              </div>
+            ) : reviews && user ? (
+              <div className="grid grid-cols-2 gap-x-7 gap-y-10 ">
+                {moveUserReviewToFront(reviews, user._id).map((review) => (
+                  <ReviewsCard
+                    key={review._id}
+                    review={review}
+                    user={review.user}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-x-7 gap-y-10 ">
+                {reviews?.map((review) => (
+                  <ReviewsCard
+                    key={review._id}
+                    review={review}
+                    user={review.user}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+        {!reviews && reviewsIsError && <div>{reviewsError.message}</div>}
+      </div>
     </div>
   );
 }

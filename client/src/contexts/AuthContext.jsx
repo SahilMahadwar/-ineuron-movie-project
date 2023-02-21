@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { axiosApiInstance } from "../lib/axiosApiInstance";
 
 const AuthContext = createContext();
