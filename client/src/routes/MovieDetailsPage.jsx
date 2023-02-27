@@ -1,9 +1,12 @@
-import { Link, useLoaderData } from "react-router-dom";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { useContext, useEffect, useRef } from "react";
+import { Link, useLoaderData, useLocation, useParams } from "react-router-dom";
 import MovieDetailsCard from "../components/Cards/MovieDetailsCard";
 import ReviewsCard from "../components/Cards/ReviewsCard";
 import CreateReviewCard from "../components/CreateReviewCard";
 import Button from "../components/Form/Button";
 import Spinner from "../components/Spinner";
+import ReviewsContext, { ReviewsProvider } from "../contexts/ReviewsContext";
 import useApi from "../hooks/useApi";
 import useAuth from "../hooks/useAuth";
 import { axiosApiInstance } from "../lib/axiosApiInstance";
@@ -23,14 +26,34 @@ export async function loader({ params }) {
 export default function MovieDetailsPage() {
   const movie = useLoaderData();
 
-  const { user, isLoading, isError } = useAuth();
-
   const {
     reviews,
     isLoading: reviewsIsLoading,
     isError: reviewsIsError,
     error: reviewsError,
-  } = useApi();
+    getReviews,
+    refetch,
+  } = useContext(ReviewsContext);
+
+  const { pathname } = useLocation();
+  let { movieId } = useParams();
+
+  useEffect(() => {
+    console.log("UseEffect Ran");
+    if (pathname.startsWith("/movies")) {
+      getReviews(movieId);
+    }
+  }, [movieId, refetch]);
+
+  const { user, isLoading, isError } = useAuth();
+
+  // const {
+  //   reviews,
+  //   isLoading: reviewsIsLoading,
+  //   isError: reviewsIsError,
+  //   error: reviewsError,
+  //   getReviews,
+  // } = useApi();
 
   function moveUserReviewToFront(arr, elem) {
     reviews.forEach((element, i) => {
@@ -44,7 +67,7 @@ export default function MovieDetailsPage() {
   }
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-10 ">
       {/* Movie Details Card */}
       <MovieDetailsCard
         posterPath={movie.poster}
@@ -62,22 +85,31 @@ export default function MovieDetailsPage() {
 
       {/* Reviews Part */}
       <div className="bg-white  px-8 py-8 rounded-xl shadow-sm">
-        {isLoading && <Spinner />}
-        {user && !isLoading && <CreateReviewCard movie={movie} />}
-        {!user && isError && (
+        {isLoading ? (
+          <div className=" flex justify-center  ">
+            <Spinner />
+          </div>
+        ) : user && !isLoading ? (
+          <CreateReviewCard movie={movie} />
+        ) : !user && isError ? (
           <div className="space-y-3 flex flex-col items-center justify-center">
             <p className="text-gray-800">Please login to add a review</p>
             <Link to="/auth/login">
               <Button size="xs">Login</Button>
             </Link>
           </div>
+        ) : (
+          ""
         )}
       </div>
 
       {/* Reviews Part */}
       <div className="">
-        {reviewsIsLoading || isLoading ? <Spinner /> : ""}
-        {reviews && !reviewsIsLoading && (
+        {reviewsIsLoading || isLoading ? (
+          <div className="flex justify-center  ">
+            <Spinner />
+          </div>
+        ) : reviews && !reviewsIsLoading ? (
           <div>
             {reviews?.length === 0 ? (
               <div className="bg-white  px-8 py-8 rounded-xl shadow-sm">
@@ -90,23 +122,23 @@ export default function MovieDetailsPage() {
                     key={review._id}
                     review={review}
                     user={review.user}
+                    movie={movie}
                   />
                 ))}
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-x-7 gap-y-10 ">
                 {reviews?.map((review) => (
-                  <ReviewsCard
-                    key={review._id}
-                    review={review}
-                    user={review.user}
-                  />
+                  <ReviewsCard key={review._id} review={review} />
                 ))}
               </div>
             )}
           </div>
+        ) : !reviews && reviewsIsError ? (
+          <div>{reviewsError.message}</div>
+        ) : (
+          ""
         )}
-        {!reviews && reviewsIsError && <div>{reviewsError.message}</div>}
       </div>
     </div>
   );

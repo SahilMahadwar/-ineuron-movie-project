@@ -1,6 +1,7 @@
 import { FaceSmileIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
+import ReviewsContext from "../contexts/ReviewsContext";
 import useApi from "../hooks/useApi";
 import useAuth from "../hooks/useAuth";
 import Button from "./Form/Button";
@@ -10,11 +11,14 @@ export default function CreateReviewCard({ movie }) {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm();
 
-  const { postReview } = useApi();
-  const { user, isLoading, isError, error } = useAuth();
+  const { refetch, setRefetch, addReviewToState } = useContext(ReviewsContext);
+
+  const { postReview, isLoading } = useApi();
+  const { user } = useAuth();
 
   const onSubmit = async (inputs) => {
     const reviewData = {
@@ -24,7 +28,8 @@ export default function CreateReviewCard({ movie }) {
       movie: movie._id,
     };
 
-    postReview(reviewData);
+    await postReview(reviewData);
+    reset();
   };
 
   return (
@@ -76,7 +81,7 @@ export default function CreateReviewCard({ movie }) {
               </div>
             </div>
             <div className="flex-shrink-0">
-              <Button size="sm" type="submit">
+              <Button isLoading={isLoading} size="sm" type="submit">
                 Post
               </Button>
             </div>

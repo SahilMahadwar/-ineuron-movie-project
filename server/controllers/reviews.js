@@ -7,8 +7,15 @@ const ErrorResponse = require("../utils/errorResponse");
 // @access  Private
 // @role    Admin
 exports.createReview = asyncHandler(async (req, res, next) => {
-  // Create user
-  const review = await Review.create(req.body);
+  // Create review
+  const newReview = await Review.create({
+    title: req.body.title,
+    review: req.body.review,
+    movie: req.body.movie,
+    user: req.user.id,
+  });
+
+  const review = await Review.findById(newReview._id).populate("user");
 
   res.status(201).json({ success: true, data: review });
 });
@@ -23,6 +30,16 @@ exports.getReviewsForMovie = asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true, data: review });
 });
 
+// @desc    Get all reviews for movie
+// @route   GET /api/v1/reviews
+// @access  Public
+exports.getSingleReview = asyncHandler(async (req, res, next) => {
+  // Find all review
+  const review = await Review.findById(req.params.id);
+
+  res.status(200).json({ success: true, data: review });
+});
+
 // @desc    Update review
 // @route   PUT /api/v1/bootcamps/:id
 // @access  Private
@@ -30,19 +47,20 @@ exports.getReviewsForMovie = asyncHandler(async (req, res, next) => {
 exports.updateReview = asyncHandler(async (req, res, next) => {
   // Check if the review belongs to user before updating
 
-  const reviewUserCheck = await Review.findOne({
-    _id: req.params.id,
-    user: req.user.id,
-  });
+  const reviewUserCheck = await Review.findById(req.params.id);
 
   if (!reviewUserCheck) {
-    return next(new ErrorResponse(`Review dosnt belong to this user`, 500));
+    return next(new ErrorResponse(`Review Not Found`, 404));
+  }
+
+  if (reviewUserCheck.user._id.toString() !== req.user.id.toString()) {
+    return next(new ErrorResponse(`Review dosnt belong to this user`, 404));
   }
 
   const review = await Review.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
-  });
+  }).populate("user");
 
   if (!review) {
     return next(

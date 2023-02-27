@@ -4,6 +4,7 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { default as App } from "./App";
 import ErrorElement from "./components/ErrorElement";
+import { ReviewsProvider } from "./contexts/ReviewsContext";
 import AdminLayout from "./layouts/AdminLayout";
 import AppLayout from "./layouts/AppLayout";
 import AdminDashboard from "./routes/admin/Dashboard";
@@ -34,7 +35,11 @@ const router = createBrowserRouter([
           },
           {
             path: "/movies/:movieId",
-            element: <MovieDetails />,
+            element: (
+              <ReviewsProvider>
+                <MovieDetails />
+              </ReviewsProvider>
+            ),
             loader: movieLoader,
             errorElement: <ErrorElement />,
           },
