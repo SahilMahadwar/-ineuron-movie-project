@@ -122,14 +122,17 @@ export default function MovieDetailsPage() {
                     key={review._id}
                     review={review}
                     user={review.user}
-                    movie={movie}
                   />
                 ))}
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-x-7 gap-y-10 ">
                 {reviews?.map((review) => (
-                  <ReviewsCard key={review._id} review={review} />
+                  <ReviewsCard
+                    key={review._id}
+                    review={review}
+                    user={review.user}
+                  />
                 ))}
               </div>
             )}

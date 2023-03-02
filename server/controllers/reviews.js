@@ -33,6 +33,16 @@ exports.getReviewsForMovie = asyncHandler(async (req, res, next) => {
 // @desc    Get all reviews for movie
 // @route   GET /api/v1/reviews
 // @access  Public
+exports.getAllReviews = asyncHandler(async (req, res, next) => {
+  // Find all review
+  const review = await Review.find().populate("user").populate("movie");
+
+  res.status(200).json({ success: true, data: review });
+});
+
+// @desc    Get all reviews for movie
+// @route   GET /api/v1/reviews
+// @access  Public
 exports.getSingleReview = asyncHandler(async (req, res, next) => {
   // Find all review
   const review = await Review.findById(req.params.id);

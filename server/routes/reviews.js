@@ -8,11 +8,15 @@ const {
   updateReview,
   deleteReview,
   getSingleReview,
+  getAllReviews,
 } = require("../controllers/reviews");
 
 const router = express.Router();
 
-router.route("/").post(protect, authorize("ADMIN", "USER"), createReview);
+router
+  .route("/")
+  .get(getAllReviews)
+  .post(protect, authorize("ADMIN", "USER"), createReview);
 
 router
   .route("/:id")
