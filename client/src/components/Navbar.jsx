@@ -9,7 +9,7 @@ import Spinner from "./Spinner";
 
 const navigation = [
   { name: "Movies", href: "/", current: true },
-  { name: "Reviews", href: "/reviews", current: false },
+  { name: "Search", href: "/search", current: false },
 ];
 
 const adminNavigation = [

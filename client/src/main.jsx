@@ -14,7 +14,8 @@ import ErrorPage from "./routes/ErrorPage";
 import Home, { loader as moviesLoader } from "./routes/Home";
 import MovieDetails, { loader as movieLoader } from "./routes/MovieDetailsPage";
 import Movies from "./routes/Movies";
-import Reviews from "./routes/Reviews";
+import Profile from "./routes/Profile";
+import Search from "./routes/Search";
 import "./styles/globals.css";
 
 const router = createBrowserRouter([
@@ -25,7 +26,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <AppLayout />,
+        element: (
+          <ReviewsProvider>
+            <AppLayout />
+          </ReviewsProvider>
+        ),
         children: [
           {
             path: "/",
@@ -35,17 +40,19 @@ const router = createBrowserRouter([
           },
           {
             path: "/movies/:movieId",
-            element: (
-              <ReviewsProvider>
-                <MovieDetails />
-              </ReviewsProvider>
-            ),
+            element: <MovieDetails />,
+
             loader: movieLoader,
             errorElement: <ErrorElement />,
           },
           {
-            path: "/reviews",
-            element: <Reviews />,
+            path: "/search",
+            element: <Search />,
+            errorElement: <ErrorElement />,
+          },
+          {
+            path: "/profile",
+            element: <Profile />,
             errorElement: <ErrorElement />,
           },
         ],

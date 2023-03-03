@@ -4,7 +4,7 @@ import ReviewsContext from "../contexts/ReviewsContext";
 import { axiosApiInstance } from "../lib/axiosApiInstance";
 
 export default function useApi() {
-  const [reviews, setReviews] = useState(null);
+  const [movies, setMovies] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isError, setIsError] = useState(null);
@@ -163,12 +163,37 @@ export default function useApi() {
     }
   };
 
+  const searchMovie = async (movieName) => {
+    try {
+      setIsError(false);
+      setError();
+      setIsLoading(true);
+
+      const { data: axiosRes, status } = await axiosApiInstance.get(
+        `/movies?search=${movieName ? movieName : ""}`
+      );
+
+      if (axiosRes.success === true) {
+        console.log(axiosRes.data);
+        setMovies(axiosRes.data);
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      setError(error);
+      setIsError(true);
+      setIsLoading(false);
+      console.log(error);
+    }
+  };
+
   return {
     addToWebsite,
     postReview,
     updateReview,
     deleteReview,
-    reviews,
+    searchMovie,
+    movies,
     isLoading,
     error,
     isError,
