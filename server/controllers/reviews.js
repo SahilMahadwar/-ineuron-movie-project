@@ -34,10 +34,94 @@ exports.getReviewsForMovie = asyncHandler(async (req, res, next) => {
 // @route   GET /api/v1/reviews
 // @access  Public
 exports.getAllReviews = asyncHandler(async (req, res, next) => {
-  // Find all review
-  const review = await Review.find().populate("user").populate("movie");
+  let query;
 
-  res.status(200).json({ success: true, data: review });
+  // Copy req.query
+  const reqQuery = { ...req.query };
+
+  // Fields to exclude
+  const removeFields = ["select", "sort", "page", "limit", "search"];
+
+  // Loop over removedFields and delete them from reqQuery
+  removeFields.forEach((param) => delete reqQuery[param]);
+
+  console.log(reqQuery);
+
+  // Create query string
+  let queryStr = JSON.stringify(reqQuery);
+
+  // Create operators like gt gtrterthan less than
+  queryStr = queryStr.replace(
+    /\b(gt|gte|lt|lte|in)\b/g,
+    (match) => `$${match}`
+  );
+
+  console.log(queryStr);
+
+  // Select Fields
+  if (req.query.search) {
+    const searchQuery = req.query.search.split(",").join(" ");
+    query = Review.find({
+      $or: [{ title: { $regex: searchQuery, $options: "i" } }],
+    })
+      .populate("user")
+      .populate("movie");
+  } else {
+    //Finding All resource
+    query = Review.find(JSON.parse(queryStr))
+      .populate("user")
+      .populate("movie");
+  }
+
+  // Select Fields
+  if (req.query.select) {
+    const fields = req.query.select.split(",").join(" ");
+    query = query.select(fields);
+  }
+
+  // Sort
+  if (req.query.sort) {
+    const sortBy = req.query.sort.split(",").join(" ");
+    query = query.sort(sortBy);
+  } else {
+    query = query.sort("-createdAt");
+  }
+
+  // Pagination
+  const page = parseInt(req.query.page, 10) || 1;
+  const limit = parseInt(req.query.limit, 10) || 25;
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  const total = await Review.countDocuments();
+
+  query = query.skip(startIndex).limit(limit);
+
+  // Executing query
+  const reviews = await query;
+
+  // Pagination Reasult
+  const pagination = {};
+
+  if (endIndex < total) {
+    pagination.next = {
+      page: page + 1,
+      limit: limit,
+    };
+  }
+
+  if (startIndex > 0) {
+    pagination.prev = {
+      page: page - 1,
+      limit: limit,
+    };
+  }
+
+  res.status(200).json({
+    success: true,
+    count: reviews.length,
+    pagination: pagination,
+    data: reviews,
+  });
 });
 
 // @desc    Get all reviews for movie
