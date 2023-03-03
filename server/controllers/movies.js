@@ -45,7 +45,9 @@ exports.getAllMovies = asyncHandler(async (req, res, next) => {
   // Select Fields
   if (req.query.search) {
     const searchQuery = req.query.search.split(",").join(" ");
-    query = Movie.find({ $or: [{ name: { $regex: searchQuery } }] });
+    query = Movie.find({
+      $or: [{ name: { $regex: searchQuery, $options: "i" } }],
+    });
   } else {
     //Finding All resource
     query = Movie.find(JSON.parse(queryStr));
