@@ -15,7 +15,7 @@ export function Logo({ type }) {
         />
       </svg>
       {type === "full" && (
-        <p className="text-gray-800 font-bold ml-1 text-xl">movieTime</p>
+        <p className="text-gray-800 font-bold ml-1 text-xl">ineuronMovies</p>
       )}
     </span>
   );
