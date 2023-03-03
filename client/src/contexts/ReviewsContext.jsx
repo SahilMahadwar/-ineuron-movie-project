@@ -10,8 +10,6 @@ export const ReviewsProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [isError, setIsError] = useState(null);
 
-  const [refetch, setRefetch] = useState(0);
-
   const getReviews = async (movieId) => {
     try {
       setIsError(false);
@@ -56,6 +54,32 @@ export const ReviewsProvider = ({ children }) => {
     console.log(reviews);
   };
 
+  const getMyReviews = async (userId) => {
+    try {
+      setIsError(false);
+      setIsLoading(true);
+      setError();
+
+      const { data, status } = await axiosApiInstance.get(
+        `/reviews?user=${userId}`
+      );
+
+      if (status === 200) {
+        setIsLoading(false);
+        setReviews(data.data);
+      }
+
+      console.log(data);
+
+      setIsLoading(false);
+    } catch (error) {
+      setError(error);
+      setIsError(true);
+      setIsLoading(false);
+      console.log(error);
+    }
+  };
+
   return (
     <ReviewsContext.Provider
       value={{
@@ -63,9 +87,8 @@ export const ReviewsProvider = ({ children }) => {
         isLoading,
         error,
         isError,
-        refetch,
         getReviews,
-        setRefetch,
+        getMyReviews,
         removeReviewFromState,
         addReviewToState,
       }}

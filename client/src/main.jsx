@@ -4,6 +4,7 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { default as App } from "./App";
 import ErrorElement from "./components/ErrorElement";
+import ProtectedRoute from "./components/ProtectedRoute";
 import { ReviewsProvider } from "./contexts/ReviewsContext";
 import AdminLayout from "./layouts/AdminLayout";
 import AppLayout from "./layouts/AppLayout";
@@ -52,7 +53,12 @@ const router = createBrowserRouter([
           },
           {
             path: "/profile",
-            element: <Profile />,
+            element: (
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            ),
+
             errorElement: <ErrorElement />,
           },
         ],

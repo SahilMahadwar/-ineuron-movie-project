@@ -25,12 +25,8 @@ export function Movies() {
         ) : (
           <div className="grid grid-cols-6 gap-x-7 gap-y-10">
             {movies?.map((movie) => (
-              <Link to={`/movies/${movie._id}`}>
-                <Poster
-                  posterPath={movie.poster}
-                  title={movie.name}
-                  key={movie.tmdbId}
-                />
+              <Link to={`/movies/${movie._id}`} key={movie.tmdbId}>
+                <Poster posterPath={movie.poster} title={movie.name} />
               </Link>
             ))}
           </div>

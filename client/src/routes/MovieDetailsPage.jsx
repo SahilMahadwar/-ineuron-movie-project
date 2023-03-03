@@ -32,7 +32,6 @@ export default function MovieDetailsPage() {
     isError: reviewsIsError,
     error: reviewsError,
     getReviews,
-    refetch,
   } = useContext(ReviewsContext);
 
   const { pathname } = useLocation();
@@ -43,7 +42,7 @@ export default function MovieDetailsPage() {
     if (pathname.startsWith("/movies")) {
       getReviews(movieId);
     }
-  }, [movieId, refetch]);
+  }, [movieId]);
 
   const { user, isLoading, isError } = useAuth();
 
