@@ -14,7 +14,13 @@ import { axiosTmdbInstance } from "../lib/axiosTmdbInstance";
 import { tmdbKey } from "../lib/axiosTmdbInstance/constants";
 
 const getMovieDetails = async (params) => {
-  const { data, status } = await axiosApiInstance.get(`/movies/${params}`);
+  let token = localStorage.getItem("token");
+
+  const { data, status } = await axiosApiInstance.get(`/movies/${params}`, {
+    headers: {
+      Authorization: token ? `Bearer ${token}` : null,
+    },
+  });
 
   return data.data;
 };
@@ -80,6 +86,7 @@ export default function MovieDetailsPage() {
         tagline={movie.tagline}
         description={movie.description}
         isAdmin={false}
+        lists={movie.lists}
       />
 
       {/* Reviews Part */}

@@ -1,6 +1,10 @@
+import { useEffect, useState } from "react";
+import { Link, useLocation, useParams } from "react-router-dom";
 import useApi from "../../hooks/useApi";
+import useAuth from "../../hooks/useAuth";
 import { convertRuntimeToHours } from "../../utils/tmdb";
 import Button from "../Form/Button";
+import Spinner from "../Spinner";
 import Poster from "./Poster";
 
 export function MovieDetailsCard(props) {
@@ -16,13 +20,17 @@ export function MovieDetailsCard(props) {
     tagline,
     description,
     isAdmin,
-    movie,
+    lists,
   } = props;
 
-  const { addToWebsite } = useApi();
+  const { addToWebsite, isLoading, isError, error } = useApi();
+
+  const [watchlist, setWatchlist] = useState(lists.watchlist);
+  const [seenlist, setSeenlist] = useState(lists.seenlist);
+  console.log(lists);
 
   const handleAdd = async () => {
-    await addToWebsite(movie);
+    await addToWebsite(); // have to pass props as data
     console.log("movies added successfully");
   };
 
@@ -60,6 +68,32 @@ export function MovieDetailsCard(props) {
           </div>
 
           {isAdmin && <Button onClick={handleAdd}>Add To Website</Button>}
+
+          {!isAdmin && (
+            <div>
+              {watchlist != null && seenlist != null ? (
+                <div className="space-x-2">
+                  <Button>
+                    {watchlist ? "Remove From Watchlist" : "Add To Watchlist"}
+                  </Button>
+
+                  <Button>
+                    {seenlist ? "Remove From seenlist" : "Add To seenlist"}
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-x-2">
+                  <Link to="/auth/login">
+                    <Button>Add To Watchlist</Button>
+                  </Link>
+
+                  <Link to="/auth/login">
+                    <Button>Add To Seenlist</Button>
+                  </Link>
+                </div>
+              )}
+            </div>
+          )}
 
           <div className="space-y-1">
             <p className="text-gray-800 font-semibold text-sm">Genres</p>

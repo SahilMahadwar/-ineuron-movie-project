@@ -187,12 +187,45 @@ export default function useApi() {
     }
   };
 
+  const movieLitsCheck = async (movieId) => {
+    try {
+      setIsError(false);
+      setError();
+      setIsLoading(true);
+
+      let token = localStorage.getItem("token");
+
+      const { data: axiosRes, status } = await axiosApiInstance.get(
+        `/list/list-check/${movieId}`,
+        {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : null,
+          },
+        }
+      );
+
+      if (axiosRes.success === true) {
+        console.log(axiosRes.data);
+        setIsLoading(false);
+        return axiosRes.data;
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      setError(error);
+      setIsError(true);
+      setIsLoading(false);
+      console.log(error);
+    }
+  };
+
   return {
     addToWebsite,
     postReview,
     updateReview,
     deleteReview,
     searchMovie,
+    movieLitsCheck,
     movies,
     isLoading,
     error,
