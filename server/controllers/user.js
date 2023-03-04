@@ -8,7 +8,7 @@ const ErrorResponse = require("../utils/errorResponse");
 // @route   GET /api/v1/user/me
 // @access  Private
 exports.getMe = asyncHandler(async (req, res, next) => {
-  if (req.user) {
+  if (!req.user) {
     return next(new ErrorResponse(`User not available `, 500));
   }
 
