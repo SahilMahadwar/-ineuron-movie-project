@@ -154,7 +154,9 @@ exports.updateReview = asyncHandler(async (req, res, next) => {
   const review = await Review.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
-  }).populate("user");
+  })
+    .populate("user")
+    .populate("movie");
 
   if (!review) {
     return next(

@@ -61,6 +61,8 @@ export function Profile() {
                     key={review._id}
                     review={review}
                     user={review.user}
+                    poster={true}
+                    userInfo={false}
                   />
                 ))}
               </div>

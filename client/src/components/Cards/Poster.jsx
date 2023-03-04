@@ -5,7 +5,7 @@ export function Poster({
   height = "h-64",
 }) {
   return (
-    <div className="space-y-2.5  cursor-pointer select-none">
+    <div className="space-y-2.5 cursor-pointer select-none">
       <div
         className={`${width} ${height} bg-gray-300 rounded-xl overflow-hidden`}
       >

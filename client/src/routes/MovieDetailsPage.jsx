@@ -121,6 +121,7 @@ export default function MovieDetailsPage() {
                     key={review._id}
                     review={review}
                     user={review.user}
+                    userInfo={true}
                   />
                 ))}
               </div>
@@ -131,6 +132,7 @@ export default function MovieDetailsPage() {
                     key={review._id}
                     review={review}
                     user={review.user}
+                    userInfo={true}
                   />
                 ))}
               </div>
