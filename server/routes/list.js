@@ -9,6 +9,7 @@ const {
   getSeenlist,
   addMovieToSeenlist,
   deleteMovieFromSeenlist,
+  checkIfMovieExistInLists,
 } = require("../controllers/list");
 
 const router = express.Router();
@@ -24,5 +25,7 @@ router
   .get(protect, getSeenlist)
   .post(protect, addMovieToSeenlist)
   .delete(protect, deleteMovieFromSeenlist);
+
+router.route("/list-check/:id").get(protect, checkIfMovieExistInLists);
 
 module.exports = router;

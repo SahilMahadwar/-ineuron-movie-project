@@ -251,3 +251,35 @@ exports.deleteMovieFromSeenlist = asyncHandler(async (req, res, next) => {
 
   res.status(201).json({ success: true, data: {} });
 });
+
+// @desc    Check if movie exists in lists
+// @route   GET /api/v1/list/list-check/:id
+// @access  Private
+exports.checkIfMovieExistInLists = asyncHandler(async (req, res, next) => {
+  // check if movie is valid objectId
+  if (!isValidObjectId(req.params.id)) {
+    return next(new ErrorResponse(`Movie Id is not valid object Id`, 500));
+  }
+
+  console.log(req.user._id);
+
+  const watchlist = await List.findOne({
+    type: "WATCHLIST",
+    movie: req.body.movie,
+    user: req.user._id,
+  });
+
+  const seenlist = await List.findOne({
+    type: "SEENLIST",
+    movie: req.params.id,
+    user: req.user._id,
+  });
+
+  res.status(201).json({
+    success: true,
+    data: {
+      watchlist: watchlist ? true : false,
+      seenlist: seenlist ? true : false,
+    },
+  });
+});
