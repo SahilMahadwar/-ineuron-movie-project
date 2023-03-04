@@ -265,7 +265,7 @@ exports.checkIfMovieExistInLists = asyncHandler(async (req, res, next) => {
 
   const watchlist = await List.findOne({
     type: "WATCHLIST",
-    movie: req.body.movie,
+    movie: req.params.id,
     user: req.user._id,
   });
 
