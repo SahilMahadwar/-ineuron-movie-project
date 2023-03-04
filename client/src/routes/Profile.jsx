@@ -21,20 +21,9 @@ export function Profile() {
     if (user) {
       console.log("UseEffect User Ran");
 
-      getMyReviews(user.id);
+      getMyReviews(user._id);
     }
   }, [user]);
-
-  function moveUserReviewToFront(arr, elem) {
-    reviews.forEach((element, i) => {
-      if (element.user.id === elem) {
-        const removedElement = arr.splice(i, 1);
-        arr.unshift(removedElement[0]);
-      }
-    });
-
-    return arr;
-  }
 
   return (
     <div className="space-y-12">

@@ -56,7 +56,7 @@ export default function MovieDetailsPage() {
 
   function moveUserReviewToFront(arr, elem) {
     reviews.forEach((element, i) => {
-      if (element.user.id === elem) {
+      if (element.user._id === elem) {
         const removedElement = arr.splice(i, 1);
         arr.unshift(removedElement[0]);
       }
