@@ -80,7 +80,7 @@ export const AuthProvider = ({ children }) => {
 
       let token = localStorage.getItem("token");
 
-      const { data, status } = await axiosApiInstance.get(`/auth/me`, {
+      const { data, status } = await axiosApiInstance.get(`/user/me`, {
         headers: {
           Authorization: token ? `Bearer ${token}` : null,
         },
