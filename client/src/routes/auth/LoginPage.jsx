@@ -23,15 +23,15 @@ export default function LoginPage() {
   } = useForm();
   const navigate = useNavigate();
 
-  const { login } = useAuth();
+  const { login, user } = useAuth();
 
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (user) {
       navigate("/");
     }
-  }, []);
+  }, [user]);
 
   const onSubmit = async (data) => {
     setLoading(true);

@@ -16,15 +16,15 @@ export default function RegisterPage() {
 
   const navigate = useNavigate();
 
-  const { register: registerUser } = useAuth();
+  const { register: registerUser, user } = useAuth();
 
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (user) {
       navigate("/");
     }
-  }, []);
+  }, [user]);
 
   const onSubmit = async (data) => {
     setLoading(true);
