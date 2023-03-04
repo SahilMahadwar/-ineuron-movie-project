@@ -15,6 +15,8 @@ connectDB();
 const auth = require("./routes/auth");
 const movies = require("./routes/movies");
 const reviews = require("./routes/reviews");
+const user = require("./routes/user");
+const list = require("./routes/list");
 
 //Create App
 const app = express();
@@ -36,6 +38,8 @@ if (process.env.NODE_ENV === "development") {
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/movies", movies);
 app.use("/api/v1/reviews", reviews);
+app.use("/api/v1/user", user);
+app.use("/api/v1/list", list);
 
 // Api Home
 app.get("/api/v1", (req, res, next) => {

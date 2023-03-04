@@ -73,7 +73,6 @@ exports.getAllMovies = asyncHandler(async (req, res, next) => {
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
   const total = await Movie.countDocuments();
-
   query = query.skip(startIndex).limit(limit);
 
   // Executing query

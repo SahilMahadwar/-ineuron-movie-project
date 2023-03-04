@@ -2,49 +2,45 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const UserSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: [true, "Please add user name"],
-    },
-
-    email: {
-      type: String,
-      required: [true, "Please add an email"],
-      unique: true,
-      match: [
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-        "Please add a valid email",
-      ],
-    },
-
-    role: {
-      type: String,
-      enum: ["USER", "ADMIN"],
-      default: "USER",
-    },
-
-    password: {
-      type: String,
-      required: [true, "Please add a password"],
-      select: false,
-      minlength: 6,
-    },
-
-    resetPasswordToken: String,
-    resetPasswordExpire: Date,
-
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
+const UserSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, "Please add user name"],
   },
-  {
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
-  }
-);
+
+  email: {
+    type: String,
+    required: [true, "Please add an email"],
+    unique: true,
+    match: [
+      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+      "Please add a valid email",
+    ],
+  },
+
+  role: {
+    type: String,
+    enum: ["USER", "ADMIN"],
+    default: "USER",
+  },
+
+  password: {
+    type: String,
+    required: [true, "Please add a password"],
+    select: false,
+    minlength: 6,
+  },
+
+  resetPasswordToken: String,
+  resetPasswordExpire: Date,
+
+  watchlist: [{ type: mongoose.Schema.Types.ObjectId, ref: "Movie" }],
+
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
 // Encrypt password using bcrypt
 UserSchema.pre("save", async function (next) {
@@ -63,13 +59,5 @@ UserSchema.methods.getSignedJwtToken = function () {
 UserSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
-
-// Reverse populate with virtuals
-UserSchema.virtual("reviews", {
-  ref: "Review",
-  localField: "_id",
-  foreignField: "user",
-  justOne: false,
-});
 
 module.exports = mongoose.model("User", UserSchema);
