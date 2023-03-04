@@ -11,12 +11,11 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { pathname } = useLocation();
 
-  // TODO: Create a new state to trigger a refetch manually
+  const [refetch, setRefetch] = useState(0);
+
   useEffect(() => {
-    if (!pathname.startsWith("/auth")) {
-      getUser();
-    }
-  }, []);
+    getUser();
+  }, [refetch]);
 
   useEffect(() => {
     if (user && !isLoading) {
@@ -70,6 +69,7 @@ export const AuthProvider = ({ children }) => {
   const logOut = () => {
     localStorage.removeItem("token");
     setUser(null);
+    setRefetch(refetch + 1);
     navigate("/auth/login");
   };
 
