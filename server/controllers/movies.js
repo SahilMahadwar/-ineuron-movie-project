@@ -1,7 +1,10 @@
 const asyncHandler = require("../middleware/async");
 const Movie = require("../models/Movie");
-
+const User = require("../models/User");
+const List = require("../models/List");
 const ErrorResponse = require("../utils/errorResponse");
+const { isValidObjectId } = require("mongoose");
+const jwt = require("jsonwebtoken");
 
 // @desc    Create movie
 // @route   POST /api/v1/movies
@@ -107,6 +110,11 @@ exports.getAllMovies = asyncHandler(async (req, res, next) => {
 // @route   GET /api/v1/movies/:id
 // @access  Public
 exports.getSingleMovie = asyncHandler(async (req, res, next) => {
+  // check if movie is valid objectId
+  if (!isValidObjectId(req.params.id)) {
+    return next(new ErrorResponse(`Movie Id is not valid object Id`, 500));
+  }
+
   const movie = await Movie.findById(req.params.id);
 
   if (!movie) {
@@ -115,7 +123,49 @@ exports.getSingleMovie = asyncHandler(async (req, res, next) => {
     );
   }
 
-  res.status(200).json({ success: true, data: movie });
+  let watchlist = null;
+  let seenlist = null;
+
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    const token = req.headers.authorization.split(" ")[1];
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return next(new ErrorResponse(`Invalid user`, 500));
+    }
+
+    watchlist = await List.findOne({
+      type: "WATCHLIST",
+      movie: req.params.id,
+      user: user._id,
+    });
+
+    seenlist = await List.findOne({
+      type: "SEENLIST",
+      movie: req.params.id,
+      user: user._id,
+    });
+
+    watchlist = watchlist ? true : false;
+    seenlist = seenlist ? true : false;
+  }
+
+  res.status(200).json({
+    success: true,
+    data: {
+      ...movie._doc,
+      lists: {
+        watchlist,
+        seenlist,
+      },
+    },
+  });
 });
 
 // @desc    Update movie
