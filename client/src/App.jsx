@@ -10,9 +10,8 @@ export function App() {
     <AuthProvider>
       <Outlet />
       <ToastContainer
-        position="top-right"
+        position="top-center"
         autoClose={3000}
-        hideProgressBar
         newestOnTop
         closeOnClick
         rtl={false}

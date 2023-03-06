@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import ReviewsContext from "../contexts/ReviewsContext";
 import { axiosApiInstance } from "../lib/axiosApiInstance";
 
@@ -219,6 +220,123 @@ export default function useApi() {
     }
   };
 
+  const addMovieToList = async ({ list, movieId, name }) => {
+    try {
+      setIsError(false);
+      setError();
+      setIsLoading(true);
+
+      let token = localStorage.getItem("token");
+
+      const { data: axiosRes, status } = await axiosApiInstance.post(
+        `/list/${
+          list === "WATCHLIST"
+            ? "watchlist"
+            : list === "SEENLIST"
+            ? "seenlist"
+            : ""
+        }/${movieId}`,
+        {},
+        {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : null,
+          },
+        }
+      );
+
+      if (status === 201) {
+        setIsLoading(false);
+        // toast.success(
+        //   `${
+        //     list === "WATCHLIST"
+        //       ? `${name} Added To Your Watchlist`
+        //       : list === "SEENLIST"
+        //       ? `${name} Marked As Watched`
+        //       : ""
+        //   }`
+        // );
+        return axiosRes;
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      setIsError(true);
+      setIsLoading(false);
+
+      if (error.response?.data?.error) {
+        setError(error.response?.data?.error);
+        toast.error(
+          error.response?.data?.error
+            ? error.response?.data?.error
+            : error.message
+        );
+      } else {
+        setError(error.message);
+        toast.error(message);
+      }
+
+      console.log(error);
+    }
+  };
+
+  const removeMovieFromList = async ({ list, movieId, name }) => {
+    try {
+      setIsError(false);
+      setError();
+      setIsLoading(true);
+
+      let token = localStorage.getItem("token");
+
+      const { data: axiosRes, status } = await axiosApiInstance.delete(
+        `/list/${
+          list === "WATCHLIST"
+            ? "watchlist"
+            : list === "SEENLIST"
+            ? "seenlist"
+            : ""
+        }/${movieId}`,
+        {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : null,
+          },
+        }
+      );
+
+      if (status === 201) {
+        setIsLoading(false);
+        // toast.success(
+        //   `${
+        //     list === "WATCHLIST"
+        //       ? `${name} Removed From Watchlist`
+        //       : list === "SEENLIST"
+        //       ? `${name} Marked As Not Watched`
+        //       : ""
+        //   }`
+        // );
+        return axiosRes;
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      setIsError(true);
+      setIsLoading(false);
+
+      if (error.response?.data?.error) {
+        setError(error.response?.data?.error);
+        toast.error(
+          error.response?.data?.error
+            ? error.response?.data?.error
+            : error.message
+        );
+      } else {
+        setError(error.message);
+        toast.error(message);
+      }
+
+      console.log(error);
+    }
+  };
+
   return {
     addToWebsite,
     postReview,
@@ -226,6 +344,8 @@ export default function useApi() {
     deleteReview,
     searchMovie,
     movieLitsCheck,
+    addMovieToList,
+    removeMovieFromList,
     movies,
     isLoading,
     error,
