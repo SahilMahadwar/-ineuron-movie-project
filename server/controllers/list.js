@@ -67,12 +67,12 @@ exports.getWatchlist = asyncHandler(async (req, res, next) => {
 // @access  Private
 exports.addMovieToWatchlist = asyncHandler(async (req, res, next) => {
   // check if movie is valid objectId
-  if (!isValidObjectId(req.body.movie)) {
+  if (!isValidObjectId(req.params.id)) {
     return next(new ErrorResponse(`Movie Id is not valid object Id`, 500));
   }
 
   //check if movie is valid
-  const movieCheck = await Movie.findById(req.body.movie);
+  const movieCheck = await Movie.findById(req.params.id);
 
   if (!movieCheck) {
     return next(new ErrorResponse(`Movie Not Found`, 404));
@@ -81,7 +81,7 @@ exports.addMovieToWatchlist = asyncHandler(async (req, res, next) => {
   // check if movie already exist in watchlist
   const checkInWatchlist = await List.findOne({
     type: "WATCHLIST",
-    movie: req.body.movie,
+    movie: req.params.id,
     user: req.user._id,
   });
 
@@ -94,7 +94,7 @@ exports.addMovieToWatchlist = asyncHandler(async (req, res, next) => {
   // add to watchlist
   const newItem = await List.create({
     type: "WATCHLIST",
-    movie: req.body.movie,
+    movie: req.params.id,
     user: req.user._id,
   });
 
@@ -108,13 +108,13 @@ exports.addMovieToWatchlist = asyncHandler(async (req, res, next) => {
 // @access  Private
 exports.deleteMovieFromWatchlist = asyncHandler(async (req, res, next) => {
   // check if movie is valid objectId
-  if (!isValidObjectId(req.body.movie)) {
+  if (!isValidObjectId(req.params.id)) {
     return next(new ErrorResponse(`Movie Id is not valid object Id`, 500));
   }
 
   const movie = await List.findOne({
     type: "WATCHLIST",
-    movie: req.body.movie,
+    movie: req.params.id,
     user: req.user._id,
   });
 
@@ -192,12 +192,12 @@ exports.getSeenlist = asyncHandler(async (req, res, next) => {
 // @access  Private
 exports.addMovieToSeenlist = asyncHandler(async (req, res, next) => {
   // check if movie is valid objectId
-  if (!isValidObjectId(req.body.movie)) {
+  if (!isValidObjectId(req.params.id)) {
     return next(new ErrorResponse(`Movie Id is not valid object Id`, 500));
   }
 
   //check if movie is valid
-  const movieCheck = await Movie.findById(req.body.movie);
+  const movieCheck = await Movie.findById(req.params.id);
 
   if (!movieCheck) {
     return next(new ErrorResponse(`Movie Not Found`, 404));
@@ -206,7 +206,7 @@ exports.addMovieToSeenlist = asyncHandler(async (req, res, next) => {
   // check if movie already exist in Seenlist
   const checkInSeenlist = await List.findOne({
     type: "SEENLIST",
-    movie: req.body.movie,
+    movie: req.params.id,
     user: req.user._id,
   });
 
@@ -219,7 +219,7 @@ exports.addMovieToSeenlist = asyncHandler(async (req, res, next) => {
   // add to Seenlist
   const newItem = await List.create({
     type: "SEENLIST",
-    movie: req.body.movie,
+    movie: req.params.id,
     user: req.user._id,
   });
 
@@ -233,13 +233,13 @@ exports.addMovieToSeenlist = asyncHandler(async (req, res, next) => {
 // @access  Private
 exports.deleteMovieFromSeenlist = asyncHandler(async (req, res, next) => {
   // check if movie is valid objectId
-  if (!isValidObjectId(req.body.movie)) {
+  if (!isValidObjectId(req.params.id)) {
     return next(new ErrorResponse(`Movie Id is not valid object Id`, 500));
   }
 
   const movie = await List.findOne({
     type: "SEENLIST",
-    movie: req.body.movie,
+    movie: req.params.id,
     user: req.user._id,
   });
 

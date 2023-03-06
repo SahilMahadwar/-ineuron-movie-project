@@ -14,15 +14,17 @@ const {
 
 const router = express.Router();
 
+router.route("/watchlist").get(protect, getWatchlist);
+
 router
-  .route("/watchlist")
-  .get(protect, getWatchlist)
+  .route("/watchlist/:id")
   .post(protect, addMovieToWatchlist)
   .delete(protect, deleteMovieFromWatchlist);
 
+router.route("/seenlist").get(protect, getSeenlist);
+
 router
-  .route("/seenlist")
-  .get(protect, getSeenlist)
+  .route("/seenlist/:id")
   .post(protect, addMovieToSeenlist)
   .delete(protect, deleteMovieFromSeenlist);
 
