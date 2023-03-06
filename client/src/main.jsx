@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { ReviewsProvider } from "./contexts/ReviewsContext";
 import AdminLayout from "./layouts/AdminLayout";
 import AppLayout from "./layouts/AppLayout";
+import ProfileLayout from "./layouts/ProfileLayout";
 import AdminDashboard from "./routes/admin/Dashboard";
 import LoginPage from "./routes/auth/LoginPage";
 import RegisterPage from "./routes/auth/RegisterPage";
@@ -15,8 +16,12 @@ import ErrorPage from "./routes/ErrorPage";
 import Home, { loader as moviesLoader } from "./routes/Home";
 import MovieDetails, { loader as movieLoader } from "./routes/MovieDetailsPage";
 import Movies from "./routes/Movies";
-import Profile from "./routes/Profile";
+import { RedirectToReviews } from "./routes/profile/Profile";
+import ReviewsPage from "./routes/profile/ReviewsPage";
+import SeenListPage from "./routes/profile/SeenListPage";
+import WatchListPage from "./routes/profile/WatchlistPage";
 import Search from "./routes/Search";
+import Settings from "./routes/Settings";
 import "./styles/globals.css";
 
 const router = createBrowserRouter([
@@ -42,7 +47,6 @@ const router = createBrowserRouter([
           {
             path: "/movies/:movieId",
             element: <MovieDetails />,
-
             loader: movieLoader,
             errorElement: <ErrorElement />,
           },
@@ -55,10 +59,40 @@ const router = createBrowserRouter([
             path: "/profile",
             element: (
               <ProtectedRoute>
-                <Profile />
+                <ProfileLayout />
               </ProtectedRoute>
             ),
-
+            children: [
+              {
+                path: "/profile",
+                loader: RedirectToReviews,
+                errorElement: <ErrorElement />,
+              },
+              {
+                path: "/profile/reviews",
+                element: <ReviewsPage />,
+                errorElement: <ErrorElement />,
+              },
+              {
+                path: "/profile/watchlist",
+                element: <WatchListPage />,
+                errorElement: <ErrorElement />,
+              },
+              {
+                path: "/profile/seen",
+                element: <SeenListPage />,
+                errorElement: <ErrorElement />,
+              },
+            ],
+            errorElement: <ErrorElement />,
+          },
+          {
+            path: "/settings",
+            element: (
+              <ProtectedRoute>
+                <Settings />
+              </ProtectedRoute>
+            ),
             errorElement: <ErrorElement />,
           },
         ],
