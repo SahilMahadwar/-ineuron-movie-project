@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
+
+import {
+  RiBookmark2Line,
+  RiBookmarkLine,
+  RiCheckDoubleLine,
+  RiCheckLine,
+} from "react-icons/ri";
 import { Link, useLocation, useParams } from "react-router-dom";
 import useApi from "../../hooks/useApi";
 import useAuth from "../../hooks/useAuth";
 import { convertRuntimeToHours } from "../../utils/tmdb";
 import Button from "../Form/Button";
-import Spinner from "../Spinner";
+
 import Poster from "./Poster";
 
 export function MovieDetailsCard(props) {
@@ -19,19 +26,77 @@ export function MovieDetailsCard(props) {
     genres,
     tagline,
     description,
-    isAdmin,
+    isAdmin = false,
     lists,
+    movieId,
   } = props;
 
-  const { addToWebsite, isLoading, isError, error } = useApi();
+  const { addToWebsite, isError, error, addMovieToList, removeMovieFromList } =
+    useApi();
 
   const [watchlist, setWatchlist] = useState(lists.watchlist);
   const [seenlist, setSeenlist] = useState(lists.seenlist);
-  console.log(lists);
 
-  const handleAdd = async () => {
+  const [isLoading, setIsLoading] = useState({
+    watchlist: false,
+    seenlist: false,
+  });
+
+  const handleAddToSite = async () => {
     await addToWebsite(); // have to pass props as data
     console.log("movies added successfully");
+  };
+
+  const handleAdd = async (listName) => {
+    if (listName === "WATCHLIST") {
+      setIsLoading({ watchlist: true });
+    } else {
+      setIsLoading({ seenlist: true });
+    }
+
+    const data = { list: listName, movieId: movieId, name: name };
+    const { success } = await addMovieToList(data);
+    if (success) {
+      if (listName === "WATCHLIST") {
+        setWatchlist(true);
+      }
+
+      if (listName === "SEENLIST") {
+        setSeenlist(true);
+      }
+    }
+
+    if (listName === "WATCHLIST") {
+      setIsLoading({ watchlist: false });
+    } else {
+      setIsLoading({ seenlist: false });
+    }
+  };
+
+  const handleRemove = async (listName) => {
+    if (listName === "WATCHLIST") {
+      setIsLoading({ watchlist: true });
+    } else {
+      setIsLoading({ seenlist: true });
+    }
+
+    const data = { list: listName, movieId: movieId, name: name };
+    const { success } = await removeMovieFromList(data);
+    if (success) {
+      if (listName === "WATCHLIST") {
+        setWatchlist(false);
+      }
+
+      if (listName === "SEENLIST") {
+        setSeenlist(false);
+      }
+    }
+
+    if (listName === "WATCHLIST") {
+      setIsLoading({ watchlist: false });
+    } else {
+      setIsLoading({ seenlist: false });
+    }
   };
 
   return (
@@ -67,19 +132,59 @@ export function MovieDetailsCard(props) {
             )}
           </div>
 
-          {isAdmin && <Button onClick={handleAdd}>Add To Website</Button>}
+          {isAdmin && <Button onClick={handleAddToSite}>Add To Website</Button>}
 
           {!isAdmin && (
             <div>
               {watchlist != null && seenlist != null ? (
-                <div className="space-x-2">
-                  <Button>
-                    {watchlist ? "Remove From Watchlist" : "Add To Watchlist"}
-                  </Button>
+                <div className="space-x-2 flex items-center ">
+                  {watchlist ? (
+                    <Button
+                      intent="active"
+                      size="sm"
+                      onClick={() => handleRemove("WATCHLIST")}
+                      isLoading={isLoading.watchlist}
+                      isDisabled={isLoading.seenlist}
+                      leftIcon={<RiBookmark2Line />}
+                    >
+                      Remove From Watchlist
+                    </Button>
+                  ) : (
+                    <Button
+                      intent="secondary"
+                      size="sm"
+                      isLoading={isLoading.watchlist}
+                      isDisabled={isLoading.seenlist}
+                      onClick={() => handleAdd("WATCHLIST")}
+                      leftIcon={<RiBookmarkLine />}
+                    >
+                      Add To Watchlist
+                    </Button>
+                  )}
 
-                  <Button>
-                    {seenlist ? "Remove From seenlist" : "Add To seenlist"}
-                  </Button>
+                  {seenlist ? (
+                    <Button
+                      intent="active"
+                      size="sm"
+                      isLoading={isLoading.seenlist}
+                      isDisabled={isLoading.watchlist}
+                      onClick={() => handleRemove("SEENLIST")}
+                      leftIcon={<RiCheckDoubleLine />}
+                    >
+                      Watched
+                    </Button>
+                  ) : (
+                    <Button
+                      intent="secondary"
+                      size="sm"
+                      isLoading={isLoading.seenlist}
+                      isDisabled={isLoading.watchlist}
+                      onClick={() => handleAdd("SEENLIST")}
+                      leftIcon={<RiCheckLine />}
+                    >
+                      Already watched
+                    </Button>
+                  )}
                 </div>
               ) : (
                 <div className="space-x-2">

@@ -85,8 +85,8 @@ export default function MovieDetailsPage() {
         genres={movie.genres}
         tagline={movie.tagline}
         description={movie.description}
-        isAdmin={false}
         lists={movie.lists}
+        movieId={movie._id}
       />
 
       {/* Reviews Part */}
