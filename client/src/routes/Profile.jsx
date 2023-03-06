@@ -41,7 +41,7 @@ export function Profile() {
           <div>
             {reviews?.length === 0 ? (
               <div className="bg-white  px-8 py-8 rounded-xl shadow-sm">
-                no movies found
+                no reviews found
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-x-7 gap-y-10 ">
