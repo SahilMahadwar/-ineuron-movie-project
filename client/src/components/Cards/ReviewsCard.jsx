@@ -60,7 +60,7 @@ export default function ReviewsCard({
   };
 
   return (
-    <div className="bg-white px-8 py-8 rounded-xl shadow-sm overflow-hidden flex space-x-6 items-start">
+    <div className="bg-white px-8 py-8 rounded-xl shadow-sm  flex space-x-6 items-start w-full">
       {poster && (
         <Link to={`/movies/${review.movie._id}`}>
           <Poster
@@ -71,7 +71,7 @@ export default function ReviewsCard({
           />
         </Link>
       )}
-      <div className="flex flex-col space-y-6   w-full">
+      <div className="flex flex-col space-y-6 overflow-hidden w-full">
         {userInfo && (
           <div className="flex-shrink-0 flex items-center space-x-2 ">
             <img
@@ -111,7 +111,9 @@ export default function ReviewsCard({
           </div>
         ) : (
           <div className="w-full  space-y-2 break-words">
-            <h3 className="text-base text-gray-800 ">{review.title}</h3>
+            <h3 className="text-base text-gray-800 overflow-hidden">
+              {review.title}
+            </h3>
             {/* {review.title === "EUUU (From P-Town)" && (
             <span className="bg-red-500 text-white text-xs font-semibold px-2.5 py-0.5 rounded  mt-4">
               CHAPRI DETECTED
