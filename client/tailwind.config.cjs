@@ -10,8 +10,8 @@ module.exports = {
       },
     },
     fontFamily: {
-      display: ["InterVariable"],
-      body: ["InterVariable"],
+      display: ["InterVariable, -apple-system, system-ui, sans-serif"],
+      body: ["InterVariable, -apple-system, system-ui, sans-serif"],
     },
   },
   plugins: [],
