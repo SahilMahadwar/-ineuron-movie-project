@@ -3,57 +3,48 @@ import ReviewsCard from "../../components/Cards/ReviewsCard";
 import Spinner from "../../components/Spinner";
 import ReviewsContext from "../../contexts/ReviewsContext";
 
+import { Link } from "react-router-dom";
+import Poster from "../../components/Cards/Poster";
+import useApi from "../../hooks/useApi";
 import useAuth from "../../hooks/useAuth";
 
 export default function SeenListPage() {
-  const {
-    reviews,
-    isLoading: reviewsIsLoading,
-    isError: reviewsIsError,
-    error: reviewsError,
-    getMyReviews,
-  } = useContext(ReviewsContext);
+  const { user } = useAuth();
 
-  const { user, isLoading, isError, error } = useAuth();
+  const { getList, movies, isLoading, isError, error } = useApi();
 
   useEffect(() => {
-    console.log("UseEffect Ran");
+    console.log("Seenlist UseEffect Ran");
     if (user) {
-      console.log("UseEffect User Ran");
-      getMyReviews(user._id);
+      getList("SEENLIST");
     }
   }, [user]);
 
   return (
     <div className=" w-full ">
-      {/* Reviews Part */}
       <div className="">
-        {reviewsIsLoading ? (
+        {isLoading ? (
           <div className="flex justify-center">
             <Spinner />
           </div>
-        ) : reviews && !reviewsIsLoading ? (
+        ) : movies && !isLoading ? (
           <div>
-            {reviews?.length === 0 ? (
+            {movies?.length === 0 ? (
               <div className="bg-white  px-8 py-8 rounded-xl shadow-sm">
-                no reviews found
+                no movies found
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-x-8 gap-y-8 ">
-                {reviews?.map((review) => (
-                  <ReviewsCard
-                    key={review._id}
-                    review={review}
-                    user={review.user}
-                    poster={true}
-                    userInfo={false}
-                  />
+              <div className="grid grid-cols-5 gap-x-7 gap-y-10">
+                {movies.map((m) => (
+                  <Link to={`/movies/${m.movie._id}`} key={m.movie.tmdbId}>
+                    <Poster posterPath={m.movie.poster} title={m.movie.name} />
+                  </Link>
                 ))}
               </div>
             )}
           </div>
-        ) : !reviews && reviewsIsError ? (
-          <div>{reviewsError.message}</div>
+        ) : !movies && isError ? (
+          <div>{error.message}</div>
         ) : (
           ""
         )}

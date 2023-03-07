@@ -3,18 +3,13 @@ import ReviewsCard from "../../components/Cards/ReviewsCard";
 import Spinner from "../../components/Spinner";
 import ReviewsContext from "../../contexts/ReviewsContext";
 
+import useApi from "../../hooks/useApi";
 import useAuth from "../../hooks/useAuth";
 
 export function ReviewsPage() {
-  const {
-    reviews,
-    isLoading: reviewsIsLoading,
-    isError: reviewsIsError,
-    error: reviewsError,
-    getMyReviews,
-  } = useContext(ReviewsContext);
+  const { reviews, isLoading, isError, error, getMyReviews } = useApi();
 
-  const { user, isLoading, isError, error } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     console.log("UseEffect Ran");
@@ -28,11 +23,11 @@ export function ReviewsPage() {
     <div className=" w-full ">
       {/* Reviews Part */}
       <div className="">
-        {reviewsIsLoading ? (
+        {isLoading ? (
           <div className="flex justify-center">
             <Spinner />
           </div>
-        ) : reviews && !reviewsIsLoading ? (
+        ) : reviews && !isLoading ? (
           <div>
             {reviews?.length === 0 ? (
               <div className="bg-white  px-8 py-8 rounded-xl shadow-sm">
@@ -52,8 +47,8 @@ export function ReviewsPage() {
               </div>
             )}
           </div>
-        ) : !reviews && reviewsIsError ? (
-          <div>{reviewsError.message}</div>
+        ) : !reviews && isError ? (
+          <div>{error.message}</div>
         ) : (
           ""
         )}

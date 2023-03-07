@@ -44,25 +44,6 @@ function Navigation() {
 }
 
 export function ProfileLayout() {
-  const {
-    reviews,
-    isLoading: reviewsIsLoading,
-    isError: reviewsIsError,
-    error: reviewsError,
-    getMyReviews,
-  } = useContext(ReviewsContext);
-
-  const { user, isLoading, isError, error } = useAuth();
-
-  useEffect(() => {
-    console.log("UseEffect Ran");
-    if (user) {
-      console.log("UseEffect User Ran");
-
-      getMyReviews(user._id);
-    }
-  }, [user]);
-
   return (
     <div className="flex space-x-8">
       <div className="w-1/4">
