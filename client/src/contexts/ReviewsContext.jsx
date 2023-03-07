@@ -69,8 +69,6 @@ export const ReviewsProvider = ({ children }) => {
         setReviews(data.data);
       }
 
-      console.log(data);
-
       setIsLoading(false);
     } catch (error) {
       setError(error);
