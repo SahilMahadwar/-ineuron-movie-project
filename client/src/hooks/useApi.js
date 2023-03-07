@@ -6,6 +6,7 @@ import { axiosApiInstance } from "../lib/axiosApiInstance";
 
 export default function useApi() {
   const [movies, setMovies] = useState(null);
+  const [reviews, setReviews] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isError, setIsError] = useState(null);
@@ -337,6 +338,82 @@ export default function useApi() {
     }
   };
 
+  const getList = async (listName) => {
+    try {
+      setIsError(false);
+      setError();
+      setIsLoading(true);
+
+      let token = localStorage.getItem("token");
+
+      const { data: axiosRes, status } = await axiosApiInstance.get(
+        `/list/${
+          listName === "WATCHLIST"
+            ? "watchlist"
+            : listName === "SEENLIST"
+            ? "seenlist"
+            : ""
+        }`,
+        {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : null,
+          },
+        }
+      );
+
+      if (axiosRes.success) {
+        setIsLoading(false);
+        setMovies(axiosRes.data);
+        console.log(axiosRes.data);
+        return axiosRes;
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      setIsError(true);
+      setIsLoading(false);
+
+      if (error.response?.data?.error) {
+        setError(error.response?.data?.error);
+        toast.error(
+          error.response?.data?.error
+            ? error.response?.data?.error
+            : error.message
+        );
+      } else {
+        setError(error.message);
+        toast.error(message);
+      }
+
+      console.log(error);
+    }
+  };
+
+  const getMyReviews = async (userId) => {
+    try {
+      setIsError(false);
+      setIsLoading(true);
+      setError();
+
+      const { data, status } = await axiosApiInstance.get(
+        `/reviews?user=${userId}`
+      );
+
+      if (status === 200) {
+        setIsLoading(false);
+        setReviews(data.data);
+        console.log(data.data);
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      setError(error);
+      setIsError(true);
+      setIsLoading(false);
+      console.log(error);
+    }
+  };
+
   return {
     addToWebsite,
     postReview,
@@ -346,6 +423,9 @@ export default function useApi() {
     movieLitsCheck,
     addMovieToList,
     removeMovieFromList,
+    getList,
+    getMyReviews,
+    reviews,
     movies,
     isLoading,
     error,
