@@ -58,7 +58,7 @@ export default function MovieDetailsPage() {
         arr.unshift(removedElement[0]);
       }
     });
-
+    console.log("MOVING USER REVIEWS TO FRONT");
     return arr;
   }
 
