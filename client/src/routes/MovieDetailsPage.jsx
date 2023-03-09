@@ -122,7 +122,7 @@ export default function MovieDetailsPage() {
               </div>
             ) : reviews && user ? (
               <div className="grid grid-cols-2 gap-x-7 gap-y-10 ">
-                {moveUserReviewToFront(reviews, user._id).map((review) => (
+                {reviews.map((review) => (
                   <ReviewsCard
                     key={review._id}
                     review={review}
