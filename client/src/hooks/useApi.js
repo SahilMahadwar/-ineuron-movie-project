@@ -413,7 +413,7 @@ export default function useApi() {
       setError();
 
       const { data: axiosRes, status } = await axiosApiInstance.get(
-        `/reviews/movie-id/${movieId}`
+        `/reviews?movie=${movieId}`
       );
 
       if (status === 200) {
