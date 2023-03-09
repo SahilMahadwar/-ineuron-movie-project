@@ -1,37 +1,47 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useApi from "../hooks/useApi";
 import { axiosApiInstance } from "../lib/axiosApiInstance";
 
-const MovieDetailsContext = createContext();
+const ProfileContext = createContext();
 
-export const MovieDetailsProvider = ({ children }) => {
+export const ProfileProvider = ({ children }) => {
   const [reviews, setReviews] = useState(null);
-
-  const [reviewsIsLoading, setReviewsIsLoading] = useState(false);
+  const [movies, setMovies] = useState({ watchlist: null, seenlist: null });
 
   const {
     updateReview: useApiUpdateReview,
     deleteReview: useApiDeleteReview,
     postReview: useApiPostReview,
-    getMovieReviews,
-    isError,
+    getMyReviews: useApiGetMyReviews,
+    getList: useApiGetList,
     isLoading,
+    isError,
     error,
   } = useApi();
 
-  const getReviews = async (movieId) => {
-    try {
-      setReviewsIsLoading(true);
-      const { success, data } = await getMovieReviews(movieId);
+  const getMyReviews = async (userId) => {
+    const { success, data } = await useApiGetMyReviews(userId);
 
-      if (success) {
-        setReviews(data);
+    if (success) {
+      setReviews(data);
+      return data;
+    }
+  };
+
+  const getList = async (listName) => {
+    const { success, data } = await useApiGetList(listName);
+
+    if (success) {
+      if (listName === "WATCHLIST") {
+        setMovies({ seenlist: movies.seenlist, watchlist: data });
       }
 
-      setReviewsIsLoading(false);
-    } catch (error) {
-      setReviewsIsLoading(false);
+      if (listName === "SEENLIST") {
+        setMovies({ watchlist: movies.watchlist, seenlist: data });
+      }
+
+      return data;
     }
   };
 
@@ -49,6 +59,7 @@ export const MovieDetailsProvider = ({ children }) => {
     const { data, success } = await useApiUpdateReview(updateReviewData);
 
     if (success) {
+      console.log(data);
       return data;
     }
   };
@@ -66,30 +77,32 @@ export const MovieDetailsProvider = ({ children }) => {
     const { data, success } = await useApiPostReview(reviewData);
 
     if (success) {
+      console.log(data);
       addReviewToState(data);
       return data;
     }
   };
 
   return (
-    <MovieDetailsContext.Provider
+    <ProfileContext.Provider
       value={{
         reviews,
         isLoading,
         error,
         isError,
-        reviewsIsLoading,
-        getReviews,
+        movies,
+        getMyReviews,
         removeReviewFromState,
         addReviewToState,
         updateReview,
         deleteReview,
         postReview,
+        getList,
       }}
     >
       {children}
-    </MovieDetailsContext.Provider>
+    </ProfileContext.Provider>
   );
 };
 
-export default MovieDetailsContext;
+export default ProfileContext;

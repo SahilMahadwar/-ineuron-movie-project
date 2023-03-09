@@ -1,22 +1,46 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import ReviewsCard from "../../components/Cards/ReviewsCard";
 import Spinner from "../../components/Spinner";
 
-import useApi from "../../hooks/useApi";
+import ProfileContext from "../../contexts/ProfileContext";
 import useAuth from "../../hooks/useAuth";
 
 export function ReviewsPage() {
-  const { reviews, isLoading, isError, error, getMyReviews } = useApi();
+  const { reviews, isError, error, getMyReviews, updateReview, deleteReview } =
+    useContext(ProfileContext);
 
   const { user } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    console.log("UseEffect Ran");
     if (user) {
-      console.log("UseEffect User Ran");
-      getMyReviews(user._id);
+      fetchMyReviews(user._id);
     }
   }, [user]);
+
+  const fetchMyReviews = async (userId) => {
+    try {
+      if (reviews) {
+        setIsLoading(false);
+      } else {
+        setIsLoading(true);
+      }
+
+      await getMyReviews(userId);
+
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+    }
+  };
+
+  const onSave = async (updateReviewData) => {
+    return updateReview(updateReviewData);
+  };
+
+  const onDelete = async (reviewId) => {
+    return deleteReview(reviewId);
+  };
 
   return (
     <div className=" w-full ">
@@ -41,6 +65,9 @@ export function ReviewsPage() {
                     user={review.user}
                     poster={true}
                     userInfo={false}
+                    onSave={onSave}
+                    onDelete={onDelete}
+                    loggedInUser={user._id}
                   />
                 ))}
               </div>

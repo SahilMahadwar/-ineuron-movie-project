@@ -6,6 +6,7 @@ import { default as App } from "./App";
 import ErrorElement from "./components/ErrorElement";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { MovieDetailsProvider } from "./contexts/MovieDetailsContext";
+import { ProfileProvider } from "./contexts/ProfileContext";
 import AdminLayout from "./layouts/AdminLayout";
 import AppLayout from "./layouts/AppLayout";
 import ProfileLayout from "./layouts/ProfileLayout";
@@ -32,11 +33,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: (
-          <MovieDetailsProvider>
-            <AppLayout />
-          </MovieDetailsProvider>
-        ),
+        element: <AppLayout />,
         children: [
           {
             path: "/",
@@ -46,7 +43,11 @@ const router = createBrowserRouter([
           },
           {
             path: "/movies/:movieId",
-            element: <MovieDetails />,
+            element: (
+              <MovieDetailsProvider>
+                <MovieDetails />
+              </MovieDetailsProvider>
+            ),
             loader: movieLoader,
             errorElement: <ErrorElement />,
           },
@@ -59,7 +60,9 @@ const router = createBrowserRouter([
             path: "/profile",
             element: (
               <ProtectedRoute>
-                <ProfileLayout />
+                <ProfileProvider>
+                  <ProfileLayout />
+                </ProfileProvider>
               </ProtectedRoute>
             ),
             children: [

@@ -5,14 +5,9 @@ import ReviewsCard from "../components/Cards/ReviewsCard";
 import CreateReviewCard from "../components/CreateReviewCard";
 import Button from "../components/Form/Button";
 import Spinner from "../components/Spinner";
-import MovieDetailsContext, {
-  MovieDetailsProvider,
-} from "../contexts/MovieDetailsContext";
-import useApi from "../hooks/useApi";
+import MovieDetailsContext from "../contexts/MovieDetailsContext";
 import useAuth from "../hooks/useAuth";
 import { axiosApiInstance } from "../lib/axiosApiInstance";
-import { axiosTmdbInstance } from "../lib/axiosTmdbInstance";
-import { tmdbKey } from "../lib/axiosTmdbInstance/constants";
 
 const getMovieDetails = async (params) => {
   let token = localStorage.getItem("token");
@@ -35,7 +30,7 @@ export default function MovieDetailsPage() {
 
   const {
     reviews,
-    isLoading: reviewsIsLoading,
+    reviewsIsLoading,
     isError: reviewsIsError,
     error: reviewsError,
     getReviews,

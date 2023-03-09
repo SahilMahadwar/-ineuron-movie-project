@@ -82,6 +82,7 @@ export default function useApi() {
 
       if (status === 201) {
         console.log("sussfully added ");
+        setIsLoading(false);
         return axiosRes;
       }
 
@@ -392,7 +393,33 @@ export default function useApi() {
       if (status === 200) {
         setIsLoading(false);
         setReviews(data.data);
-        console.log(data.data);
+        console.log(data);
+        return data;
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      setError(error);
+      setIsError(true);
+      setIsLoading(false);
+      console.log(error);
+    }
+  };
+
+  const getMovieReviews = async (movieId) => {
+    try {
+      setIsError(false);
+      setIsLoading(true);
+      setError();
+
+      const { data: axiosRes, status } = await axiosApiInstance.get(
+        `/reviews/movie-id/${movieId}`
+      );
+
+      if (status === 200) {
+        setIsLoading(false);
+        setReviews(axiosRes.data);
+        return axiosRes;
       }
 
       setIsLoading(false);
@@ -415,6 +442,7 @@ export default function useApi() {
     removeMovieFromList,
     getList,
     getMyReviews,
+    getMovieReviews,
     reviews,
     movies,
     isLoading,
