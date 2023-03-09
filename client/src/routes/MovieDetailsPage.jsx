@@ -52,7 +52,7 @@ export default function MovieDetailsPage() {
   const { user, isLoading, isError } = useAuth();
 
   function moveUserReviewToFront(arr, elem) {
-    reviews.forEach((element, i) => {
+    arr.forEach((element, i) => {
       if (element.user._id === elem) {
         const removedElement = arr.splice(i, 1);
         arr.unshift(removedElement[0]);
@@ -67,7 +67,7 @@ export default function MovieDetailsPage() {
   };
 
   const onDelete = async (reviewId) => {
-    return deleteReview(reviewId);
+    return await deleteReview(reviewId);
   };
 
   return (
