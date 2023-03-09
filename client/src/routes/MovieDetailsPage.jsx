@@ -25,6 +25,17 @@ export async function loader({ params }) {
   return getMovieDetails(params.movieId);
 }
 
+const moveUserReviewToFront = (arr, elem) => {
+  arr.forEach((element, i) => {
+    if (element.user._id === elem) {
+      const removedElement = arr.splice(i, 1);
+      arr.unshift(removedElement[0]);
+    }
+  });
+  console.log("MOVING USER REVIEWS TO FRONT");
+  return arr;
+};
+
 export default function MovieDetailsPage() {
   const movie = useLoaderData();
 
@@ -50,17 +61,6 @@ export default function MovieDetailsPage() {
   }, [movieId]);
 
   const { user, isLoading, isError } = useAuth();
-
-  function moveUserReviewToFront(arr, elem) {
-    arr.forEach((element, i) => {
-      if (element.user._id === elem) {
-        const removedElement = arr.splice(i, 1);
-        arr.unshift(removedElement[0]);
-      }
-    });
-    console.log("MOVING USER REVIEWS TO FRONT");
-    return arr;
-  }
 
   const onSave = async (updateReviewData) => {
     return updateReview(updateReviewData);
