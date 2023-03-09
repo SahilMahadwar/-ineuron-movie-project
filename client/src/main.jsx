@@ -5,7 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { default as App } from "./App";
 import ErrorElement from "./components/ErrorElement";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { ReviewsProvider } from "./contexts/ReviewsContext";
+import { MovieDetailsProvider } from "./contexts/MovieDetailsContext";
 import AdminLayout from "./layouts/AdminLayout";
 import AppLayout from "./layouts/AppLayout";
 import ProfileLayout from "./layouts/ProfileLayout";
@@ -33,9 +33,9 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: (
-          <ReviewsProvider>
+          <MovieDetailsProvider>
             <AppLayout />
-          </ReviewsProvider>
+          </MovieDetailsProvider>
         ),
         children: [
           {

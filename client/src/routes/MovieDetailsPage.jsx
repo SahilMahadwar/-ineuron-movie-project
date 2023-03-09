@@ -1,4 +1,3 @@
-import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { useContext, useEffect, useRef } from "react";
 import { Link, useLoaderData, useLocation, useParams } from "react-router-dom";
 import MovieDetailsCard from "../components/Cards/MovieDetailsCard";
@@ -6,7 +5,9 @@ import ReviewsCard from "../components/Cards/ReviewsCard";
 import CreateReviewCard from "../components/CreateReviewCard";
 import Button from "../components/Form/Button";
 import Spinner from "../components/Spinner";
-import ReviewsContext, { ReviewsProvider } from "../contexts/ReviewsContext";
+import MovieDetailsContext, {
+  MovieDetailsProvider,
+} from "../contexts/MovieDetailsContext";
 import useApi from "../hooks/useApi";
 import useAuth from "../hooks/useAuth";
 import { axiosApiInstance } from "../lib/axiosApiInstance";
@@ -38,7 +39,10 @@ export default function MovieDetailsPage() {
     isError: reviewsIsError,
     error: reviewsError,
     getReviews,
-  } = useContext(ReviewsContext);
+    updateReview,
+    deleteReview,
+    postReview,
+  } = useContext(MovieDetailsContext);
 
   const { pathname } = useLocation();
   let { movieId } = useParams();
@@ -52,14 +56,6 @@ export default function MovieDetailsPage() {
 
   const { user, isLoading, isError } = useAuth();
 
-  // const {
-  //   reviews,
-  //   isLoading: reviewsIsLoading,
-  //   isError: reviewsIsError,
-  //   error: reviewsError,
-  //   getReviews,
-  // } = useApi();
-
   function moveUserReviewToFront(arr, elem) {
     reviews.forEach((element, i) => {
       if (element.user._id === elem) {
@@ -70,6 +66,14 @@ export default function MovieDetailsPage() {
 
     return arr;
   }
+
+  const onSave = async (updateReviewData) => {
+    return updateReview(updateReviewData);
+  };
+
+  const onDelete = async (reviewId) => {
+    return deleteReview(reviewId);
+  };
 
   return (
     <div className="space-y-10 ">
@@ -96,7 +100,7 @@ export default function MovieDetailsPage() {
             <Spinner />
           </div>
         ) : user && !isLoading ? (
-          <CreateReviewCard movie={movie} />
+          <CreateReviewCard movie={movie} onPostReview={postReview} />
         ) : !user && isError ? (
           <div className="space-y-3 flex flex-col items-center justify-center">
             <p className="text-gray-800">Please login to add a review</p>
@@ -129,6 +133,9 @@ export default function MovieDetailsPage() {
                     review={review}
                     user={review.user}
                     userInfo={true}
+                    onSave={onSave}
+                    onDelete={onDelete}
+                    loggedInUser={user._id}
                   />
                 ))}
               </div>

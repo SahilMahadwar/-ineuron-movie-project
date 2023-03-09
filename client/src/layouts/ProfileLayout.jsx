@@ -1,10 +1,4 @@
-import { useContext, useEffect } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import ReviewsCard from "../components/Cards/ReviewsCard";
-import Spinner from "../components/Spinner";
-import ReviewsContext from "../contexts/ReviewsContext";
-import useApi from "../hooks/useApi";
-import useAuth from "../hooks/useAuth";
 
 const navigation = [
   { name: "Your Reviews", to: "/profile/reviews" },

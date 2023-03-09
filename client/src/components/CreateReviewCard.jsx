@@ -1,12 +1,15 @@
 import { FaceSmileIcon } from "@heroicons/react/24/outline";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import ReviewsContext from "../contexts/ReviewsContext";
+import ReviewsContext from "../contexts/MovieDetailsContext";
 import useApi from "../hooks/useApi";
 import useAuth from "../hooks/useAuth";
 import Button from "./Form/Button";
 
-export default function CreateReviewCard({ movie }) {
+export default function CreateReviewCard({
+  movie,
+  onPostReview: _onPostReview,
+}) {
   const {
     register,
     handleSubmit,
@@ -15,12 +18,12 @@ export default function CreateReviewCard({ movie }) {
     formState: { errors },
   } = useForm();
 
-  const { refetch, setRefetch, addReviewToState } = useContext(ReviewsContext);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { postReview, isLoading } = useApi();
   const { user } = useAuth();
 
-  const onSubmit = async (inputs) => {
+  const onPostReview = async (inputs) => {
+    setIsLoading(true);
     const reviewData = {
       title: inputs.title,
       review: inputs.review,
@@ -28,8 +31,9 @@ export default function CreateReviewCard({ movie }) {
       movie: movie._id,
     };
 
-    await postReview(reviewData);
+    await _onPostReview(reviewData);
     reset();
+    setIsLoading(false);
   };
 
   return (
@@ -42,7 +46,7 @@ export default function CreateReviewCard({ movie }) {
         />
       </div>
       <div className="min-w-0 flex-1 ">
-        <form className="relative" onSubmit={handleSubmit(onSubmit)}>
+        <form className="relative" onSubmit={handleSubmit(onPostReview)}>
           <div className="border border-gray-300 rounded-lg shadow-sm overflow-hidden focus-within:border-brand-200 focus-within:ring-1 focus-within:ring-brand-200 px-4">
             <input
               {...register("title", { required: "Review is required" })}

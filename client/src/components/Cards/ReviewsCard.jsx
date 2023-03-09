@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import ReviewsContext from "../../contexts/ReviewsContext";
+import ReviewsContext from "../../contexts/MovieDetailsContext";
 import useApi from "../../hooks/useApi";
 import useAuth from "../../hooks/useAuth";
 import Button from "../Form/Button";
@@ -14,20 +14,19 @@ export default function ReviewsCard({
   review: movieReview,
   poster,
   userInfo,
+  onSave: _onSave,
+  onDelete: _onDelete,
+  loggedInUser,
 }) {
   const [review, setReview] = useState(movieReview);
+  const [editMode, setEditMode] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const simpleDate = new Date(review.createdAt).toISOString().slice(0, 10);
-
-  const [editMode, setEditMode] = useState(false);
 
   function capitalizeFirstLetter(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
-
-  const { user: loggedInUser } = useAuth();
-
-  const { updateReview, deleteReview, isError, error, isLoading } = useApi();
 
   const {
     register,
@@ -37,23 +36,25 @@ export default function ReviewsCard({
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (inputs) => {
+  const onSave = async (inputs) => {
+    setIsLoading(true);
     const updateReviewData = {
       title: inputs.title,
       review: inputs.review,
       reviewId: review._id,
     };
 
-    const updatedData = await updateReview(updateReviewData);
+    const data = await _onSave(updateReviewData);
 
-    console.log(updatedData);
-
-    setReview(updatedData);
+    setReview(data);
     setEditMode(false);
+    setIsLoading(false);
   };
 
   const onDelete = async () => {
-    await deleteReview(review._id);
+    setIsLoading(true);
+    await _onDelete(review._id);
+    setIsLoading(false);
   };
 
   return (
@@ -113,7 +114,7 @@ export default function ReviewsCard({
           </div>
         )}
 
-        {loggedInUser?._id === user._id && !editMode && (
+        {loggedInUser === user._id && !editMode && (
           <div className="space-x-4">
             <Button
               onClick={() => setEditMode(true)}
@@ -138,7 +139,7 @@ export default function ReviewsCard({
           <div className="space-x-4">
             <Button
               isLoading={isLoading}
-              onClick={handleSubmit(onSubmit)}
+              onClick={handleSubmit(onSave)}
               intent="secondary"
               size="xs"
             >

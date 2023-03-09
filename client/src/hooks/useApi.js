@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useState } from "react";
+
 import { toast } from "react-toastify";
-import ReviewsContext from "../contexts/ReviewsContext";
+
 import { axiosApiInstance } from "../lib/axiosApiInstance";
 
 export default function useApi() {
@@ -10,9 +10,6 @@ export default function useApi() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isError, setIsError] = useState(null);
-
-  const { addReviewToState, removeReviewFromState } =
-    useContext(ReviewsContext);
 
   const addToWebsite = async (movie) => {
     try {
@@ -85,9 +82,9 @@ export default function useApi() {
 
       if (status === 201) {
         console.log("sussfully added ");
+        return axiosRes;
       }
 
-      addReviewToState(axiosRes.data);
       setIsLoading(false);
     } catch (error) {
       setError(error);
@@ -122,7 +119,8 @@ export default function useApi() {
 
       if (status === 201) {
         setIsLoading(false);
-        return axiosRes.data;
+        console.log(axiosRes);
+        return axiosRes;
       }
 
       setIsLoading(false);
@@ -153,9 +151,9 @@ export default function useApi() {
 
       if (axiosRes.success === true) {
         console.log("deleted successfully");
+        return axiosRes;
       }
 
-      removeReviewFromState(reviewId);
       setIsLoading(false);
     } catch (error) {
       setError(error);
@@ -305,15 +303,7 @@ export default function useApi() {
 
       if (status === 201) {
         setIsLoading(false);
-        // toast.success(
-        //   `${
-        //     list === "WATCHLIST"
-        //       ? `${name} Removed From Watchlist`
-        //       : list === "SEENLIST"
-        //       ? `${name} Marked As Not Watched`
-        //       : ""
-        //   }`
-        // );
+
         return axiosRes;
       }
 
