@@ -42,7 +42,7 @@ export const MovieDetailsProvider = ({ children }) => {
   };
 
   const addReviewToState = async (newReviewData) => {
-    setReviews([...reviews, newReviewData]);
+    setReviews([newReviewData, ...reviews]);
   };
 
   const updateReview = async (updateReviewData) => {
