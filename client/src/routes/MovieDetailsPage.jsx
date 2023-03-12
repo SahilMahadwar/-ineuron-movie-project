@@ -88,6 +88,8 @@ export default function MovieDetailsPage() {
         movieId={movie._id}
       />
 
+      {console.log(movie.lists)}
+
       {/* Reviews Part */}
       <div className="bg-white  px-8 py-8 rounded-xl shadow-sm">
         {isLoading ? (

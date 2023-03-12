@@ -22,7 +22,7 @@ export default function useApi() {
       const data = {
         name: movie.name,
         tmdbId: movie.tmdbId,
-        poster: `https://image.tmdb.org/t/p/w600_and_h900_bestv2${movie.poster_path}`,
+        poster: movie.poster,
         description: movie.description,
         status: movie.status,
         tagline: movie.tagline,
@@ -30,6 +30,7 @@ export default function useApi() {
         runtime: movie.runtime,
         genres: movie.genres,
         releaseDate: movie.releaseDate,
+        adult: movie.adult,
       };
 
       const { axiosRes, status } = await axiosApiInstance.post(
@@ -431,6 +432,131 @@ export default function useApi() {
     }
   };
 
+  const getAllReviewsOnSite = async (listName) => {
+    try {
+      setIsError(false);
+      setError();
+      setIsLoading(true);
+
+      let token = localStorage.getItem("token");
+
+      const { data: axiosRes, status } = await axiosApiInstance.get(
+        `/reviews`,
+        {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : null,
+          },
+        }
+      );
+
+      if (axiosRes.success) {
+        setIsLoading(false);
+        setReviews(axiosRes.data);
+        return axiosRes;
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      setIsError(true);
+      setIsLoading(false);
+
+      if (error.response?.data?.error) {
+        setError(error.response?.data?.error);
+        toast.error(
+          error.response?.data?.error
+            ? error.response?.data?.error
+            : error.message
+        );
+      } else {
+        setError(error.message);
+        toast.error(message);
+      }
+
+      console.log(error);
+    }
+  };
+
+  const getAllMoviesOnSite = async (listName) => {
+    try {
+      setIsError(false);
+      setError();
+      setIsLoading(true);
+
+      let token = localStorage.getItem("token");
+
+      const { data: axiosRes, status } = await axiosApiInstance.get(`/movies`, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : null,
+        },
+      });
+
+      if (axiosRes.success) {
+        setIsLoading(false);
+        setMovies(axiosRes.data);
+        return axiosRes;
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      setIsError(true);
+      setIsLoading(false);
+
+      if (error.response?.data?.error) {
+        setError(error.response?.data?.error);
+        toast.error(
+          error.response?.data?.error
+            ? error.response?.data?.error
+            : error.message
+        );
+      } else {
+        setError(error.message);
+        toast.error(message);
+      }
+
+      console.log(error);
+    }
+  };
+
+  const getAllUsersOnSite = async (listName) => {
+    try {
+      setIsError(false);
+      setError();
+      setIsLoading(true);
+
+      let token = localStorage.getItem("token");
+
+      const { data: axiosRes, status } = await axiosApiInstance.get(`/users`, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : null,
+        },
+      });
+
+      if (axiosRes.success) {
+        setIsLoading(false);
+        return axiosRes;
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      setIsError(true);
+      setIsLoading(false);
+
+      if (error.response?.data?.error) {
+        setError(error.response?.data?.error);
+        toast.error(
+          error.response?.data?.error
+            ? error.response?.data?.error
+            : error.message
+        );
+      } else {
+        setError(error.message);
+        toast.error(message);
+      }
+
+      console.log(error);
+    }
+  };
+
   return {
     addToWebsite,
     postReview,
@@ -443,6 +569,9 @@ export default function useApi() {
     getList,
     getMyReviews,
     getMovieReviews,
+    getAllReviewsOnSite,
+    getAllMoviesOnSite,
+    getAllUsersOnSite,
     reviews,
     movies,
     isLoading,

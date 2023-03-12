@@ -52,6 +52,8 @@ export function useTmdb() {
       if (status === 200) {
         setIsLoading(false);
 
+        console.log(data);
+
         return {
           data: data.results,
           success: true,

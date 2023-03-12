@@ -43,8 +43,21 @@ export function MovieDetailsCard(props) {
   });
 
   const handleAddToSite = async () => {
-    await addToWebsite(); // have to pass props as data
-    console.log("movies added successfully");
+    const movie = {
+      name: name,
+      tmdbId: movieId,
+      poster: posterPath,
+      description: description,
+      status: status,
+      tagline: tagline,
+      spokenLanguage: spokenLanguage,
+      runtime: runtime,
+      genres: genres,
+      releaseDate: releaseDate,
+      adult: adult,
+    };
+
+    await addToWebsite(movie); // have to pass props as data
   };
 
   const handleAdd = async (listName) => {

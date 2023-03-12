@@ -45,7 +45,7 @@ export function MovieCard({
           </div>
 
           <div>
-            <Link to={`/admin/movies/${movieId}`}>
+            <Link to={`/admin/movies/tmdb/${movieId}`}>
               <button className=" text-brand-500 bg-brand-100  w-fit  text-xs font-semibold px-2.5 py-1 rounded mt-1.5 mb-0.5 ">
                 Add to website
               </button>
@@ -58,7 +58,7 @@ export function MovieCard({
           </div>
 
           <div className="relative  overflow-hidden ">
-            <Link to={`/admin/movies/${movieId}`}>
+            <Link to={`/admin/movies/tmdb/${movieId}`}>
               <p className=" text-gray-600 bg-white  w-fit  text-xs font-semibold rounded hover:text-brand-500 ">
                 More Info
               </p>

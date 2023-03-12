@@ -5,12 +5,16 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { default as App } from "./App";
 import ErrorElement from "./components/ErrorElement";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { AdminProvider } from "./contexts/AdminContext";
 import { MovieDetailsProvider } from "./contexts/MovieDetailsContext";
 import { ProfileProvider } from "./contexts/ProfileContext";
 import AdminLayout from "./layouts/AdminLayout";
 import AppLayout from "./layouts/AppLayout";
 import ProfileLayout from "./layouts/ProfileLayout";
-import AdminDashboard from "./routes/admin/Dashboard";
+import AdminDashboard from "./routes/admin/AdminDashboard";
+import TmdbMovie, {
+  loader as tmdbMovieLoader,
+} from "./routes/admin/movies/TmdbMovie";
 import LoginPage from "./routes/auth/LoginPage";
 import RegisterPage from "./routes/auth/RegisterPage";
 import ErrorPage from "./routes/ErrorPage";
@@ -102,7 +106,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/admin",
-        element: <AdminLayout />,
+        element: (
+          <AdminProvider>
+            <AdminLayout />
+          </AdminProvider>
+        ),
         errorElement: <ErrorElement />,
         children: [
           {
@@ -116,9 +124,9 @@ const router = createBrowserRouter([
             errorElement: <ErrorElement />,
           },
           {
-            path: "/admin/movies/:tmdbId",
-            element: <MovieDetails />,
-            loader: movieLoader,
+            path: "/admin/movies/tmdb/:tmdbId",
+            element: <TmdbMovie />,
+            loader: tmdbMovieLoader,
             errorElement: <ErrorElement />,
           },
         ],

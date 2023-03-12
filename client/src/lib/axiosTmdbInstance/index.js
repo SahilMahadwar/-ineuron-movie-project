@@ -1,8 +1,9 @@
 import axios from "axios";
 
-import { baseTmdbApiUrl } from "./constants";
+import { baseTmdbApiUrl, tmdbKey } from "./constants";
 
 const config = {
   baseURL: baseTmdbApiUrl,
 };
+
 export const axiosTmdbInstance = axios.create(config);

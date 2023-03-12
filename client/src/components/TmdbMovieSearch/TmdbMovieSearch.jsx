@@ -58,10 +58,10 @@ export default function TmdbMovieSearch({ open, setOpen }) {
           <div className=" space-y-12  ">
             {movies?.map((movie) => (
               <MovieCard
-                movieId={movie._id}
+                movieId={movie.id}
                 posterPath={`https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movie.poster_path}`}
                 title={movie.title}
-                key={movie._id}
+                key={movie.id}
                 overview={movie.overview}
                 adult={movie.adult}
                 voteAverage={movie.vote_average}
