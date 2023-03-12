@@ -38,7 +38,7 @@ if (process.env.NODE_ENV === "development") {
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/movies", movies);
 app.use("/api/v1/reviews", reviews);
-app.use("/api/v1/user", user);
+app.use("/api/v1/users", user);
 app.use("/api/v1/list", list);
 
 // Api Home

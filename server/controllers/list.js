@@ -56,7 +56,7 @@ exports.getWatchlist = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    count: list.length,
+    count: total,
     pagination: pagination,
     data: list,
   });
@@ -181,7 +181,7 @@ exports.getSeenlist = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    count: list.length,
+    count: total,
     pagination: pagination,
     data: list,
   });

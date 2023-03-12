@@ -118,7 +118,7 @@ exports.getAllReviews = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    count: reviews.length,
+    count: total,
     pagination: pagination,
     data: reviews,
   });

@@ -100,7 +100,7 @@ exports.getAllMovies = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    count: movies.length,
+    count: total,
     pagination: pagination,
     data: movies,
   });
