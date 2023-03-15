@@ -31,7 +31,9 @@ export default function TmdbMovie() {
         status={movie.status}
         releaseDate={movie.release_date}
         runtime={movie.runtime}
-        spokenLanguage={movie.spoken_languages[0].english_name}
+        spokenLanguage={
+          movie.spoken_languages[0]?.english_name || movie.spoken_languages.name
+        }
         genres={movie.genres.map((genre) => {
           return genre.name;
         })}

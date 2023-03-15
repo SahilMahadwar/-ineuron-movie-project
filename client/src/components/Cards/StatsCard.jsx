@@ -1,4 +1,5 @@
 import { RiErrorWarningLine } from "react-icons/ri";
+import { Link } from "react-router-dom";
 import Spinner from "../Spinner";
 
 export default function StatsCard({
@@ -8,6 +9,7 @@ export default function StatsCard({
   isLoading,
   isError,
   error,
+  link,
 }) {
   if (isLoading) {
     return (
@@ -42,12 +44,12 @@ export default function StatsCard({
           <p className="text-2xl font-semibold text-slate-900">{stat}</p>
           <div className="absolute bottom-0 inset-x-0 bg-slate-50 px-4 py-4 sm:px-6">
             <div className="text-sm">
-              <a
-                href="#"
+              <Link
+                to={link}
                 className="font-medium text-brand-600 hover:text-brand-500"
               >
                 View all<span className="sr-only"> {name} stats</span>
-              </a>
+              </Link>
             </div>
           </div>
         </dd>

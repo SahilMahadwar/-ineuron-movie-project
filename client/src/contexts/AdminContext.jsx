@@ -10,6 +10,9 @@ export const AdminProvider = ({ children }) => {
   const [movies, setMovies] = useState();
   const [users, setUsers] = useState();
 
+  const { updateReview: useApiUpdateReview, deleteReview: useApiDeleteReview } =
+    useApi();
+
   const {
     getAllReviewsOnSite,
     isLoading: reviewsIsLoading,
@@ -55,6 +58,31 @@ export const AdminProvider = ({ children }) => {
     setUsers(data);
   };
 
+  const updateReview = async (updateReviewData) => {
+    const { data, success } = await useApiUpdateReview(updateReviewData);
+
+    if (success) {
+      console.log(data);
+      return data;
+    }
+  };
+
+  const removeReviewFromState = (reviewId) => {
+    console.log(reviewId);
+    const newReviews = reviews.data.filter((review) => review._id !== reviewId);
+
+    setReviews({ ...reviews, count: reviews.count - 1, data: newReviews });
+  };
+
+  const deleteReview = async (reviewId) => {
+    const { data, success } = await useApiDeleteReview(reviewId);
+
+    if (success) {
+      removeReviewFromState(reviewId);
+      return data;
+    }
+  };
+
   return (
     <AdminContext.Provider
       value={{
@@ -70,6 +98,8 @@ export const AdminProvider = ({ children }) => {
         usersIsLoading,
         usersIsError,
         usersError,
+        updateReview,
+        deleteReview,
       }}
     >
       {children}
