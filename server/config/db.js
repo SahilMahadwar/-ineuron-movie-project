@@ -3,11 +3,15 @@ const mongoose = require("mongoose");
 const connectDB = async () => {
   mongoose.set("strictQuery", false);
 
-  // const conn = await mongoose.connect(process.env.MONGO_URL, {
-  //   dbName: "movieapp",
-  // });
+  let conn;
 
-  const conn = await mongoose.connect(process.env.MONGO_URL);
+  if (process.env.NODE_ENV === "production") {
+    conn = await mongoose.connect(process.env.MONGO_URL, {
+      dbName: "movieapp",
+    });
+  } else {
+    conn = await mongoose.connect(process.env.MONGO_URL);
+  }
 
   console.log(`Mongodb Connected: ${conn.connection.host}`);
 };
