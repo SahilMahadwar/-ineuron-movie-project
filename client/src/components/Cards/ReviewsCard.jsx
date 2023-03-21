@@ -17,6 +17,7 @@ export default function ReviewsCard({
   onSave: _onSave,
   onDelete: _onDelete,
   loggedInUser,
+  isAdmin,
 }) {
   const [review, setReview] = useState(movieReview);
   const [editMode, setEditMode] = useState(false);
@@ -132,6 +133,19 @@ export default function ReviewsCard({
             >
               Delete
             </Button>
+          </div>
+        )}
+
+        {isAdmin && loggedInUser !== user._id && (
+          <div className="space-x-4">
+            <Button
+              isLoading={isLoading}
+              onClick={onDelete}
+              intent="secondary"
+              size="xs"
+            >
+              Delete
+            </Button>{" "}
           </div>
         )}
 

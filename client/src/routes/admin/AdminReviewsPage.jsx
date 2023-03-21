@@ -53,6 +53,7 @@ export function AdminReviewsPage() {
                     onSave={onSave}
                     onDelete={onDelete}
                     loggedInUser={user._id}
+                    isAdmin={true}
                   />
                 ))}
               </div>
