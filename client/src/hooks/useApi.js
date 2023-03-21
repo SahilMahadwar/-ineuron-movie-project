@@ -557,6 +557,37 @@ export default function useApi() {
     }
   };
 
+  const deleteMovie = async (movieId) => {
+    try {
+      setIsError(false);
+      setError();
+      setIsLoading(true);
+
+      let token = localStorage.getItem("token");
+
+      const { data: axiosRes, status } = await axiosApiInstance.delete(
+        `/movies//${movieId}`,
+        {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : null,
+          },
+        }
+      );
+
+      if (axiosRes.success === true) {
+        console.log("deleted successfully");
+        return axiosRes;
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      setError(error);
+      setIsError(true);
+      setIsLoading(false);
+      console.log(error);
+    }
+  };
+
   return {
     addToWebsite,
     postReview,
@@ -572,6 +603,7 @@ export default function useApi() {
     getAllReviewsOnSite,
     getAllMoviesOnSite,
     getAllUsersOnSite,
+    deleteMovie,
     reviews,
     movies,
     isLoading,

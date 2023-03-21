@@ -12,6 +12,7 @@ import AdminLayout from "./layouts/AdminLayout";
 import AppLayout from "./layouts/AppLayout";
 import ProfileLayout from "./layouts/ProfileLayout";
 import AdminDashboard from "./routes/admin/AdminDashboard";
+import AdminMoviesPage from "./routes/admin/AdminMoviesPage";
 import AdminReviewsPage from "./routes/admin/AdminReviewsPage";
 import AdminUsersPage from "./routes/admin/AdminUsersPage";
 import TmdbMovie, {
@@ -121,8 +122,8 @@ const router = createBrowserRouter([
           },
           {
             path: "/admin/movies",
-            element: <Movies />,
-            loader: moviesLoader,
+            element: <AdminMoviesPage />,
+
             errorElement: <ErrorElement />,
           },
           {
