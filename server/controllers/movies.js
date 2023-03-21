@@ -5,6 +5,7 @@ const List = require("../models/List");
 const ErrorResponse = require("../utils/errorResponse");
 const { isValidObjectId } = require("mongoose");
 const jwt = require("jsonwebtoken");
+const Review = require("../models/Review");
 
 // @desc    Create movie
 // @route   POST /api/v1/movies
@@ -200,7 +201,29 @@ exports.deleteMovie = asyncHandler(async (req, res, next) => {
     );
   }
 
-  movie.remove();
+  const reviews = await Review.find({ movie: movie._id });
+  const watchlist = await List.find({ type: "WATCHLIST", movie: movie._id });
+  const seenlist = await List.find({ type: "SEENLIST", movie: movie._id });
+
+  reviews.forEach(async (review) => {
+    const deleteReview = await Review.findById(review._id);
+
+    deleteReview.delete();
+  });
+
+  watchlist.forEach(async (listItem) => {
+    const deleteMovieFromWatchList = await List.findById(listItem._id);
+
+    deleteMovieFromWatchList.delete();
+  });
+
+  seenlist.forEach(async (listItem) => {
+    const deleteMovieFromSeenList = await List.findById(listItem._id);
+
+    deleteMovieFromSeenList.delete();
+  });
+
+  movie.delete();
 
   res.status(201).json({ success: true, data: {} });
 });
