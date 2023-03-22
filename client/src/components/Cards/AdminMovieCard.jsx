@@ -25,7 +25,7 @@ export function AdminMovieCard({
   };
 
   return (
-    <div className="bg-white flex p-6 rounded-xl shadow-sm space-x-6">
+    <div className="bg-white flex p-6 rounded-xl shadow-sm space-x-6 h-full">
       <div className="shrink-0">
         <Link to={`/movies/${movieId}`}>
           <Poster posterPath={posterPath} />
