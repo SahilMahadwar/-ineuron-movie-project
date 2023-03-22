@@ -165,30 +165,6 @@ export default function useApi() {
     }
   };
 
-  const searchMovie = async (movieName) => {
-    try {
-      setIsError(false);
-      setError();
-      setIsLoading(true);
-
-      const { data: axiosRes, status } = await axiosApiInstance.get(
-        `/movies?search=${movieName ? movieName : ""}`
-      );
-
-      if (axiosRes.success === true) {
-        console.log(axiosRes.data);
-        setMovies(axiosRes.data);
-      }
-
-      setIsLoading(false);
-    } catch (error) {
-      setError(error);
-      setIsError(true);
-      setIsLoading(false);
-      console.log(error);
-    }
-  };
-
   const movieLitsCheck = async (movieId) => {
     try {
       setIsError(false);
@@ -476,17 +452,17 @@ export default function useApi() {
     }
   };
 
-  const getAllMoviesOnSite = async (listName) => {
+  const getAllMoviesOnSite = async (movieName, page) => {
     try {
       setIsError(false);
       setError();
       setIsLoading(true);
 
-      let token = localStorage.getItem("token");
-
       const { data: axiosRes, status } = await axiosApiInstance.get(`/movies`, {
-        headers: {
-          Authorization: token ? `Bearer ${token}` : null,
+        params: {
+          search: movieName ? movieName : "",
+          limit: "26",
+          page: page ? page : "",
         },
       });
 
@@ -593,7 +569,7 @@ export default function useApi() {
     postReview,
     updateReview,
     deleteReview,
-    searchMovie,
+
     movieLitsCheck,
     addMovieToList,
     removeMovieFromList,

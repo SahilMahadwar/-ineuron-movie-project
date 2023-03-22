@@ -49,10 +49,24 @@ export const AdminProvider = ({ children }) => {
     setReviews(data);
   };
 
-  const getMovies = async () => {
-    const data = await getAllMoviesOnSite();
-    console.log(data);
-    setMovies(data);
+  const getMovies = async (movieName, page) => {
+    const axiosRes = await getAllMoviesOnSite(movieName, page);
+
+    if (movies) {
+      const { data, pagination } = axiosRes;
+
+      if (page > 1) {
+        setMovies({
+          ...movies,
+          pagination: pagination,
+          data: [...movies.data, ...data],
+        });
+      } else {
+        setMovies({ ...movies, pagination: pagination, data: data });
+      }
+    } else {
+      setMovies(axiosRes);
+    }
   };
 
   const getUsers = async () => {
@@ -120,6 +134,7 @@ export const AdminProvider = ({ children }) => {
         deleteMovie,
         updateReview,
         deleteReview,
+        getMovies,
       }}
     >
       {children}
