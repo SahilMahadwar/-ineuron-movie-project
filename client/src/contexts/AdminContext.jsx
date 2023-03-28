@@ -14,6 +14,7 @@ export const AdminProvider = ({ children }) => {
     updateReview: useApiUpdateReview,
     deleteReview: useApiDeleteReview,
     deleteMovie: useApiDeleteMovie,
+    deleteUser: useApiDeleteUser,
   } = useApi();
 
   const {
@@ -83,10 +84,24 @@ export const AdminProvider = ({ children }) => {
     }
   };
 
-  const getUsers = async () => {
-    const data = await getAllUsersOnSite();
-    console.log(data);
-    setUsers(data);
+  const getUsers = async (searchQuery, page) => {
+    const axiosRes = await getAllUsersOnSite(searchQuery, page);
+
+    if (users) {
+      const { data, pagination } = axiosRes;
+
+      if (page > 1) {
+        setUsers({
+          ...users,
+          pagination: pagination,
+          data: [...users.data, ...data],
+        });
+      } else {
+        setUsers({ ...users, pagination: pagination, data: data });
+      }
+    } else {
+      setUsers(axiosRes);
+    }
   };
 
   const updateReview = async (updateReviewData) => {
@@ -130,6 +145,22 @@ export const AdminProvider = ({ children }) => {
     }
   };
 
+  const removeUserFromState = (userId) => {
+    console.log(userId);
+    const newUsers = users.data.filter((user) => user._id !== userId);
+
+    setUsers({ ...users, count: users.count - 1, data: newUsers });
+  };
+
+  const deleteUser = async (userId) => {
+    const { data, success } = await useApiDeleteUser(userId);
+
+    if (success) {
+      removeUserFromState(userId);
+      return data;
+    }
+  };
+
   return (
     <AdminContext.Provider
       value={{
@@ -150,6 +181,8 @@ export const AdminProvider = ({ children }) => {
         deleteReview,
         getMovies,
         getReviews,
+        getUsers,
+        deleteUser,
       }}
     >
       {children}

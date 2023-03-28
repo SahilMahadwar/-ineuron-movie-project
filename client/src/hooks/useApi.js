@@ -424,7 +424,7 @@ export default function useApi() {
           },
           params: {
             search: reviewTitle ? reviewTitle : "",
-            limit: "26",
+            limit: "12",
             page: page ? page : "",
           },
         }
@@ -466,7 +466,7 @@ export default function useApi() {
       const { data: axiosRes, status } = await axiosApiInstance.get(`/movies`, {
         params: {
           search: movieName ? movieName : "",
-          limit: "26",
+          limit: "12",
           page: page ? page : "",
         },
       });
@@ -498,7 +498,7 @@ export default function useApi() {
     }
   };
 
-  const getAllUsersOnSite = async (listName) => {
+  const getAllUsersOnSite = async (searchQuery, page) => {
     try {
       setIsError(false);
       setError();
@@ -509,6 +509,11 @@ export default function useApi() {
       const { data: axiosRes, status } = await axiosApiInstance.get(`/users`, {
         headers: {
           Authorization: token ? `Bearer ${token}` : null,
+        },
+        params: {
+          search: searchQuery ? searchQuery : "",
+          limit: "12",
+          page: page ? page : "",
         },
       });
 
@@ -547,7 +552,38 @@ export default function useApi() {
       let token = localStorage.getItem("token");
 
       const { data: axiosRes, status } = await axiosApiInstance.delete(
-        `/movies//${movieId}`,
+        `/movies/${movieId}`,
+        {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : null,
+          },
+        }
+      );
+
+      if (axiosRes.success === true) {
+        console.log("deleted successfully");
+        return axiosRes;
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      setError(error);
+      setIsError(true);
+      setIsLoading(false);
+      console.log(error);
+    }
+  };
+
+  const deleteUser = async (userId) => {
+    try {
+      setIsError(false);
+      setError();
+      setIsLoading(true);
+
+      let token = localStorage.getItem("token");
+
+      const { data: axiosRes, status } = await axiosApiInstance.delete(
+        `/users/${userId}`,
         {
           headers: {
             Authorization: token ? `Bearer ${token}` : null,
@@ -574,7 +610,7 @@ export default function useApi() {
     postReview,
     updateReview,
     deleteReview,
-
+    deleteUser,
     movieLitsCheck,
     addMovieToList,
     removeMovieFromList,
