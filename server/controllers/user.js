@@ -1,5 +1,6 @@
 const asyncHandler = require("../middleware/async");
-
+const Review = require("../models/Review");
+const List = require("../models/List");
 const User = require("../models/User");
 const ErrorResponse = require("../utils/errorResponse");
 
@@ -50,7 +51,10 @@ exports.getAllUsers = asyncHandler(async (req, res, next) => {
   if (req.query.search) {
     const searchQuery = req.query.search.split(",").join(" ");
     query = User.find({
-      $or: [{ name: { $regex: searchQuery, $options: "i" } }],
+      $or: [
+        { name: { $regex: searchQuery, $options: "i" } },
+        { email: { $regex: searchQuery, $options: "i" } },
+      ],
     });
   } else {
     //Finding All resource
@@ -76,7 +80,21 @@ exports.getAllUsers = asyncHandler(async (req, res, next) => {
   const limit = parseInt(req.query.limit, 10) || 25;
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
-  const total = await User.countDocuments();
+
+  let total;
+
+  if (req.query.search) {
+    const searchQuery = req.query.search.split(",").join(" ");
+    total = await User.countDocuments({
+      $or: [
+        { name: { $regex: searchQuery, $options: "i" } },
+        { email: { $regex: searchQuery, $options: "i" } },
+      ],
+    });
+  } else {
+    total = await User.countDocuments();
+  }
+
   query = query.skip(startIndex).limit(limit);
 
   // Executing query
@@ -105,4 +123,48 @@ exports.getAllUsers = asyncHandler(async (req, res, next) => {
     pagination: pagination,
     data: users,
   });
+});
+
+// @desc    Delete user
+// @route   DELETE /api/v1/users/:id
+// @access  Private
+// @role    Admin
+exports.deleteUser = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    return next(
+      new ErrorResponse(`User not found id of ${req.params.id}`, 404)
+    );
+  }
+
+  if (user.role === "ADMIN") {
+    return next(new ErrorResponse(`You can not delete admin user`, 500));
+  }
+
+  const reviews = await Review.find({ user: user._id });
+  const watchlist = await List.find({ type: "WATCHLIST", user: user._id });
+  const seenlist = await List.find({ type: "SEENLIST", user: user._id });
+
+  reviews.forEach(async (review) => {
+    const deleteReview = await Review.findById(review._id);
+    console.log("deleteing users revies");
+    deleteReview.delete();
+  });
+
+  watchlist.forEach(async (listItem) => {
+    const deleteUserFromWatchList = await List.findById(listItem._id);
+    console.log("deleteing users watchlist");
+    deleteUserFromWatchList.delete();
+  });
+
+  seenlist.forEach(async (listItem) => {
+    const deleteUserFromSeenList = await List.findById(listItem._id);
+    console.log("deleteing users seenlist");
+    deleteUserFromSeenList.delete();
+  });
+
+  user.delete();
+
+  res.status(201).json({ success: true, data: {} });
 });
