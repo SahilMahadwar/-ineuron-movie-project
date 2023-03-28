@@ -3,7 +3,14 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { toast } from "react-toastify";
 import Button from "../Form/Button";
 
-const UserCard = ({ name, email, role, userId, onDelete: _onDelete }) => {
+const UserCard = ({
+  name,
+  email,
+  role,
+  userId,
+  onDelete: _onDelete,
+  disableOnDelete,
+}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const onDelete = async () => {
@@ -36,6 +43,7 @@ const UserCard = ({ name, email, role, userId, onDelete: _onDelete }) => {
             size="xs"
             onClick={onDelete}
             isLoading={isLoading}
+            isDisabled={disableOnDelete}
           >
             Delete This User
           </Button>

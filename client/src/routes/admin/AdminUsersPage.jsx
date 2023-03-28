@@ -25,6 +25,8 @@ export function AdminUsersPage() {
   // disables moviesIsLoading spinner on manual search or refetching movies again
   const [searchIsLoading, setSearchIsLoading] = useState(false);
 
+  const [disableAction, setDisableAction] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -84,7 +86,9 @@ export function AdminUsersPage() {
   };
 
   const removeUser = async (userId) => {
-    return deleteUser(userId);
+    setDisableAction(true);
+    await deleteUser(userId);
+    setDisableAction(false);
   };
 
   return (
@@ -134,6 +138,7 @@ export function AdminUsersPage() {
                         role={user.role}
                         userId={user._id}
                         onDelete={removeUser}
+                        disableOnDelete={disableAction}
                       />
                     </div>
                   );
@@ -146,6 +151,7 @@ export function AdminUsersPage() {
                         role={user.role}
                         userId={user._id}
                         onDelete={removeUser}
+                        disableOnDelete={disableAction}
                       />
                     </div>
                   );
