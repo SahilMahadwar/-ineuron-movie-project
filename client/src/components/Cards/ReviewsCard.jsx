@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import ReviewsContext from "../../contexts/MovieDetailsContext";
 import useApi from "../../hooks/useApi";
 import useAuth from "../../hooks/useAuth";
@@ -48,13 +49,18 @@ export default function ReviewsCard({
     const data = await _onSave(updateReviewData);
 
     setReview(data);
+
     setEditMode(false);
+
+    toast.success(`Review Updated Successfully`);
+
     setIsLoading(false);
   };
 
   const onDelete = async () => {
     setIsLoading(true);
     await _onDelete(review._id);
+    toast.success(`Review has been deleted`);
     setIsLoading(false);
   };
 

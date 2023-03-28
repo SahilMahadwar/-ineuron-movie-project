@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { RiDeleteBinLine } from "react-icons/ri";
 
 import { useState } from "react";
+import { toast } from "react-toastify";
 import Button from "../Form/Button";
 import Poster from "./Poster";
 
@@ -21,6 +22,7 @@ export function AdminMovieCard({
   const onDelete = async () => {
     setIsLoading(true);
     await _onDelete(movieId);
+    toast.success(`Movie ${title} has been deleted`);
     setIsLoading(false);
   };
 
