@@ -24,6 +24,8 @@ export function AdminMoviesPage() {
   // disables moviesIsLoading spinner on manual search or refetching movies again
   const [searchIsLoading, setSearchIsLoading] = useState(false);
 
+  const [disableAction, setDisableAction] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -50,7 +52,9 @@ export function AdminMoviesPage() {
   };
 
   const removeMovieFromSite = async (movieId) => {
-    return deleteMovie(movieId);
+    setDisableAction(true);
+    await deleteMovie(movieId);
+    setDisableAction(false);
   };
 
   const onSearch = async (inputs) => {
@@ -135,6 +139,7 @@ export function AdminMoviesPage() {
                           releaseDate={movie.releaseDate}
                           movieId={movie._id}
                           onDelete={removeMovieFromSite}
+                          disableOnDelete={disableAction}
                         />
                       </div>
                     );
@@ -148,6 +153,7 @@ export function AdminMoviesPage() {
                         releaseDate={movie.releaseDate}
                         movieId={movie._id}
                         onDelete={removeMovieFromSite}
+                        disableOnDelete={disableAction}
                       />
                     );
                   }

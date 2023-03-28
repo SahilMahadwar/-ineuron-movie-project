@@ -16,6 +16,7 @@ export function AdminMovieCard({
   adult,
   movieId,
   onDelete: _onDelete,
+  disableOnDelete,
 }) {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -41,6 +42,7 @@ export function AdminMovieCard({
           size="sm"
           isLoading={isLoading}
           leftIcon={<RiDeleteBinLine />}
+          isDisabled={disableOnDelete}
         >
           Remove from site
         </Button>
