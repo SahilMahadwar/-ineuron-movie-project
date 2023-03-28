@@ -19,6 +19,7 @@ export default function ReviewsCard({
   onDelete: _onDelete,
   loggedInUser,
   isAdmin,
+  disableAction,
 }) {
   const [review, setReview] = useState(movieReview);
   const [editMode, setEditMode] = useState(false);
@@ -136,6 +137,7 @@ export default function ReviewsCard({
               onClick={onDelete}
               intent="secondary"
               size="xs"
+              isDisabled={disableAction}
             >
               Delete
             </Button>
@@ -162,6 +164,7 @@ export default function ReviewsCard({
               onClick={handleSubmit(onSave)}
               intent="secondary"
               size="xs"
+              isDisabled={disableAction}
             >
               Save
             </Button>

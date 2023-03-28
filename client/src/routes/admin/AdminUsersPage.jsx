@@ -18,14 +18,13 @@ export function AdminUsersPage() {
     usersError,
     getUsers,
     deleteUser,
+    disableAction,
   } = useContext(AdminContext);
 
   const [refetch, setRefetch] = useState(false);
 
   // disables moviesIsLoading spinner on manual search or refetching movies again
   const [searchIsLoading, setSearchIsLoading] = useState(false);
-
-  const [disableAction, setDisableAction] = useState(false);
 
   const {
     register,
@@ -86,9 +85,7 @@ export function AdminUsersPage() {
   };
 
   const removeUser = async (userId) => {
-    setDisableAction(true);
-    await deleteUser(userId);
-    setDisableAction(false);
+    return deleteUser(userId);
   };
 
   return (

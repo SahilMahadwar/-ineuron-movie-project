@@ -17,14 +17,13 @@ export function AdminMoviesPage() {
     moviesError,
     deleteMovie,
     getMovies,
+    disableAction,
   } = useContext(AdminContext);
 
   const [refetch, setRefetch] = useState(false);
 
   // disables moviesIsLoading spinner on manual search or refetching movies again
   const [searchIsLoading, setSearchIsLoading] = useState(false);
-
-  const [disableAction, setDisableAction] = useState(false);
 
   const {
     register,
@@ -52,9 +51,7 @@ export function AdminMoviesPage() {
   };
 
   const removeMovieFromSite = async (movieId) => {
-    setDisableAction(true);
-    await deleteMovie(movieId);
-    setDisableAction(false);
+    return deleteMovie(movieId);
   };
 
   const onSearch = async (inputs) => {

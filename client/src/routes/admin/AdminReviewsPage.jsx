@@ -17,6 +17,7 @@ export function AdminReviewsPage() {
     updateReview,
     deleteReview,
     getReviews,
+    disableAction,
   } = useContext(AdminContext);
 
   const { user } = useAuth();
@@ -141,6 +142,7 @@ export function AdminReviewsPage() {
                         onDelete={onDelete}
                         loggedInUser={user._id}
                         isAdmin={true}
+                        disableAction={disableAction}
                       />
                     </div>
                   );
@@ -156,6 +158,7 @@ export function AdminReviewsPage() {
                         onDelete={onDelete}
                         loggedInUser={user._id}
                         isAdmin={true}
+                        disableAction={disableAction}
                       />
                     </div>
                   );

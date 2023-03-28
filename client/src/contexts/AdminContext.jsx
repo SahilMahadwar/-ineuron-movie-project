@@ -9,6 +9,7 @@ export const AdminProvider = ({ children }) => {
   const [reviews, setReviews] = useState(null);
   const [movies, setMovies] = useState();
   const [users, setUsers] = useState();
+  const [disableAction, setDisableAction] = useState(false);
 
   const {
     updateReview: useApiUpdateReview,
@@ -105,12 +106,15 @@ export const AdminProvider = ({ children }) => {
   };
 
   const updateReview = async (updateReviewData) => {
+    setDisableAction(true);
     const { data, success } = await useApiUpdateReview(updateReviewData);
 
     if (success) {
       console.log(data);
+      setDisableAction(false);
       return data;
     }
+    setDisableAction(false);
   };
 
   const removeReviewFromState = (reviewId) => {
@@ -121,12 +125,15 @@ export const AdminProvider = ({ children }) => {
   };
 
   const deleteReview = async (reviewId) => {
+    setDisableAction(true);
     const { data, success } = await useApiDeleteReview(reviewId);
 
     if (success) {
       removeReviewFromState(reviewId);
+      setDisableAction(false);
       return data;
     }
+    setDisableAction(false);
   };
 
   const removeMovieFromState = (movieId) => {
@@ -137,12 +144,15 @@ export const AdminProvider = ({ children }) => {
   };
 
   const deleteMovie = async (movieId) => {
+    setDisableAction(true);
     const { data, success } = await useApiDeleteMovie(movieId);
 
     if (success) {
       removeMovieFromState(movieId);
+      setDisableAction(false);
       return data;
     }
+    setDisableAction(false);
   };
 
   const removeUserFromState = (userId) => {
@@ -153,12 +163,15 @@ export const AdminProvider = ({ children }) => {
   };
 
   const deleteUser = async (userId) => {
+    setDisableAction(true);
     const { data, success } = await useApiDeleteUser(userId);
 
     if (success) {
       removeUserFromState(userId);
+      setDisableAction(false);
       return data;
     }
+    setDisableAction(false);
   };
 
   return (
@@ -183,6 +196,7 @@ export const AdminProvider = ({ children }) => {
         getReviews,
         getUsers,
         deleteUser,
+        disableAction,
       }}
     >
       {children}
