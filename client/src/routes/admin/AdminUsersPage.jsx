@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import ReviewsCard from "../../components/Cards/ReviewsCard";
 import Spinner from "../../components/Spinner";
 
+import { RiDeleteBinLine, RiUserAddLine } from "react-icons/ri";
+import Button from "../../components/Form/Button";
 import AdminContext from "../../contexts/AdminContext";
 import useAuth from "../../hooks/useAuth";
 
@@ -24,21 +26,45 @@ export function AdminUsersPage() {
               no reviews found
             </div>
           ) : (
-            <div className="grid grid-cols-4 gap-x-7 gap-y-10">
+            <div className="grid grid-cols-3 gap-x-7 gap-y-10">
               {users?.data.map(
                 (user, index) =>
                   index < 4 && (
                     <div key={user._id}>
-                      <div className="flex rounded-lg shadow-sm flex-col py-5 px-4 items-center  bg-white space-y-2">
-                        <img
-                          className="inline-block h-10 w-10 rounded-full"
-                          src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                          alt={user.name}
-                        />
-                        <p className="text-gray-700 font-normal">{user.name}</p>
-                        <p className="text-gray-600 text-sm font-light ">
-                          {user.email}
-                        </p>
+                      <div className="flex flex-col  items-start px-8  py-6  space-y-6  bg-white rounded-lg shadow-sm overflow-hidden text-ellipsis">
+                        <div className="flex items-center space-x-4">
+                          <img
+                            className="w-16 h-16 rounded-full "
+                            src="https://randomuser.me/api/portraits/men/32.jpg"
+                            alt={user.name}
+                          />
+
+                          <div>
+                            <h5 className="mb-1 text-xl font-medium text-slate-700 ">
+                              {user.name}
+                            </h5>
+
+                            <p class="text-sm text-gray-500 ">{user.email}</p>
+                          </div>
+                        </div>
+                        {user.role === "USER" && (
+                          <div className="space-x-3">
+                            <Button
+                              leftIcon={<RiDeleteBinLine />}
+                              intent="secondary"
+                              size="xs"
+                            >
+                              Delete This User
+                            </Button>
+                            <Button
+                              intent="secondary"
+                              size="xs"
+                              leftIcon={<RiUserAddLine />}
+                            >
+                              Promote To Admin
+                            </Button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   )

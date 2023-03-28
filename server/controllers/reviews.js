@@ -62,7 +62,14 @@ exports.getAllReviews = asyncHandler(async (req, res, next) => {
   if (req.query.search) {
     const searchQuery = req.query.search.split(",").join(" ");
     query = Review.find({
-      $or: [{ title: { $regex: searchQuery, $options: "i" } }],
+      $or: [
+        {
+          title: { $regex: searchQuery, $options: "i" },
+        },
+        {
+          review: { $regex: searchQuery, $options: "i" },
+        },
+      ],
     })
       .populate("user")
       .populate("movie");
@@ -92,7 +99,22 @@ exports.getAllReviews = asyncHandler(async (req, res, next) => {
   const limit = parseInt(req.query.limit, 10) || 25;
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
-  const total = await Review.countDocuments();
+
+  let total;
+
+  if (req.query.search) {
+    const searchQuery = req.query.search.split(",").join(" ");
+    total = await Review.countDocuments({
+      $or: [
+        { title: { $regex: searchQuery, $options: "i" } },
+        {
+          review: { $regex: searchQuery, $options: "i" },
+        },
+      ],
+    });
+  } else {
+    total = await Review.countDocuments();
+  }
 
   query = query.skip(startIndex).limit(limit);
 

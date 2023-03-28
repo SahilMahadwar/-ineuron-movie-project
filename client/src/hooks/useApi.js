@@ -408,7 +408,7 @@ export default function useApi() {
     }
   };
 
-  const getAllReviewsOnSite = async (listName) => {
+  const getAllReviewsOnSite = async (reviewTitle, page) => {
     try {
       setIsError(false);
       setError();
@@ -421,6 +421,11 @@ export default function useApi() {
         {
           headers: {
             Authorization: token ? `Bearer ${token}` : null,
+          },
+          params: {
+            search: reviewTitle ? reviewTitle : "",
+            limit: "26",
+            page: page ? page : "",
           },
         }
       );

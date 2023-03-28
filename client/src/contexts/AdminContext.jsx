@@ -43,10 +43,24 @@ export const AdminProvider = ({ children }) => {
     getUsers();
   }, []);
 
-  const getReviews = async () => {
-    const data = await getAllReviewsOnSite();
-    console.log(data);
-    setReviews(data);
+  const getReviews = async (reviewTitle, page) => {
+    const axiosRes = await getAllReviewsOnSite(reviewTitle, page);
+
+    if (reviews) {
+      const { data, pagination } = axiosRes;
+
+      if (page > 1) {
+        setReviews({
+          ...reviews,
+          pagination: pagination,
+          data: [...reviews.data, ...data],
+        });
+      } else {
+        setReviews({ ...reviews, pagination: pagination, data: data });
+      }
+    } else {
+      setReviews(axiosRes);
+    }
   };
 
   const getMovies = async (movieName, page) => {
@@ -135,6 +149,7 @@ export const AdminProvider = ({ children }) => {
         updateReview,
         deleteReview,
         getMovies,
+        getReviews,
       }}
     >
       {children}
