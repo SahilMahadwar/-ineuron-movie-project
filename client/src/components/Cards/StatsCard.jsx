@@ -13,7 +13,7 @@ export default function StatsCard({
 }) {
   if (isLoading) {
     return (
-      <div className="shadow rounded-lg space-x-2  overflow-hidden bg-white flex items-center justify-center">
+      <div className="shadow rounded-lg space-x-2  overflow-hidden bg-white flex items-center justify-center h-[152px]">
         <Spinner size="lg" /> <p>Loading Data...</p>
       </div>
     );
