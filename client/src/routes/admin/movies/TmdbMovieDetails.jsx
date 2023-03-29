@@ -18,14 +18,14 @@ export async function loader({ params }) {
   return getMovieDetails(params.tmdbId);
 }
 
-export default function TmdbMovie() {
+export default function TmdbMovieDetails() {
   const movie = useLoaderData();
 
   return (
     <div className="space-y-10 ">
       {/* Movie Details Card */}
       <MovieDetailsCard
-        name={movie.original_title}
+        name={movie.title}
         posterPath={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movie.poster_path}`}
         adult={movie.adult}
         status={movie.status}

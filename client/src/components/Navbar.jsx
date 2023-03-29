@@ -33,7 +33,7 @@ export default function ({
   userLoading,
   isError,
   adminNav,
-  setTmdbSlide,
+  setAddMovieModal,
   tmdbSlide,
 }) {
   const { logOut } = useAuth();
@@ -99,7 +99,7 @@ export default function ({
               <div className="hidden sm:ml-6 sm:flex sm:items-center">
                 {pathname.startsWith("/admin") ? (
                   <>
-                    <Button onClick={() => setTmdbSlide(true)} size="xs">
+                    <Button onClick={() => setAddMovieModal(true)} size="xs">
                       Add New Movie
                     </Button>
                   </>

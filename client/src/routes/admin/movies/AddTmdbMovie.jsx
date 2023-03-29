@@ -1,23 +1,23 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
-import ReviewsCard from "../../components/Cards/ReviewsCard";
-import Spinner from "../../components/Spinner";
-
 import { useForm } from "react-hook-form";
-import AdminMovieCard from "../../components/Cards/AdminMovieCard";
-import Button from "../../components/Form/Button";
-import Input from "../../components/Form/Input";
-import AdminContext from "../../contexts/AdminContext";
+import AdminMovieCard from "../../../components/Cards/AdminMovieCard";
+import TMDBMovieCard from "../../../components/Cards/TMDBMovieCard";
+import Button from "../../../components/Form/Button";
+import Input from "../../../components/Form/Input";
+import Spinner from "../../../components/Spinner";
+import AdminContext from "../../../contexts/AdminContext";
+import { useTmdb } from "../../../hooks/useTmdb";
 
-export function AdminMoviesPage() {
+export default function AddTmdbMovie() {
   const {
+    isLoading,
+    error,
+    isError,
+    movieSearch,
     movies,
-    moviesIsLoading,
-    moviesIsError,
-    moviesError,
-    deleteMovie,
-    getMovies,
     disableAction,
-  } = useContext(AdminContext);
+    getPopularMovies,
+  } = useTmdb();
 
   const [refetch, setRefetch] = useState(false);
 
@@ -37,12 +37,16 @@ export function AdminMoviesPage() {
     getAllMoviesAgain();
   }, [watch("searchQuery")]);
 
+  useEffect(() => {
+    getPopularMovies();
+  }, []);
+
   const getAllMoviesAgain = async () => {
     if (refetch) {
       const searchQuery = getValues("searchQuery");
       if (searchQuery.length === 0) {
         setSearchIsLoading(true);
-        await getMovies();
+        await getPopularMovies();
         setRefetch(false);
         setSearchIsLoading(false);
       }
@@ -55,7 +59,7 @@ export function AdminMoviesPage() {
 
   const onSearch = async (inputs) => {
     setSearchIsLoading(true);
-    await getMovies(inputs.searchQuery);
+    await movieSearch(inputs.searchQuery);
     setRefetch(true);
     setSearchIsLoading(false);
   };
@@ -64,31 +68,37 @@ export function AdminMoviesPage() {
 
   const lastMovieCardRef = useCallback(
     (node) => {
-      if (moviesIsLoading) return;
+      if (isLoading) return;
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && movies.pagination.next) {
+        if (entries[0].isIntersecting && movies.page < movies.total_pages) {
           getMoreMovies();
           console.log("Fetching more movies");
         }
       });
       if (node) observer.current.observe(node);
     },
-    [moviesIsLoading, movies?.pagination.next]
+    [isLoading, movies?.page < movies?.total_pages]
   );
 
   const getMoreMovies = async () => {
-    if (movies?.pagination.next) {
+    if (movies.page < movies.total_pages) {
       const searchQuery = getValues("searchQuery");
-      const nextPage = movies?.pagination.next.page;
+      const nextPage = movies.page + 1;
 
-      await getMovies(searchQuery, nextPage);
+      if (searchQuery.length > 0) {
+        await movieSearch(searchQuery, nextPage);
+      } else {
+        await getPopularMovies(nextPage);
+      }
     }
   };
 
   return (
     <div className="w-full space-y-10">
-      <h2 className="text-2xl font-semibold text-slate-700">Manage Movies</h2>
+      <h2 className="text-2xl font-semibold text-slate-700">
+        Import Movie Using TMDB
+      </h2>
 
       <div className="bg-white rounded-lg py-8 px-8 space-y-4">
         <h1 className="text-2xl font-semibold text-gray-800">Search</h1>
@@ -106,7 +116,7 @@ export function AdminMoviesPage() {
             <Button
               type="submit"
               isDisabled={errors.searchQuery}
-              isLoading={moviesIsLoading}
+              isLoading={isLoading}
             >
               Search
             </Button>
@@ -116,24 +126,24 @@ export function AdminMoviesPage() {
 
       {/* Reviews Part */}
       <div className="">
-        {movies?.data && !moviesIsError ? (
+        {movies?.results && !isError ? (
           <div>
-            {movies?.data.length === 0 ? (
+            {movies?.results.length === 0 ? (
               <div className="bg-white  px-8 py-8 rounded-xl shadow-sm">
                 no movies found
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-x-7 gap-y-10">
-                {movies?.data.map((movie, index) => {
-                  if (movies?.data.length === index + 1) {
+                {movies?.results.map((movie, index) => {
+                  console.log(movie);
+                  if (movies?.results.length === index + 1) {
                     return (
-                      <div ref={lastMovieCardRef} key={movie._id}>
-                        <AdminMovieCard
-                          posterPath={movie.poster}
-                          title={movie.name}
-                          overview={movie.description}
-                          releaseDate={movie.releaseDate}
-                          movieId={movie._id}
+                      <div ref={lastMovieCardRef} key={movie.id}>
+                        <TMDBMovieCard
+                          posterPath={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movie.poster_path}`}
+                          title={movie.title}
+                          overview={movie.overview}
+                          movieId={movie.id}
                           onDelete={removeMovieFromSite}
                           disableOnDelete={disableAction}
                         />
@@ -141,13 +151,12 @@ export function AdminMoviesPage() {
                     );
                   } else {
                     return (
-                      <AdminMovieCard
-                        key={movie._id}
-                        posterPath={movie.poster}
-                        title={movie.name}
-                        overview={movie.description}
-                        releaseDate={movie.releaseDate}
-                        movieId={movie._id}
+                      <TMDBMovieCard
+                        key={movie.id}
+                        posterPath={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movie.poster_path}`}
+                        title={movie.title}
+                        overview={movie.overview}
+                        movieId={movie.id}
                         onDelete={removeMovieFromSite}
                         disableOnDelete={disableAction}
                       />
@@ -157,8 +166,8 @@ export function AdminMoviesPage() {
               </div>
             )}
           </div>
-        ) : moviesIsError ? (
-          <div>{moviesError}</div>
+        ) : isError ? (
+          <div>{error}</div>
         ) : (
           ""
         )}
@@ -166,7 +175,7 @@ export function AdminMoviesPage() {
 
       {searchIsLoading
         ? null
-        : moviesIsLoading && (
+        : isLoading && (
             <div className="min-h-80 w-full flex items-center justify-center py-4 space-x-2">
               <Spinner /> <p>Loading new movies please wait</p>
             </div>
@@ -174,5 +183,3 @@ export function AdminMoviesPage() {
     </div>
   );
 }
-
-export default AdminMoviesPage;

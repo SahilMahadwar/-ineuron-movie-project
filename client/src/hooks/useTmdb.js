@@ -7,65 +7,118 @@ export function useTmdb() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isError, setIsError] = useState(null);
+  const [disableAction, setDisableAction] = useState(false);
 
-  // useEffect(() => {
-  //   getPopularMovies();
-  // }, []);
+  const getPopularMovies = async (page = 1) => {
+    try {
+      setIsError(false);
+      setError();
+      setIsLoading(true);
 
-  // const getPopularMovies = async (page = 1) => {
-  //   try {
-  //     setIsError(false);
-  //     setIsLoading(true);
+      const axiosRes = await axiosTmdbInstance.get(
+        `https://api.themoviedb.org/3/movie/popular?api_key=${tmdbKey}&language=en-US&page=${page}`
+      );
 
-  //     const { data, status } = await axiosTmdbInstance.get(
-  //       `https://api.themoviedb.org/3/movie/popular?api_key=${tmdbKey}&language=en-US&page=${page}`
-  //     );
+      if (axiosRes.status === 200) {
+        if (movies) {
+          const { data } = axiosRes;
 
-  //     if (status === 200) {
-  //       setMovies(data.results);
-  //     }
+          if (page > 1) {
+            setMovies({
+              ...movies,
+              page: data.page,
+              results: [...movies.results, ...data.results],
+            });
+            setIsLoading(false);
+          } else {
+            setIsLoading(false);
+            setMovies(axiosRes.data);
+          }
+        } else {
+          setIsLoading(false);
+          setMovies(axiosRes.data);
+        }
 
-  //     console.log(data);
+        return axiosRes.data;
+      }
 
-  //     setIsLoading(false);
-  //   } catch (error) {
-  //     setError(error);
-  //     setIsError(true);
-  //     setIsLoading(false);
-  //     console.log(error);
-  //   }
-  // };
+      console.log(data);
 
-  const movieSearch = async (query) => {
+      setIsLoading(false);
+    } catch (error) {
+      setIsError(true);
+      setIsLoading(false);
+
+      if (error.response?.data?.error) {
+        setError(error.response?.data?.error);
+        toast.error(
+          error.response?.data?.error
+            ? error.response?.data?.error
+            : error.message
+        );
+      } else {
+        setError(error.message);
+        toast.error(message);
+      }
+
+      console.log(error);
+    }
+  };
+
+  const movieSearch = async (query, page = 1) => {
     const convertedQuery = query.split(" ").join("%").toLowerCase();
 
     console.log(convertedQuery);
 
     try {
       setIsError(false);
+      setError();
       setIsLoading(true);
 
-      const { data, status } = await axiosTmdbInstance.get(
-        `https://api.themoviedb.org/3/search/movie?api_key=${tmdbKey}&language=en-US&query=${convertedQuery}&page=1&include_adult=true`
+      const axiosRes = await axiosTmdbInstance.get(
+        `https://api.themoviedb.org/3/search/movie?api_key=${tmdbKey}&language=en-US&query=${convertedQuery}&page=${page}&include_adult=true`
       );
 
-      if (status === 200) {
-        setIsLoading(false);
+      if (axiosRes.status === 200) {
+        if (movies) {
+          const { data } = axiosRes;
 
-        console.log(data);
+          if (page > 1) {
+            setMovies({
+              ...movies,
+              page: data.page,
+              results: [...movies.results, ...data.results],
+            });
+            setIsLoading(false);
+          } else {
+            setIsLoading(false);
+            setMovies(axiosRes.data);
+          }
+        } else {
+          setIsLoading(false);
+          setMovies(axiosRes.data);
+        }
 
-        return {
-          data: data.results,
-          success: true,
-        };
+        return axiosRes.data;
       }
 
       setIsLoading(false);
       console.log(data);
     } catch (error) {
-      setError(error);
       setIsError(true);
       setIsLoading(false);
+
+      if (error.response?.data?.error) {
+        setError(error.response?.data?.error);
+        toast.error(
+          error.response?.data?.error
+            ? error.response?.data?.error
+            : error.message
+        );
+      } else {
+        setError(error.message);
+        toast.error(message);
+      }
       console.log(error);
     }
   };
@@ -75,5 +128,10 @@ export function useTmdb() {
     error,
     isError,
     movieSearch,
+    movies,
+    setMovies,
+    disableAction,
+    setDisableAction,
+    getPopularMovies,
   };
 }

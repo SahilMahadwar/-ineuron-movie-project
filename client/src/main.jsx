@@ -15,9 +15,11 @@ import AdminDashboard from "./routes/admin/AdminDashboard";
 import AdminMoviesPage from "./routes/admin/AdminMoviesPage";
 import AdminReviewsPage from "./routes/admin/AdminReviewsPage";
 import AdminUsersPage from "./routes/admin/AdminUsersPage";
-import TmdbMovie, {
+import AddTmdbMovie from "./routes/admin/movies/AddTmdbMovie";
+
+import TmdbMovieDetails, {
   loader as tmdbMovieLoader,
-} from "./routes/admin/movies/TmdbMovie";
+} from "./routes/admin/movies/TmdbMovieDetails";
 import LoginPage from "./routes/auth/LoginPage";
 import RegisterPage from "./routes/auth/RegisterPage";
 import ErrorPage from "./routes/ErrorPage";
@@ -137,9 +139,14 @@ const router = createBrowserRouter([
             errorElement: <ErrorElement />,
           },
           {
-            path: "/admin/movies/tmdb/:tmdbId",
-            element: <TmdbMovie />,
+            path: "/admin/movies/add-tmdb/:tmdbId",
+            element: <TmdbMovieDetails />,
             loader: tmdbMovieLoader,
+            errorElement: <ErrorElement />,
+          },
+          {
+            path: "/admin/movies/add-tmdb",
+            element: <AddTmdbMovie />,
             errorElement: <ErrorElement />,
           },
         ],

@@ -5,10 +5,11 @@ import Navbar from "../components/Navbar";
 import Spinner from "../components/Spinner";
 import TmdbMovieSearch from "../components/TmdbMovieSearch/TmdbMovieSearch";
 
+import AddMovieModal from "../components/AddMovie/AddMovieModal";
 import useAuth from "../hooks/useAuth";
 
 export default function AdminLayout({ title }) {
-  const [tmdbSlide, setTmdbSlide] = useState(false);
+  const [addMovieModal, setAddMovieModal] = useState(false);
 
   const { user, isLoading, error, isError, getUser } = useAuth();
 
@@ -36,8 +37,7 @@ export default function AdminLayout({ title }) {
             user={user}
             isError={isError}
             userLoading={isLoading}
-            tmdbSlide={tmdbSlide}
-            setTmdbSlide={setTmdbSlide}
+            setAddMovieModal={setAddMovieModal}
           />
 
           <div className="py-10">
@@ -62,7 +62,7 @@ export default function AdminLayout({ title }) {
             </main>
           </div>
         </div>
-        <TmdbMovieSearch open={tmdbSlide} setOpen={setTmdbSlide} />
+        <AddMovieModal open={addMovieModal} setOpen={setAddMovieModal} />
       </>
     );
   }

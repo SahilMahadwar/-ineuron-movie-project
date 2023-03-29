@@ -124,7 +124,7 @@ export function AdminUsersPage() {
               no users found
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-x-7 gap-y-10">
+            <div className="grid grid-cols-3 gap-x-7 gap-y-10">
               {users?.data.map((user, index) => {
                 if (users?.data.length === index + 1) {
                   return (
