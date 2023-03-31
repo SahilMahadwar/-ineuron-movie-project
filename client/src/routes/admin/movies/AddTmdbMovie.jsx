@@ -98,7 +98,7 @@ export default function AddTmdbMovie() {
                 register={register}
                 config={{ required: "Movie name is required" }}
                 name="searchQuery"
-                placeholder="Search for movies on this site"
+                placeholder="Search for movies on TMDB"
               />
             </div>
 
