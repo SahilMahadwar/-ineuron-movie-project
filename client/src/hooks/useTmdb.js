@@ -7,7 +7,6 @@ export function useTmdb() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isError, setIsError] = useState(null);
-  const [disableAction, setDisableAction] = useState(false);
 
   const getPopularMovies = async (page = 1) => {
     try {
@@ -123,6 +122,42 @@ export function useTmdb() {
     }
   };
 
+  const getMovieById = async (movieId) => {
+    try {
+      setIsError(false);
+      setError();
+      setIsLoading(true);
+
+      const axiosRes = await axiosTmdbInstance.get(
+        `https://api.themoviedb.org/3/movie/${movieId}?api_key=${tmdbKey}&language=en-US`
+      );
+
+      if (axiosRes.status === 200) {
+        setIsLoading(false);
+        return axiosRes.data;
+      }
+
+      setIsLoading(false);
+      console.log(data);
+    } catch (error) {
+      setIsError(true);
+      setIsLoading(false);
+
+      if (error.response?.data?.error) {
+        setError(error.response?.data?.error);
+        toast.error(
+          error.response?.data?.error
+            ? error.response?.data?.error
+            : error.message
+        );
+      } else {
+        setError(error.message);
+        toast.error(message);
+      }
+      console.log(error);
+    }
+  };
+
   return {
     isLoading,
     error,
@@ -130,8 +165,8 @@ export function useTmdb() {
     movieSearch,
     movies,
     setMovies,
-    disableAction,
-    setDisableAction,
+
     getPopularMovies,
+    getMovieById,
   };
 }

@@ -11,7 +11,7 @@ export default function useApi() {
   const [error, setError] = useState(null);
   const [isError, setIsError] = useState(null);
 
-  const addToWebsite = async (movie) => {
+  const addMovieToWebsite = async (movie) => {
     try {
       setIsError(false);
       setError();
@@ -33,7 +33,7 @@ export default function useApi() {
         adult: movie.adult,
       };
 
-      const { axiosRes, status } = await axiosApiInstance.post(
+      const { data: axiosRes, status } = await axiosApiInstance.post(
         "/movies",
         data,
         {
@@ -45,6 +45,8 @@ export default function useApi() {
 
       if (status === 201) {
         console.log("sussfully added ");
+        setIsLoading(false);
+        return axiosRes;
       }
 
       setIsLoading(false);
@@ -457,24 +459,25 @@ export default function useApi() {
     }
   };
 
-  const getAllMoviesOnSite = async (movieName, page) => {
+  const getAllMoviesOnSite = async (movieName, page, tmdbId) => {
     try {
       setIsError(false);
       setError();
       setIsLoading(true);
 
-      const { data: axiosRes, status } = await axiosApiInstance.get(`/movies`, {
+      const { data, status } = await axiosApiInstance.get(`/movies`, {
         params: {
-          search: movieName ? movieName : "",
+          search: movieName,
           limit: "12",
-          page: page ? page : "",
+          page: page,
+          tmdbId: tmdbId,
         },
       });
 
-      if (axiosRes.success) {
+      if (data.success) {
         setIsLoading(false);
-        setMovies(axiosRes.data);
-        return axiosRes;
+        setMovies(data.data);
+        return data;
       }
 
       setIsLoading(false);
@@ -606,7 +609,7 @@ export default function useApi() {
   };
 
   return {
-    addToWebsite,
+    addMovieToWebsite,
     postReview,
     updateReview,
     deleteReview,

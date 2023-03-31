@@ -9,15 +9,8 @@ import AdminContext from "../../../contexts/AdminContext";
 import { useTmdb } from "../../../hooks/useTmdb";
 
 export default function AddTmdbMovie() {
-  const {
-    isLoading,
-    error,
-    isError,
-    movieSearch,
-    movies,
-    disableAction,
-    getPopularMovies,
-  } = useTmdb();
+  const { isLoading, error, isError, movieSearch, movies, getPopularMovies } =
+    useTmdb();
 
   const [refetch, setRefetch] = useState(false);
 
@@ -51,10 +44,6 @@ export default function AddTmdbMovie() {
         setSearchIsLoading(false);
       }
     }
-  };
-
-  const removeMovieFromSite = async (movieId) => {
-    return deleteMovie(movieId);
   };
 
   const onSearch = async (inputs) => {
@@ -135,7 +124,6 @@ export default function AddTmdbMovie() {
             ) : (
               <div className="grid grid-cols-2 gap-x-7 gap-y-10">
                 {movies?.results.map((movie, index) => {
-                  console.log(movie);
                   if (movies?.results.length === index + 1) {
                     return (
                       <div ref={lastMovieCardRef} key={movie.id}>
@@ -144,8 +132,6 @@ export default function AddTmdbMovie() {
                           title={movie.title}
                           overview={movie.overview}
                           movieId={movie.id}
-                          onDelete={removeMovieFromSite}
-                          disableOnDelete={disableAction}
                         />
                       </div>
                     );
@@ -157,8 +143,6 @@ export default function AddTmdbMovie() {
                         title={movie.title}
                         overview={movie.overview}
                         movieId={movie.id}
-                        onDelete={removeMovieFromSite}
-                        disableOnDelete={disableAction}
                       />
                     );
                   }
