@@ -53,8 +53,14 @@ exports.getAllMovies = asyncHandler(async (req, res, next) => {
       $or: [{ name: { $regex: searchQuery, $options: "i" } }],
     });
   } else {
+    console.log(queryStr);
+    let newQueryStr = JSON.parse(queryStr);
     //Finding All resource
-    query = Movie.find(JSON.parse(queryStr));
+    query = Movie.find(
+      newQueryStr.tmdbId
+        ? { tmdbId: parseInt(newQueryStr.tmdbId) }
+        : newQueryStr
+    );
   }
 
   // Select Fields
@@ -84,7 +90,13 @@ exports.getAllMovies = asyncHandler(async (req, res, next) => {
       $or: [{ name: { $regex: searchQuery, $options: "i" } }],
     });
   } else {
-    total = await Movie.countDocuments();
+    let newQueryStr = JSON.parse(queryStr);
+
+    total = await Movie.countDocuments(
+      newQueryStr.tmdbId
+        ? { tmdbId: parseInt(newQueryStr.tmdbId) }
+        : newQueryStr
+    );
   }
 
   query = query.skip(startIndex).limit(limit);
