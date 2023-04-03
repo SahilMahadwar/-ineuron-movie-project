@@ -8,12 +8,12 @@ const MovieSchema = new mongoose.Schema({
 
   tmdbId: {
     type: Number,
-    required: [true, "Please add Tmdb Id"],
+    required: [false, "Please add Tmdb Id"],
   },
 
   poster: {
     type: String,
-    required: [true, "Please add poster"],
+    required: [false, "Please add poster"],
   },
 
   description: {
@@ -43,6 +43,16 @@ const MovieSchema = new mongoose.Schema({
 
   genres: {
     type: Array,
+    required: false,
+  },
+
+  cast: {
+    type: [
+      {
+        name: String,
+        role: String,
+      },
+    ],
     required: false,
   },
 
