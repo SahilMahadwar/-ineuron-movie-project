@@ -2531,10 +2531,38 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fontsource/inter@npm:^4.5.15":
+  version: 4.5.15
+  resolution: "@fontsource/inter@npm:4.5.15"
+  checksum: d4330957c0a23a6c6a47f6f628b89c5603deec6305f28458fd3277bb652913dc77b31ac454bba96beeaecddef87eaf4b60befa2aad040ebb8c22c39ee33a2cf1
+  languageName: node
+  linkType: hard
+
 "@gar/promisify@npm:^1.1.3":
   version: 1.1.3
   resolution: "@gar/promisify@npm:1.1.3"
   checksum: 4059f790e2d07bf3c3ff3e0fec0daa8144fe35c1f6e0111c9921bd32106adaa97a4ab096ad7dab1e28ee6a9060083c4d1a4ada42a7f5f3f7a96b8812e2b757c1
+  languageName: node
+  linkType: hard
+
+"@headlessui/react@npm:^1.7.13":
+  version: 1.7.13
+  resolution: "@headlessui/react@npm:1.7.13"
+  dependencies:
+    client-only: ^0.0.1
+  peerDependencies:
+    react: ^16 || ^17 || ^18
+    react-dom: ^16 || ^17 || ^18
+  checksum: 132e5fce86978b9a6fd9d669fb556acec783debcd8f510c99226b3b3229dad50a13aeed69fc9af66465fc7029487ecfc46e6226f14218b760d5a309e08c0d059
+  languageName: node
+  linkType: hard
+
+"@heroicons/react@npm:v1":
+  version: 1.0.6
+  resolution: "@heroicons/react@npm:1.0.6"
+  peerDependencies:
+    react: ">= 16"
+  checksum: 372b1eda3ce735ef069777bc96304f70de585ebb71a6d1cedc121bb695f9bca235619112e3ee14e8779e95a03096813cbbe3b755927a54b7580d1ce084fa4096
   languageName: node
   linkType: hard
 
@@ -3731,6 +3759,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"class-variance-authority@npm:^0.5.1":
+  version: 0.5.1
+  resolution: "class-variance-authority@npm:0.5.1"
+  peerDependencies:
+    typescript: ">= 4.5.5 < 6"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: a39ecc776d5a1f704d9533bfc24be66fa65be7c4efe825b529a6e3319d3c42c4eddf53f83ddab13bd44491e57bcc2ef1362293cfc5485d0094d3036f936e7348
+  languageName: node
+  linkType: hard
+
 "clean-stack@npm:^2.0.0":
   version: 2.2.0
   resolution: "clean-stack@npm:2.2.0"
@@ -3738,10 +3778,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"client-only@npm:^0.0.1":
+  version: 0.0.1
+  resolution: "client-only@npm:0.0.1"
+  checksum: 0c16bf660dadb90610553c1d8946a7fdfb81d624adea073b8440b7d795d5b5b08beb3c950c6a2cf16279365a3265158a236876d92bce16423c485c322d7dfaf8
+  languageName: node
+  linkType: hard
+
 "client@workspace:client":
   version: 0.0.0-use.local
   resolution: "client@workspace:client"
   dependencies:
+    "@fontsource/inter": ^4.5.15
+    "@headlessui/react": ^1.7.13
+    "@heroicons/react": v1
     "@tanstack/react-query": ^4.28.0
     "@tanstack/react-query-devtools": ^4.29.0
     "@types/react": ^18.0.28
@@ -3749,11 +3799,14 @@ __metadata:
     "@vitejs/plugin-react-swc": ^3.0.0
     autoprefixer: ^10.4.14
     axios: ^1.3.4
+    class-variance-authority: ^0.5.1
+    clsx: ^1.2.1
     eslint: ^8.37.0
     eslint-config-react-app: ^7.0.1
     postcss: ^8.4.21
     react: ^18.2.0
     react-dom: ^18.2.0
+    react-icons: ^4.8.0
     tailwindcss: ^3.3.1
     vite: ^4.2.0
     vite-jsconfig-paths: ^2.0.1
@@ -3769,6 +3822,13 @@ __metadata:
     strip-ansi: ^6.0.1
     wrap-ansi: ^7.0.0
   checksum: 79648b3b0045f2e285b76fb2e24e207c6db44323581e421c3acbd0e86454cba1b37aea976ab50195a49e7384b871e6dfb2247ad7dec53c02454ac6497394cb56
+  languageName: node
+  linkType: hard
+
+"clsx@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "clsx@npm:1.2.1"
+  checksum: 30befca8019b2eb7dbad38cff6266cf543091dae2825c856a62a8ccf2c3ab9c2907c4d12b288b73101196767f66812365400a227581484a05f968b0307cfaf12
   languageName: node
   linkType: hard
 
@@ -6811,6 +6871,15 @@ __metadata:
   peerDependencies:
     react: ^18.2.0
   checksum: 7d323310bea3a91be2965f9468d552f201b1c27891e45ddc2d6b8f717680c95a75ae0bc1e3f5cf41472446a2589a75aed4483aee8169287909fcd59ad149e8cc
+  languageName: node
+  linkType: hard
+
+"react-icons@npm:^4.8.0":
+  version: 4.8.0
+  resolution: "react-icons@npm:4.8.0"
+  peerDependencies:
+    react: "*"
+  checksum: 4dbba7ad989c295b410e19b2a702722dae44368cb04b6515f9471353552f31ac80bd350f121d5bff79f81504b84039ede44d09e9f035f48bb1032e6eace126c4
   languageName: node
   linkType: hard
 

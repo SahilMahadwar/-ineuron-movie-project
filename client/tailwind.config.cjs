@@ -6,8 +6,13 @@ module.exports = {
   darkMode: "class",
   theme: {
     extend: {
+      backgroundImage: {
+        "background-pattern": "url('https://i.ibb.co/N9657LW/bg-1c9b34b.png')",
+      },
+
       colors: {
         brand: colors.violet,
+        "bg-primary": "#121829",
       },
     },
     fontFamily: {

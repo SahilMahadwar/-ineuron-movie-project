@@ -14,7 +14,7 @@
   }
 
   body {
-    @apply bg-gray-100 font-body h-full;
+    @apply bg-[#121829] font-body text-white h-full;
   }
 
   html {
