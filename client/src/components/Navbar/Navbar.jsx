@@ -2,14 +2,13 @@ import Logo from "@/assets/Logo";
 import { UserProfileMenu } from "@/components/Navbar/UserProfileMenu";
 
 import { Disclosure } from "@headlessui/react";
-import { Backdrop } from "../Backdrop/Backdrop";
 
 export const Navbar = () => {
   return (
-    <Disclosure as="nav" className="">
+    <Disclosure as="nav" className="border-b border-b-gray-800">
       {({ open }) => (
         <>
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
             <div className="flex justify-between py-6   ">
               <div className="flex">
                 <div className="flex-shrink-0 flex items-center">
@@ -26,7 +25,6 @@ export const Navbar = () => {
               </div>
             </div>
           </div>
-          <Backdrop height="h-[500px]" />
         </>
       )}
     </Disclosure>
