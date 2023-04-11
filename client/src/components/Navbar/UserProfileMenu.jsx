@@ -2,6 +2,7 @@ import { Menu, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import { Fragment } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
 export const UserProfileMenu = () => {
   return (
@@ -28,28 +29,28 @@ export const UserProfileMenu = () => {
         <Menu.Items className=" shadow-lg   origin-top-right absolute right-0 mt-2.5 w-48 rounded-md  py-1 bg-gray-900 ring-1 ring-black ring-opacity-5 focus:outline-none border border-gray-800">
           <Menu.Item>
             {({ active }) => (
-              <a
-                href="#"
+              <Link
+                to="/profile"
                 className={clsx(
                   active ? "bg-gray-800" : "",
                   "block px-4 py-2 text-sm text-gray-50"
                 )}
               >
                 Your Profile
-              </a>
+              </Link>
             )}
           </Menu.Item>
           <Menu.Item>
             {({ active }) => (
-              <a
-                href="#"
+              <Link
+                to="/settings"
                 className={clsx(
                   active ? "bg-gray-800" : "",
                   "block px-4 py-2 text-sm text-gray-50"
                 )}
               >
                 Settings
-              </a>
+              </Link>
             )}
           </Menu.Item>
           <Menu.Item>
