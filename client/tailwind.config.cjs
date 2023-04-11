@@ -1,5 +1,7 @@
 const colors = require("tailwindcss/colors");
 
+const { primary, gray } = require("./colors.js");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
@@ -11,8 +13,8 @@ module.exports = {
       },
 
       colors: {
-        brand: colors.violet,
-        "bg-primary": "#121829",
+        brand: primary,
+        gray: gray,
       },
     },
     fontFamily: {
