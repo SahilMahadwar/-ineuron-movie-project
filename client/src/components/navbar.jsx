@@ -1,6 +1,5 @@
-import Logo from "@/assets/Logo";
-import { UserProfileMenu } from "@/components/Navbar/UserProfileMenu";
-
+import Logo from "@/assets/logo";
+import { ProfileDropdown } from "@/components/profile-dropdown";
 import { Disclosure } from "@headlessui/react";
 
 export const Navbar = () => {
@@ -17,11 +16,11 @@ export const Navbar = () => {
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:items-center">
                 {/* Profile dropdown */}
-                <UserProfileMenu />
+                <ProfileDropdown />
               </div>
 
               <div className="flex items-center sm:hidden">
-                <UserProfileMenu />
+                <ProfileDropdown />
               </div>
             </div>
           </div>

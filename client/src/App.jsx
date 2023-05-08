@@ -1,5 +1,4 @@
-import { Navbar } from "@/components/Navbar/Navbar";
-import { queryClient } from "@/libs/reactQuery/queryClient";
+import { queryClient } from "@/libs/react-query/query-client";
 import { Router } from "@/routes/routes";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";

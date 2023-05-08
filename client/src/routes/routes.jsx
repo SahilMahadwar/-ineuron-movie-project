@@ -1,5 +1,5 @@
-import { AppLayout } from "@/layouts/AppLayout";
-import { HomePage } from "@/pages/HomePage";
+import { AppLayout } from "@/layouts/app-layout";
+import { HomePage } from "@/pages/home";
 import { Route, Routes } from "react-router-dom";
 
 export const Router = () => {

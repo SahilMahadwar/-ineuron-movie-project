@@ -4,7 +4,7 @@ import { Fragment } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 
-export const UserProfileMenu = () => {
+export const ProfileDropdown = () => {
   return (
     <Menu as="div" className="ml-3 relative">
       <Menu.Button className=" rounded-full flex text-sm focus:outline-none focus:ring-2  focus:ring-brand-400 items-center hover:text-brand-400 text-gray-100 ">
