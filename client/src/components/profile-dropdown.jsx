@@ -1,3 +1,4 @@
+import { useAuth } from "@/hooks/use-auth";
 import { Menu, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import { Fragment } from "react";
@@ -5,6 +6,8 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 
 export const ProfileDropdown = () => {
+  const { logOut } = useAuth();
+
   return (
     <Menu as="div" className="ml-3 relative">
       <Menu.Button className=" rounded-full flex text-sm focus:outline-none focus:ring-2  focus:ring-brand-400 items-center hover:text-brand-400 text-gray-100 ">
@@ -55,15 +58,15 @@ export const ProfileDropdown = () => {
           </Menu.Item>
           <Menu.Item>
             {({ active }) => (
-              <a
-                href="#"
+              <button
+                onClick={logOut}
                 className={clsx(
                   active ? "bg-gray-800" : "",
-                  "block px-4 py-2 text-sm text-gray-50"
+                  "block px-4 py-2 text-sm text-gray-50 w-full text-left"
                 )}
               >
                 Sign out
-              </a>
+              </button>
             )}
           </Menu.Item>
         </Menu.Items>
