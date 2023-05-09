@@ -7,11 +7,12 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useInView } from "react-intersection-observer";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 export const SearchPage = () => {
   const { ref, inView, entry } = useInView();
   let [searchParams, setSearchParams] = useSearchParams();
+  const { pathname } = useLocation();
 
   const {
     register,
@@ -19,6 +20,7 @@ export const SearchPage = () => {
     formState: { errors },
     getValues,
     watch,
+    reset,
   } = useForm({ defaultValues: { searchQuery: searchParams.get("query") } });
 
   // disables moviesIsLoading spinner on manual search or refetching movies again
@@ -49,13 +51,19 @@ export const SearchPage = () => {
     isFetchingNextPage,
     refetch,
   } = useInfiniteQuery({
-    queryKey: [queryKeys.movies],
+    queryKey: [queryKeys.movieSearch],
     queryFn: fetchMovies,
     getNextPageParam: (lastPage, pages) => {
       console.log(lastPage);
       return lastPage.pagination?.next?.page;
     },
   });
+
+  useEffect(() => {
+    if (!searchParams.get("query")) {
+      reset();
+    }
+  }, [pathname, reset, searchParams]);
 
   useEffect(() => {
     if (inView) {
