@@ -7,7 +7,7 @@ export const Poster = ({
   return (
     <div className="cursor-pointer select-none">
       <div
-        className={`${width} ${height} bg-gray-300 rounded-lg overflow-hidden`}
+        className={`${width} ${height} bg-gray-800 rounded-lg overflow-hidden`}
       >
         <img
           src={posterPath}

@@ -11,6 +11,7 @@ export const HomePage = () => {
   const fetchMovies = async ({ pageParam = 1 }) => {
     const { data, status } = await axiosApiInstance.get(`/movies`, {
       params: {
+        limit: "12",
         page: pageParam,
       },
     });
@@ -55,13 +56,17 @@ export const HomePage = () => {
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-8 gap-y-12">
             {movies?.pages?.map((group, i) => (
               <React.Fragment key={i}>
-                {group.data.map((movie) => (
-                  <Poster
-                    posterPath={movie.poster}
-                    title={movie.name}
-                    key={movie._id}
-                  />
-                ))}
+                {group?.count === 0 ? (
+                  <div>no movies found</div>
+                ) : (
+                  group?.data?.map((movie) => (
+                    <Poster
+                      posterPath={movie.poster}
+                      title={movie.name}
+                      key={movie._id}
+                    />
+                  ))
+                )}
               </React.Fragment>
             ))}
           </div>
@@ -77,10 +82,9 @@ export const HomePage = () => {
             ? "Loading more..."
             : hasNextPage
             ? "Load More"
-            : "Nothing more to load"}
+            : "Uh oh seems like you reached end of the list"}
         </button>
       </div>
-      <div>{isFetching && !isFetchingNextPage ? "ReFetching..." : null}</div>
     </div>
   );
 };

@@ -13,7 +13,7 @@ const inputStyles = cva(
         error: "border-red-500 bg-gray-900 text-red-500",
 
         disabled:
-          "border-gray-700 bg-gray-700 text-gray-900 cursor-not-allowed",
+          " bg-gray-800 text-gray-200 cursor-not-allowed border-gray-800 border",
       },
     },
     defaultVariants: {
