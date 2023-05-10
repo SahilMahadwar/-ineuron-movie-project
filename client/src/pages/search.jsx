@@ -74,8 +74,9 @@ export const SearchPage = () => {
   useEffect(() => {
     const searchQuery = getValues("searchQuery");
     if (searchQuery?.length === 0) {
-      setShowLoading(false);
-      refetch();
+      refetch().then(() => {
+        setShowLoading(false);
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watch("searchQuery")]);
@@ -87,7 +88,7 @@ export const SearchPage = () => {
 
   return (
     <>
-      <div className="w-full  rounded-lg py-8 px-8 space-y-4 border border-gray-800">
+      <div className="w-full rounded-lg px-8 space-y-4">
         <h1 className="text-2xl font-semibold ">Search</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex w-full justify-between items-start   space-x-2">
