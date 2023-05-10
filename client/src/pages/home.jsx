@@ -4,6 +4,7 @@ import { queryKeys } from "@/libs/react-query/constants";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
+import { Link } from "react-router-dom";
 
 export const HomePage = () => {
   const { ref, inView, entry } = useInView();
@@ -60,11 +61,13 @@ export const HomePage = () => {
                   <div>no movies found</div>
                 ) : (
                   group?.data?.map((movie) => (
-                    <Poster
-                      posterPath={movie.poster}
-                      title={movie.name}
-                      key={movie._id}
-                    />
+                    <Link to={`/movies/${movie._id}`}>
+                      <Poster
+                        posterPath={movie.poster}
+                        title={movie.name}
+                        key={movie._id}
+                      />
+                    </Link>
                   ))
                 )}
               </React.Fragment>
