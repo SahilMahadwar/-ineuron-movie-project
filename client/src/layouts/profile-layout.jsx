@@ -20,7 +20,7 @@ export const ProfileLayout = () => {
   if (user) {
     return (
       <div className="flex min-h-screen flex-col space-y-10">
-        <header className="sticky top-0 z-40  w-full ">
+        <header className="sticky top-0 z-40  w-full bg-gray-900">
           <Navbar />
         </header>
 
@@ -53,7 +53,9 @@ export const ProfileLayout = () => {
             />
           </div>
 
-          <Outlet />
+          <div className="px-3">
+            <Outlet />
+          </div>
         </div>
         <Footer />
       </div>
