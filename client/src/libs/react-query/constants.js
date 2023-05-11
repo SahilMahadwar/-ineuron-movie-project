@@ -3,4 +3,7 @@ export const queryKeys = {
   movies: "movies",
   movieSearch: "movieSearch",
   reviews: "reviews",
+  myReviews: "myReviews",
+  myWatchlist: "myWatchlist",
+  mySeenlist: "mySeenlist",
 };
