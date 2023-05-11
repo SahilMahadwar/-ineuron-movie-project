@@ -33,13 +33,26 @@ export const ProfileDropdown = () => {
           <Menu.Item>
             {({ active }) => (
               <Link
-                to="/profile"
+                to="/profile/reviews"
                 className={clsx(
                   active ? "bg-gray-800" : "",
                   "block px-4 py-2 text-sm text-gray-50"
                 )}
               >
                 Your Profile
+              </Link>
+            )}
+          </Menu.Item>
+          <Menu.Item>
+            {({ active }) => (
+              <Link
+                to="/profile/watchlist"
+                className={clsx(
+                  active ? "bg-gray-800" : "",
+                  "block px-4 py-2 text-sm text-gray-50"
+                )}
+              >
+                Watchlist
               </Link>
             )}
           </Menu.Item>
