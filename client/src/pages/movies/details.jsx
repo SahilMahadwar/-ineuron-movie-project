@@ -155,7 +155,10 @@ export const MovieDetailsPage = () => {
         <h3 className="text-xl font-medium md:px-8 px-4">Reviews</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
           {reviews?.data?.map((review) => (
-            <div className="px-5 py-6 rounded-xl shadow-sm  flex space-x-6 items-start w-full border border-gray-800">
+            <div
+              key={review._id}
+              className="px-5 py-6 rounded-xl shadow-sm  flex space-x-6 items-start w-full border border-gray-800"
+            >
               <div className="flex flex-col space-y-6  px-1  w-full overflow-hidden">
                 <div className="flex-shrink-0 flex items-center space-x-2 ">
                   <img
@@ -164,7 +167,7 @@ export const MovieDetailsPage = () => {
                     alt=""
                   />
                   <div className="">
-                    <p className="font-normal">{user.name}</p>
+                    <p className="font-normal">{review?.user?.name}</p>
                     <p className="text-sm font-light">
                       {new Date(review.createdAt).toISOString().slice(0, 10)}
                     </p>
