@@ -1,6 +1,7 @@
 import { Poster } from "@/components/poster";
 import Button from "@/components/ui/button";
 import Spinner from "@/components/ui/spinner";
+import WriteReviewModal from "@/components/write-review-modal";
 import { useUser } from "@/hooks/use-user";
 import { axiosApiInstance } from "@/libs/axios-api-Instance";
 import { cookieKeys } from "@/libs/cookie-constants";
@@ -9,6 +10,12 @@ import { convertRuntimeToHours } from "@/libs/utils";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useCookies } from "react-cookie";
 import { useForm } from "react-hook-form";
+import {
+  RiBookmark2Line,
+  RiBookmarkLine,
+  RiCheckDoubleLine,
+  RiCheckLine,
+} from "react-icons/ri";
 
 import { Link, useParams } from "react-router-dom";
 
@@ -30,24 +37,15 @@ export const MovieDetailsPage = () => {
     formState: { errors },
   } = useForm();
 
-  const { data: movie, isLoading } = useQuery({
+  const {
+    data: movie,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: [movieId],
     queryFn: async () => {
-      const { data, status } = await axiosApiInstance.get(`/movies/${movieId}`);
-      return data;
-    },
-  });
-
-  const postReview = useMutation({
-    mutationFn: ({ title, review, movie, user }) => {
-      return axiosApiInstance.post(
-        `/reviews`,
-        {
-          title: title,
-          review: review,
-          movie: movie,
-          user: user,
-        },
+      const { data, status } = await axiosApiInstance.get(
+        `/movies/${movieId}`,
         {
           headers: {
             Authorization: cookies.authToken
@@ -56,25 +54,13 @@ export const MovieDetailsPage = () => {
           },
         }
       );
-    },
-    onSuccess: ({ data }) => {
+
       console.log(data);
-    },
-    onError: (error) => {
-      console.error(error);
+      return data;
     },
   });
 
-  const onSubmit = (inputs) => {
-    postReview.mutate({
-      title: inputs.title,
-      review: inputs.review,
-      movie: movieId,
-      user: user._id,
-    });
-  };
-
-  const { data: reviews } = useQuery({
+  const { data: reviews, refetch: refetchReviews } = useQuery({
     queryKey: [queryKeys.reviews + movieId],
     queryFn: async () => {
       const { data } = await axiosApiInstance.get(`/reviews?movie=${movieId}`);
@@ -86,6 +72,94 @@ export const MovieDetailsPage = () => {
     },
   });
 
+  const addMovieToWatchlist = useMutation({
+    mutationFn: () => {
+      return axiosApiInstance.post(
+        `/list/watchlist/${movieId}`,
+        {},
+        {
+          headers: {
+            Authorization: cookies.authToken
+              ? `Bearer ${cookies.authToken}`
+              : null,
+          },
+        }
+      );
+    },
+    onSuccess: ({ data }) => {
+      refetch();
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
+  const removeMovieFromWatchlist = useMutation({
+    mutationFn: () => {
+      return axiosApiInstance.delete(
+        `/list/watchlist/${movieId}`,
+
+        {
+          headers: {
+            Authorization: cookies.authToken
+              ? `Bearer ${cookies.authToken}`
+              : null,
+          },
+        }
+      );
+    },
+    onSuccess: ({ data }) => {
+      refetch();
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
+  const addMovieToSeenlist = useMutation({
+    mutationFn: () => {
+      return axiosApiInstance.post(
+        `/list/seenlist/${movieId}`,
+        {},
+        {
+          headers: {
+            Authorization: cookies.authToken
+              ? `Bearer ${cookies.authToken}`
+              : null,
+          },
+        }
+      );
+    },
+    onSuccess: ({ data }) => {
+      refetch();
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
+  const removeMovieFromSeenlist = useMutation({
+    mutationFn: () => {
+      return axiosApiInstance.delete(
+        `/list/seenlist/${movieId}`,
+
+        {
+          headers: {
+            Authorization: cookies.authToken
+              ? `Bearer ${cookies.authToken}`
+              : null,
+          },
+        }
+      );
+    },
+    onSuccess: ({ data }) => {
+      refetch();
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -93,12 +167,14 @@ export const MovieDetailsPage = () => {
   return (
     <div className="space-y-12">
       <div className="rounded-lg items-center md:py-8 md:px-8 flex-col flex space-y-7 md:flex-row md:space-x-10 md:items-start md:space-y-0 md:border md:border-gray-800 px-4">
-        <div className="w-full flex flex-col items-center md:w-[250px]">
+        <div className="w-full flex flex-col items-center md:w-[250px] space-y-4">
           <Poster
             posterPath={movie.data.poster}
             width="w-[250px]"
             height="h-auto"
           />
+
+          <WriteReviewModal refetchReviews={refetchReviews} />
         </div>
         <div className="flex-1 w-full flex flex-col items-center md:items-start md:justify-start space-y-7 md:text-start text-center">
           <div className="space-y-2">
@@ -125,13 +201,57 @@ export const MovieDetailsPage = () => {
             )}
           </div>
 
+          <div className="space-x-4 flex items-center ">
+            {movie.data.lists?.watchlist ? (
+              <Button
+                onClick={() => removeMovieFromWatchlist.mutate()}
+                size="sm"
+                isLoading={removeMovieFromWatchlist.isLoading}
+                leftIcon={<RiBookmark2Line />}
+              >
+                Remove From Watchlist
+              </Button>
+            ) : (
+              <Button
+                intent="secondary"
+                size="sm"
+                leftIcon={<RiBookmarkLine />}
+                isLoading={addMovieToWatchlist.isLoading}
+                onClick={() => addMovieToWatchlist.mutate()}
+              >
+                Add To Watchlist
+              </Button>
+            )}
+
+            {movie.data.lists?.seenlist ? (
+              <Button
+                onClick={() => removeMovieFromSeenlist.mutate()}
+                size="sm"
+                isLoading={removeMovieFromSeenlist.isLoading}
+                leftIcon={<RiCheckDoubleLine />}
+              >
+                Watched
+              </Button>
+            ) : (
+              <Button
+                isLoading={addMovieToSeenlist.isLoading}
+                onClick={() => addMovieToSeenlist.mutate()}
+                intent="secondary"
+                size="sm"
+                leftIcon={<RiCheckLine />}
+              >
+                Already watched
+              </Button>
+            )}
+          </div>
+
           <div className="space-y-2">
             <p className="font-medium text-sm ">Genres</p>
             <div className="space-x-2">
               {movie.data.genres?.map((genre) => (
                 <span
                   key={genre}
-                  className="bg-gray-700  text-center  text-xs font-semibold px-2.5 py-0.5 rounded"
+                  className="bg-gray-800  text-center  text-xs font-semibold px-2.5 py-0.5 rounded"
                 >
                   {genre}
                 </span>
