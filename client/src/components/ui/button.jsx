@@ -13,7 +13,7 @@ const buttonStyles = cva(
           "bg-brand-500 text-white hover:bg-brand-600 focus:ring-brand-300",
 
         secondary:
-          "text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:ring-gray-200 hover:text-brand-500",
+          "border border-gray-800 hover:bg-gray-700 focus:ring-gray-200 bg-gray-800",
 
         active:
           "bg-brand-50 text-brand-600 hover:bg-brand-100 focus:ring-brand-300 border border-brand-200",
@@ -21,8 +21,7 @@ const buttonStyles = cva(
       disabledIntents: {
         primary:
           "bg-brand-500 hover:bg-brand-500  text-white cursor-not-allowed",
-        secondary:
-          "bg-white text-gray-700 hover:text-gray-700 cursor-not-allowed",
+        secondary: "border border-gray-800  focus:ring-gray-200 bg-gray-800",
         active:
           "bg-brand-50 text-brand-600 hover:bg-brand-50  border border-brand-100 cursor-not-allowed",
       },
