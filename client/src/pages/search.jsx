@@ -54,7 +54,6 @@ export const SearchPage = () => {
     queryKey: [queryKeys.movieSearch],
     queryFn: fetchMovies,
     getNextPageParam: (lastPage, pages) => {
-      console.log(lastPage);
       return lastPage.pagination?.next?.page;
     },
   });
