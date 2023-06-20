@@ -59,16 +59,16 @@ export const SearchPage = () => {
   });
 
   useEffect(() => {
-    if (!searchParams.get("query")) {
-      reset();
-    }
-  }, [pathname, reset, searchParams]);
-
-  useEffect(() => {
     if (inView) {
       fetchNextPage();
     }
   }, [fetchNextPage, inView]);
+
+  useEffect(() => {
+    if (!searchParams.get("query")) {
+      reset();
+    }
+  }, [pathname, reset, searchParams]);
 
   useEffect(() => {
     const searchQuery = getValues("searchQuery");
