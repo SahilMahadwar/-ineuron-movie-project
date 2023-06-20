@@ -3,8 +3,8 @@ import { ProfileDropdown } from "@/components/profile-dropdown";
 import Button from "@/components/ui/button";
 import { Dialog, Transition } from "@headlessui/react";
 import {
-  CalendarIcon,
-  FolderIcon,
+  DocumentTextIcon,
+  FilmIcon,
   HomeIcon,
   MenuAlt2Icon,
   UsersIcon,
@@ -17,9 +17,9 @@ import { Link, Outlet } from "react-router-dom";
 
 const navigation = [
   { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
-  { name: "Movies", href: "#", icon: UsersIcon, current: false },
-  { name: "Reviews", href: "#", icon: FolderIcon, current: false },
-  { name: "Users", href: "#", icon: CalendarIcon, current: false },
+  { name: "Movies", href: "#", icon: FilmIcon, current: false },
+  { name: "Reviews", href: "#", icon: DocumentTextIcon, current: false },
+  { name: "Users", href: "#", icon: UsersIcon, current: false },
 ];
 
 export function AdminLayout() {
