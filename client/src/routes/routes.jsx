@@ -2,6 +2,9 @@ import { AdminLayout } from "@/layouts/admin-layout";
 import { AppLayout } from "@/layouts/app-layout";
 import { ProfileLayout } from "@/layouts/profile-layout";
 import { DashboardPage } from "@/pages/admin/dashboard";
+import { AdminMoviesPage } from "@/pages/admin/movies/movies";
+import { AdminReviewsPage } from "@/pages/admin/reviews";
+import { AdminUsersPage } from "@/pages/admin/users";
 import LoginPage from "@/pages/auth/login";
 import RegisterPage from "@/pages/auth/register";
 import { HomePage } from "@/pages/home";
@@ -27,6 +30,9 @@ export const Router = () => {
       </Route>
       <Route element={<AdminLayout />}>
         <Route path="/admin/dashboard" element={<DashboardPage />} />
+        <Route path="/admin/manage-movies" element={<AdminMoviesPage />} />
+        <Route path="/admin/manage-reviews" element={<AdminReviewsPage />} />
+        <Route path="/admin/manage-users" element={<AdminUsersPage />} />
       </Route>
       <Route path="/auth/login" element={<LoginPage />} />
       <Route path="/auth/register" element={<RegisterPage />} />
