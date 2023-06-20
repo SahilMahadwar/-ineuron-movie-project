@@ -1,4 +1,5 @@
 import Logo from "@/assets/logo";
+import { AddMovieDialog } from "@/components/dialogs/add-movie";
 import { ProfileDropdown } from "@/components/profile-dropdown";
 import Button from "@/components/ui/button";
 import { Dialog, Transition } from "@headlessui/react";
@@ -13,17 +14,39 @@ import {
 import clsx from "clsx";
 
 import { Fragment, useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 
 const navigation = [
-  { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
-  { name: "Movies", href: "#", icon: FilmIcon, current: false },
-  { name: "Reviews", href: "#", icon: DocumentTextIcon, current: false },
-  { name: "Users", href: "#", icon: UsersIcon, current: false },
+  {
+    name: "Dashboard",
+    href: "/admin/dashboard",
+    icon: HomeIcon,
+    current: true,
+  },
+  {
+    name: "Movies",
+    href: "/admin/manage-movies",
+    icon: FilmIcon,
+    current: false,
+  },
+  {
+    name: "Reviews",
+    href: "/admin/manage-reviews",
+    icon: DocumentTextIcon,
+    current: false,
+  },
+  {
+    name: "Users",
+    href: "/admin/manage-users",
+    icon: UsersIcon,
+    current: false,
+  },
 ];
 
 export function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { pathname } = useLocation();
+  const [movieDialogState, setMovieDialogState] = useState(false);
 
   return (
     <>
@@ -43,7 +66,7 @@ export function AdminLayout() {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Dialog.Overlay className="fixed inset-0 bg-gray-800 bg-opacity-75" />
+              <Dialog.Overlay className="fixed inset-0 bg-gray-800 bg-opacity-75 firefox:bg-opacity-90 backdrop-blur-sm backdrop-filter" />
             </Transition.Child>
             <Transition.Child
               as={Fragment}
@@ -85,17 +108,21 @@ export function AdminLayout() {
                 </div>
                 <div className="mt-5 flex-1 h-0 overflow-y-auto">
                   <div className="px-4 mt-4 mb-8">
-                    <Button fullWidth size="sm">
+                    <Button
+                      fullWidth
+                      size="sm"
+                      onClick={() => setMovieDialogState(true)}
+                    >
                       Add New Movie
                     </Button>
                   </div>
                   <nav className="px-4 space-y-2.5">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
-                        href={item.href}
+                        to={item.href}
                         className={clsx(
-                          item.current
+                          pathname === item.href
                             ? "bg-gray-800 text-white"
                             : "text-gray-300 hover:bg-gray-800 hover:text-white",
                           "group flex items-center px-2 py-2 text-base font-medium rounded-md"
@@ -103,7 +130,7 @@ export function AdminLayout() {
                       >
                         <item.icon
                           className={clsx(
-                            item.current
+                            pathname === item.href
                               ? "text-gray-300"
                               : "text-gray-400 group-hover:text-gray-300",
                             "mr-4 flex-shrink-0 h-5 w-5"
@@ -111,7 +138,7 @@ export function AdminLayout() {
                           aria-hidden="true"
                         />
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </nav>
                 </div>
@@ -134,17 +161,21 @@ export function AdminLayout() {
             </div>
             <div className="flex-1 flex flex-col overflow-y-auto">
               <div className="px-4 mt-4">
-                <Button fullWidth size="sm">
+                <Button
+                  fullWidth
+                  size="sm"
+                  onClick={() => setMovieDialogState(true)}
+                >
                   Add New Movie
                 </Button>
               </div>
               <nav className="flex-1 px-4 mt-8 space-y-2.5">
                 {navigation.map((item) => (
-                  <a
+                  <Link
                     key={item.name}
-                    href={item.href}
+                    to={item.href}
                     className={clsx(
-                      item.current
+                      pathname === item.href
                         ? "bg-gray-800 text-white"
                         : "text-gray-300 hover:bg-gray-800 hover:text-white",
                       "group flex items-center px-2.5 py-2 text-sm font-medium rounded-md"
@@ -152,7 +183,7 @@ export function AdminLayout() {
                   >
                     <item.icon
                       className={clsx(
-                        item.current
+                        pathname === item.href
                           ? "text-gray-300"
                           : "text-gray-400 group-hover:text-gray-300",
                         "mr-3 flex-shrink-0 h-5 w-5"
@@ -160,7 +191,7 @@ export function AdminLayout() {
                       aria-hidden="true"
                     />
                     {item.name}
-                  </a>
+                  </Link>
                 ))}
               </nav>
             </div>
@@ -192,6 +223,7 @@ export function AdminLayout() {
           </main>
         </div>
       </div>
+      <AddMovieDialog open={movieDialogState} setOpen={setMovieDialogState} />
     </>
   );
 }
