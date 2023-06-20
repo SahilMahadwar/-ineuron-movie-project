@@ -1,5 +1,7 @@
+import { AdminLayout } from "@/layouts/admin-layout";
 import { AppLayout } from "@/layouts/app-layout";
 import { ProfileLayout } from "@/layouts/profile-layout";
+import { DashboardPage } from "@/pages/admin/dashboard";
 import LoginPage from "@/pages/auth/login";
 import RegisterPage from "@/pages/auth/register";
 import { HomePage } from "@/pages/home";
@@ -22,6 +24,9 @@ export const Router = () => {
         <Route path="/profile/reviews" element={<ReviewsPage />} />
         <Route path="/profile/watchlist" element={<WatchlistPage />} />
         <Route path="/profile/seen" element={<SeenPage />} />
+      </Route>
+      <Route element={<AdminLayout />}>
+        <Route path="/admin/dashboard" element={<DashboardPage />} />
       </Route>
       <Route path="/auth/login" element={<LoginPage />} />
       <Route path="/auth/register" element={<RegisterPage />} />
