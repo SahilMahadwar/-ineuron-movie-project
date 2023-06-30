@@ -34,11 +34,13 @@ export const Navbar = () => {
                 <Spinner size="sm" />
               ) : user?.email ? (
                 <>
-                  <div className="hidden sm:ml-6 sm:flex sm:items-center">
-                    {/* Profile dropdown */}
-                    <ProfileDropdown />
-                  </div>
-                  <div className="flex items-center sm:hidden">
+                  <div className="flex items-center space-x-8">
+                    {user?.role === "ADMIN" && (
+                      <Link to="/admin/dashboard">
+                        <Button size="xs">Admin Console</Button>
+                      </Link>
+                    )}
+
                     <ProfileDropdown />
                   </div>
                 </>
