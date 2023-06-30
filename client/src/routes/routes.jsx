@@ -2,6 +2,7 @@ import { AdminLayout } from "@/layouts/admin-layout";
 import { AppLayout } from "@/layouts/app-layout";
 import { ProfileLayout } from "@/layouts/profile-layout";
 import { DashboardPage } from "@/pages/admin/dashboard";
+import { AdminImportMoviePage } from "@/pages/admin/movies/import";
 import { AdminMoviesPage } from "@/pages/admin/movies/movies";
 import { AdminReviewsPage } from "@/pages/admin/reviews";
 import { AdminUsersPage } from "@/pages/admin/users";
@@ -31,6 +32,11 @@ export const Router = () => {
       <Route element={<AdminLayout />}>
         <Route path="/admin/dashboard" element={<DashboardPage />} />
         <Route path="/admin/manage-movies" element={<AdminMoviesPage />} />
+        <Route
+          path="/admin/manage-movies/import"
+          element={<AdminImportMoviePage />}
+        />
+
         <Route path="/admin/manage-reviews" element={<AdminReviewsPage />} />
         <Route path="/admin/manage-users" element={<AdminUsersPage />} />
       </Route>
