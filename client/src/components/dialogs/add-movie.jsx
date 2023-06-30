@@ -1,3 +1,5 @@
+import Button from "@/components/ui/button";
+import Icon from "@/components/ui/icon";
 import { Dialog, RadioGroup, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import { Fragment, useRef, useState } from "react";
@@ -7,8 +9,6 @@ import {
   HiOutlinePencilSquare,
 } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
-import Button from "../ui/Button";
-import Icon from "../ui/icon";
 
 const addMovieOptions = [
   {
