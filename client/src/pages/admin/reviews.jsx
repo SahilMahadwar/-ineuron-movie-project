@@ -1,3 +1,4 @@
+import { ReviewCard } from "@/components/cards/review-card";
 import { Poster } from "@/components/poster";
 import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
@@ -120,40 +121,21 @@ export const AdminReviewsPage = () => {
       </div>
 
       <div className="space-y-5">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-x-8 gap-y-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8">
           {reviews?.pages?.map((group, i) => (
             <React.Fragment key={i}>
               {group?.count === 0 ? (
                 <div>no reviews found</div>
               ) : (
                 group?.data?.map((review) => (
-                  <div
+                  <ReviewCard
                     key={review._id}
-                    className="px-5 py-6 rounded-xl shadow-sm  flex space-x-6 items-start w-full border border-gray-800"
-                  >
-                    <div className="flex flex-col space-y-6  px-1  w-full overflow-hidden">
-                      <div className="flex-shrink-0 flex items-center space-x-2 ">
-                        <img
-                          className="inline-block h-10 w-10 rounded-full"
-                          src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                          alt=""
-                        />
-                        <div className="">
-                          <p className="font-normal">{review?.user?.name}</p>
-                          <p className="text-sm font-light">
-                            {new Date(review.createdAt)
-                              .toISOString()
-                              .slice(0, 10)}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="space-y-2 break-words">
-                        <h3 className="text-base ">{review.title}</h3>
-                        <p className="text-sm ">{review.review}</p>
-                      </div>
-                    </div>
-                  </div>
+                    userName={review?.user?.name}
+                    createdAt={review.createdAt}
+                    title={review.title}
+                    review={review.review}
+                    rating={review.rating}
+                  />
                 ))
               )}
             </React.Fragment>
